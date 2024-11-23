@@ -9,9 +9,14 @@ from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+# Set the secret key for JWTs
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+# Initialize JWTManager
+jwt = JWTManager(app)
 
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
@@ -43,7 +48,8 @@ def add_customer():
             age=data.get('age'),
             address=data.get('address'),
             gender=data.get('gender'),
-            marital_status=data.get('marital_status')
+            marital_status=data.get('marital_status'),
+            wallet=data.get('wallet'),
         )
         db_session.add(new_customer)
         db_session.commit()
