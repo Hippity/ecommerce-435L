@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String 
+from sqlalchemy import Column, Float, Integer, String 
 from shared.models.base import Base
 
 class Customer(Base):
@@ -11,3 +11,4 @@ class Customer(Base):
     address = Column(String, nullable=False)
     gender = Column(String, nullable=False)  
     marital_status = Column(String, nullable=False)     
+    wallet = Column(Float, nullable=False, default=0.0)
