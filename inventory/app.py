@@ -29,5 +29,14 @@ def add_customer():
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/get_goods', methods=['GET'])
+def get_goods():
+    try: 
+        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
+        json_results = [{"name": name, "price": price} for name, price in goods]
+        return jsonify(json_results), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3001)
