@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import get_jwt_identity, jwt_required
+import requests
 from shared.models.base import Base
 from shared.database import engine, SessionLocal
 from shared.models.customer import Customer
@@ -11,21 +12,28 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
+# create a database session to interact with database
+db_session = SessionLocal()
 
 @app.route('/inventory', methods=['GET'])
 def get_inventory():
     """
     Retrieve all available goods with their name and price.
     """
-    db_session = SessionLocal()
     try:
-        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
-        json_results = [{"name": name, "price": price} for name, price in goods]
-        return jsonify(json_results), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-    finally:
-        db_session.close()
+        response = requests.get('http://inventory-service:3001/api/get_goods', timeout=5)
+        response.raise_for_status()  
+        if response.headers.get('Content-Type') != 'application/json':
+            return jsonify({'error': 'Unexpected content type; JSON expected'}), 400
+        goods = response.json()
+        return jsonify(goods), 200
+
+    except requests.exceptions.Timeout:
+        return jsonify({'error': 'The request to the inventory service timed out'}), 504
+    except requests.exceptions.ConnectionError:
+        return jsonify({'error': 'Unable to connect to the inventory service'}), 503
+    except requests.exceptions.HTTPError as http_err:
+        return jsonify({'error': f'HTTP error occurred: {http_err}'}), response.status_code
 
 @app.route('/inventory/<int:item_id>', methods=['GET'])
 def get_item_details(item_id):
