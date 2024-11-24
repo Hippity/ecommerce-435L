@@ -18,7 +18,8 @@ COPY . /app
 COPY ../shared /app/shared
 
 # Expose the service's port
-EXPOSE 3001
+EXPOSE 3002  
 
 # Define the command to run the application
-CMD ["python", "inventory/app.py"]
+CMD ["python", "reviews/app.py"]
+

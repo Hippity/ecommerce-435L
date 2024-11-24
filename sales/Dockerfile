@@ -8,7 +8,7 @@ ENV PYTHONPATH="/app:/app/shared"
 WORKDIR /app
 
 # Copy the requirements file into the image
-COPY requirements.txt /app/requirements.txt
+COPY ../requirements.txt /app/requirements.txt
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt

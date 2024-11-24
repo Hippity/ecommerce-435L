@@ -1,14 +1,14 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float , Text
 from shared.models.base import Base
 
 class InventoryItem(Base):
-    __tablename__ = 'inventory'
+    __tablename__ = 'inventory_item'
     
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    category = Column(String, nullable=False)
+    name = Column(String(100), nullable=False)
+    category = Column(String(20), nullable=False)
     price_per_item = Column(Float, nullable=False)
-    description = Column(String, nullable=True)
+    description = Column(Text(400), nullable=True)
     stock_count = Column(Integer, nullable=False)
 
     @classmethod

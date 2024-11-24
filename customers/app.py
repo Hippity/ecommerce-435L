@@ -5,6 +5,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from shared.models.base import Base
 from shared.models.customer import Customer
+from shared.models.review import Review
+from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
 from flask_jwt_extended import JWTManager, create_access_token
 
@@ -96,6 +98,10 @@ def update_customer(username):
         customer = db_session.query(Customer).filter_by(username=username).first()
         if not customer:
             return jsonify({'error': 'Customer not found'}), 404
+        
+        is_valid, message = Customer.validate_data(data)
+        if not is_valid:
+            return jsonify({'error': message}), 400
 
         # Update fields dynamically
         for key, value in data.items():

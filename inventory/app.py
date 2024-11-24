@@ -9,8 +9,49 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 Base.metadata.create_all(bind=engine)
 
+# Get all items in the inventory
+@app.route('/inventory', methods=['GET'])
+def get_inventory():
+    """
+    Retrieve all items with their name and price.
+    """
+    db_session = SessionLocal()
+    try:
+        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
+        json_results = [{"name": name, "price": price} for name, price in goods]
+        return jsonify(json_results), 200
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+    finally:
+        db_session.close()
+
+# Get an item's details from the inventory
+@app.route('/inventory/<int:item_id>', methods=['GET'])
+def get_item_details(item_id):
+    """
+    Retrieve detailed information about a specific item.
+    """
+    db_session = SessionLocal()
+    try:
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if item is None:
+            return jsonify({"error": "Item not found"}), 404
+        item_details = {
+            "id": item.id,
+            "name": item.name,
+            "category": item.category,
+            "price_per_item": item.price_per_item,
+            "description": item.description,
+            "stock_count": item.stock_count
+        }
+        return jsonify(item_details), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
 # Add a new item to the inventory
-@app.route('/inventory/', methods=['POST'])
+@app.route('/inventory', methods=['POST'])
 def add_item():
     """Add a new item to the inventory."""
     data = request.json
@@ -28,6 +69,57 @@ def add_item():
         db_session.commit()
 
         return jsonify({'message': 'Good added successfully', 'item_id': new_item.id}), 201
+    except Exception as e:
+        db_session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
+# Update an existing item
+@app.route('/inventory/<int:item_id>', methods=['PUT'])
+def update_item(item_id):
+    """Update fields related to a specific inventory item."""
+    data = request.json
+    try:
+        db_session = SessionLocal()
+        item = db_session.query(InventoryItem).filter_by(id=item_id).first()
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+        
+        is_valid, message = InventoryItem.validate_data(data)
+        if not is_valid:
+            return jsonify({'error': message}), 400
+
+        # Update fields dynamically
+        for key, value in data.items():
+            if hasattr(item, key):
+                setattr(item, key, value)
+        
+        is_valid, message = InventoryItem.validate_data(data)
+        if not is_valid:
+            return jsonify({'error': message}), 400
+
+        db_session.commit()
+        return jsonify({'message': f'Item {item_id} updated successfully'}), 200
+    except Exception as e:
+        db_session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
+@app.route('/inventory/<int:item_id>', methods=['DELETE'])
+def delete_item(item_id):
+    try:
+        db_session = SessionLocal()
+        item = db_session.query(InventoryItem).filter_by(id=item_id).first()
+
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+
+        db_session.delete(item)
+        db_session.commit()
+
+        return jsonify({'message': f'Item {item_id} deleted successfully'}), 200
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
@@ -84,64 +176,6 @@ def add_stock(item_id):
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
-    finally:
-        db_session.close()
-
-# Update an existing item
-@app.route('/inventory/<int:item_id>', methods=['PUT'])
-def update_item(item_id):
-    """Update fields related to a specific inventory item."""
-    data = request.json
-    try:
-        db_session = SessionLocal()
-        item = db_session.query(InventoryItem).filter_by(id=item_id).first()
-        if not item:
-            return jsonify({'error': 'Item not found'}), 404
-
-        # Update fields dynamically
-        for key, value in data.items():
-            if hasattr(item, key):
-                setattr(item, key, value)
-
-        db_session.commit()
-        return jsonify({'message': f'Item {item_id} updated successfully'}), 200
-    except Exception as e:
-        db_session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        db_session.close()
-
-@app.route('/inventory/<int:item_id>', methods=['DELETE'])
-def delete_item(item_id):
-    try:
-        db_session = SessionLocal()
-        item = db_session.query(InventoryItem).filter_by(id=item_id).first()
-
-        if not item:
-            return jsonify({'error': 'Item not found'}), 404
-
-        db_session.delete(item)
-        db_session.commit()
-
-        return jsonify({'message': f'Item {item_id} deleted successfully'}), 200
-    except Exception as e:
-        db_session.rollback()
-        return jsonify({'error': str(e)}), 500
-    finally:
-        db_session.close()
-
-@app.route('/api/get_goods', methods=['GET'])
-def get_goods():
-    """
-    Retrieve all available goods with their name and price.
-    """
-    db_session = SessionLocal()
-    try:
-        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
-        json_results = [{"name": name, "price": price} for name, price in goods]
-        return jsonify(json_results), 200
-    except Exception as e:
-        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
     finally:
         db_session.close()
     
