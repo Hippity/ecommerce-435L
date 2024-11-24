@@ -32,7 +32,7 @@ class InventoryItem(Base):
         if not isinstance(data["stock_count"], int) or data["stock_count"] < 0:
             return False, "Invalid value for 'stock_count'. It must be a non-negative integer."
 
-        if isinstance(data["description"], str) or len(data["description"].strip()) < 5 :
+        if not isinstance(data["description"], str) or len(data["description"].strip()) < 5 :
             return False, "Invalid value for 'description'. It must be at least 5 characters."
 
         return True, "Validation successful."

@@ -15,8 +15,11 @@ Base.metadata.create_all(bind=engine)
 # create a database session to interact with database
 db_session = SessionLocal()
 
-@app.route('/sales_goods', methods=['GET'])
-def get_goods():
+@app.route('/inventory', methods=['GET'])
+def get_inventory():
+    """
+    Retrieve all available goods with their name and price.
+    """
     try:
         response = requests.get('http://inventory-service:3001/api/get_goods', timeout=5)
         response.raise_for_status()  
@@ -31,21 +34,6 @@ def get_goods():
         return jsonify({'error': 'Unable to connect to the inventory service'}), 503
     except requests.exceptions.HTTPError as http_err:
         return jsonify({'error': f'HTTP error occurred: {http_err}'}), response.status_code
-
-@app.route('/inventory', methods=['GET'])
-def get_inventory():
-    """
-    Retrieve all available goods with their name and price.
-    """
-    db_session = SessionLocal()
-    try:
-        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
-        json_results = [{"name": name, "price": price} for name, price in goods]
-        return jsonify(json_results), 200
-    except Exception as e:
-        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
-    finally:
-        db_session.close()
 
 @app.route('/inventory/<int:item_id>', methods=['GET'])
 def get_item_details(item_id):

@@ -132,12 +132,18 @@ def delete_item(item_id):
 
 @app.route('/api/get_goods', methods=['GET'])
 def get_goods():
-    try: 
+    """
+    Retrieve all available goods with their name and price.
+    """
+    db_session = SessionLocal()
+    try:
         goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
         json_results = [{"name": name, "price": price} for name, price in goods]
         return jsonify(json_results), 200
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+    finally:
+        db_session.close()
     
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3001)
