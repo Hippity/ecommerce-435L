@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
+
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.models.base import Base
 from shared.models.customer import Customer
@@ -13,8 +15,13 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 Base.metadata.create_all(bind=engine)
 
+# Configure JWT
+app.config['JWT_SECRET_KEY'] = 'secret-key'
+jwt = JWTManager(app)
+
 # Get all items in the inventory
 @app.route('/inventory', methods=['GET'])
+@jwt_required()
 def get_inventory():
     """
     Retrieve all items with their name and price.
@@ -23,6 +30,8 @@ def get_inventory():
     try:
         goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
         json_results = [{"name": name, "price": price} for name, price in goods]
+        #user = json.loads(get_jwt_identity()) 
+        #print(user["username"]) 
         return jsonify(json_results), 200
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500

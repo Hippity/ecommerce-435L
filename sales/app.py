@@ -14,8 +14,18 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
 # create a database session to interact with database
-db_session = SessionLocal()
 
+@app.route('/sales_goods', methods=['GET'])
+def get_goods():
+    try: 
+        db_session = SessionLocal()
+        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
+        json_results = [{"name": name, "price": price} for name, price in goods]
+        return jsonify(json_results), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+'''
 @app.route('/inventory', methods=['GET'])
 def get_inventory():
     """
@@ -106,7 +116,7 @@ def purchase_item(item_id):
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
     finally:
-        db_session.close()
+        db_session.close()'''
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3003)

@@ -21,7 +21,7 @@ COPY ../shared /app/shared
 EXPOSE 3003
 
 #ENV DATABASE_URL=mysql+pymysql://user:pw@docker.for.mac.host.internal:3306/ecommerce
-#ENV DATABASE_URL=mysql+pymysql://user:pw@host.docker.internal:3306/ecommerce
+ENV DATABASE_URL=mysql+pymysql://root:987654321@host.docker.internal:3306/ecommerce
 
 # Define the command to run the application
 CMD ["python", "sales/app.py"]
