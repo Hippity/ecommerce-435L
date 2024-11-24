@@ -30,8 +30,6 @@ def get_inventory():
     try:
         goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
         json_results = [{"name": name, "price": price} for name, price in goods]
-        #user = json.loads(get_jwt_identity()) 
-        #print(user["username"]) 
         return jsonify(json_results), 200
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500

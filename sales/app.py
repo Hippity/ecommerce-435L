@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, json, request, jsonify
 from flask_cors import CORS
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 import requests
 from shared.database import engine, SessionLocal
 from shared.models.base import Base
@@ -15,18 +15,13 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 Base.metadata.create_all(bind=engine)
 # create a database session to interact with database
 
-@app.route('/sales_goods', methods=['GET'])
-def get_goods():
-    try: 
-        db_session = SessionLocal()
-        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
-        json_results = [{"name": name, "price": price} for name, price in goods]
-        return jsonify(json_results), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+
+# Configure JWT
+app.config['JWT_SECRET_KEY'] = 'secret-key'
+jwt = JWTManager(app)
     
-'''
 @app.route('/inventory', methods=['GET'])
+@jwt_required()
 def get_inventory():
     """
     Retrieve all inventory with their name and price.
@@ -47,6 +42,7 @@ def get_inventory():
         return jsonify({'error': f'HTTP error occurred: {http_err}'}), response.status_code
 
 @app.route('/inventory/<int:item_id>', methods=['GET'])
+@jwt_required()
 def get_item_details(item_id):
     """
     Retrieve all available goods with their name and price.
@@ -72,51 +68,39 @@ def purchase_item(item_id):
     """
     Handle purchasing an item by a logged-in customer.
     """
+    quantity = request.json.get("quantity")
     db_session = SessionLocal()
-    try:
-        # Get the logged-in user
-        current_user = db_session.query(Customer).filter(Customer.username == get_jwt_identity()).first()
-        if not current_user:
-            return jsonify({"error": "User not found"}), 404
-        
-
-        """
-        We need to use APIs from customer and inventory
-        """
-
-        # # Get the item details
-        # good = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
-        # if not good:
-        #     return jsonify({"error": "Item not found"}), 404
-
-        # # Validate purchase quantity
-        # quantity = request.json.get("quantity")
-        # if not quantity or quantity <= 0:
-        #     return jsonify({"error": "Invalid quantity"}), 400
-
-        # # Check funds and stock availability
-        # total_cost = good.price_per_item * quantity
-        # if current_user.wallet < total_cost:
-        #     return jsonify({"error": "Insufficient funds"}), 400
-        # if good.stock_count < quantity:
-        #     return jsonify({"error": "Insufficient stock"}), 400
-
-        # # Process purchase
-        # current_user.wallet -= total_cost
-        # good.stock_count -= quantity
-        # db_session.commit()
-
-        # return jsonify({
-        #     "message": "Purchase successful",
-        #     "remaining_wallet": current_user.wallet,
-        #     "remaining_stock": good.stock_count
-        # }), 200
-
+    try:        
+        user = json.loads(get_jwt_identity()) 
+        response = requests.get(f'http://inventory-service:3001/inventory/{item_id}', timeout=5)
+        response.raise_for_status()  
+        if response.headers.get('Content-Type') != 'application/json':
+            return jsonify({'error': 'Unexpected content type; JSON expected'}), 400
+        item = response.json()
+        if item["stock_count"]>quantity and user["wallet"]>= item["price_per_item"]*quantity:
+            response = requests.post(
+            f'http://customers-service:3000/customers/{user["username"]}/wallet/deduct',
+            json={"amount": item["price_per_item"]*quantity}, 
+            timeout=5
+            ) 
+            response.raise_for_status()  
+        if response.headers.get('Content-Type') != 'application/json':
+            return jsonify({'error': 'Unexpected content type; JSON expected'}), 400
+        response = requests.post(
+        f'http://inventory-service:3001/inventory/{item_id}/remove_stock',
+        json={"quantity": quantity}, 
+        timeout=5
+        ) 
+        response.raise_for_status()  
+        if response.headers.get('Content-Type') != 'application/json':
+            return jsonify({'error': 'Unexpected content type; JSON expected'}), 400
+        return jsonify({'message': 'Successful purchased '}), 200
+    
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
     finally:
-        db_session.close()'''
+        db_session.close()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3003)
