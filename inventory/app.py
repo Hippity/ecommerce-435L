@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.models.base import Base
+from shared.models.customer import Customer
+from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
 

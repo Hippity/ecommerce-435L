@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float , Text
 from shared.models.base import Base
+from sqlalchemy.orm import relationship
+
 
 class InventoryItem(Base):
     __tablename__ = 'inventory_item'
@@ -10,6 +12,8 @@ class InventoryItem(Base):
     price_per_item = Column(Float, nullable=False)
     description = Column(Text(400), nullable=True)
     stock_count = Column(Integer, nullable=False)
+
+    reviews = relationship("Review", back_populates="inventory_item")
 
     @classmethod
     def validate_data(cls, data):

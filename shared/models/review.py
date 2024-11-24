@@ -2,10 +2,6 @@ from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, Enum, D
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from shared.models.base import Base
-from shared.models.customer import Customer
-from shared.models.inventory import InventoryItem
-
-from sqlalchemy.orm import Session
 
 class Review(Base):
     __tablename__ = 'reviews'
@@ -20,8 +16,8 @@ class Review(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now()) 
 
     customer = relationship("Customer", back_populates="reviews")
-    product = relationship("InventoryItem", back_populates="reviews")
-
+    inventory_item = relationship("InventoryItem", back_populates="reviews")
+    
     @classmethod
     def validate_data(cls, data):
 

@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import get_jwt_identity, jwt_required
 import requests
-from shared.models.base import Base
 from shared.database import engine, SessionLocal
+from shared.models.base import Base
 from shared.models.customer import Customer
+from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 
 app = Flask(__name__)
@@ -25,8 +26,8 @@ def get_inventory():
         response.raise_for_status()  
         if response.headers.get('Content-Type') != 'application/json':
             return jsonify({'error': 'Unexpected content type; JSON expected'}), 400
-        goods = response.json()
-        return jsonify(goods), 200
+        inventory = response.json()
+        return jsonify(inventory), 200
 
     except requests.exceptions.Timeout:
         return jsonify({'error': 'The request to the inventory service timed out'}), 504

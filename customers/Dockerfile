@@ -20,6 +20,9 @@ COPY ../shared /app/shared
 # Expose the service's port
 EXPOSE 3000  
 
+#ENV DATABASE_URL=mysql+pymysql://user:pw@docker.for.mac.host.internal:3306/ecommerce
+#ENV DATABASE_URL=mysql+pymysql://user:pw@host.docker.internal:3306/ecommerce
+
 # Define the command to run the application
 CMD ["python", "customers/app.py"]
 

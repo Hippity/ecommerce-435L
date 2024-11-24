@@ -2,9 +2,9 @@ from flask import Flask, request, jsonify
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from shared.database import SessionLocal
-from shared.models.review import Review
 from shared.models.base import Base
 from shared.models.customer import Customer
+from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
 import requests

@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Float, Integer, String 
 from shared.models.base import Base
+from sqlalchemy.orm import relationship
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -12,6 +13,8 @@ class Customer(Base):
     gender = Column(String(10), nullable=False) 
     marital_status = Column(String(10), nullable=False) 
     wallet = Column(Float, nullable=False, default=0.0)
+
+    reviews = relationship("Review", back_populates="customer")
 
     @classmethod
     def validate_data(cls, data):
@@ -35,7 +38,7 @@ class Customer(Base):
         if not isinstance(data["age"], int) or data["age"] < 16:
             return False, "Invalid value for 'age'. It must be greater than 16"
 
-        if not isinstance(data["address"], str) or not len(data["address"].strip()) < 4:
+        if not isinstance(data["address"], str) or len(data["address"].strip()) < 4:
             return False, "Invalid value for 'address'. It must be at least 4 characters"
 
         if data["gender"].lower() not in valid_genders:
