@@ -21,8 +21,8 @@ class Review(Base):
     @classmethod
     def validate_data(cls, data):
 
-        required_fields = ["customer_id", "item_id", "rating"]
-        valid_statuses = ["approved", "flagged"]
+        required_fields = ["rating"]
+        valid_statuses = ["approved", "normal" ,"flagged"]
 
         # Check for missing fields
         for field in required_fields:

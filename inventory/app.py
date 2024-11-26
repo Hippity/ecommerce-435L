@@ -1,25 +1,23 @@
 from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
-
-from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import json
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-
-Base.metadata.create_all(bind=engine)
-
-# Configure JWT
-app.config['JWT_SECRET_KEY'] = 'secret-key'
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 jwt = JWTManager(app)
 
-# Get all items in the inventory
+# Create tables if not created
+Base.metadata.create_all(bind=engine)
+
 @app.route('/inventory', methods=['GET'])
 @jwt_required()
 def get_inventory():
@@ -36,8 +34,8 @@ def get_inventory():
     finally:
         db_session.close()
 
-# Get an item's details from the inventory
 @app.route('/inventory/<int:item_id>', methods=['GET'])
+@jwt_required()
 def get_item_details(item_id):
     """
     Retrieve detailed information about a specific item.
@@ -61,20 +59,18 @@ def get_item_details(item_id):
     finally:
         db_session.close()
 
-# Add a new item to the inventory
 @app.route('/inventory', methods=['POST'])
+@jwt_required()
 def add_item():
     """Add a new item to the inventory."""
     data = request.json
+    db_session = SessionLocal()
     try:
-        db_session = SessionLocal()
 
-        # Validate input data
         is_valid, message = InventoryItem.validate_data(data)
         if not is_valid:
             return jsonify({'error': message}), 400
 
-        # Create and save the new item
         new_item = InventoryItem(**data)
         db_session.add(new_item)
         db_session.commit()
@@ -86,13 +82,13 @@ def add_item():
     finally:
         db_session.close()
 
-# Update an existing item
 @app.route('/inventory/<int:item_id>', methods=['PUT'])
+@jwt_required()
 def update_item(item_id):
     """Update fields related to a specific inventory item."""
     data = request.json
-    try:
-        db_session = SessionLocal()
+    db_session = SessionLocal()
+    try:     
         item = db_session.query(InventoryItem).filter_by(id=item_id).first()
         if not item:
             return jsonify({'error': 'Item not found'}), 404
@@ -101,7 +97,6 @@ def update_item(item_id):
         if not is_valid:
             return jsonify({'error': message}), 400
 
-        # Update fields dynamically
         for key, value in data.items():
             if hasattr(item, key):
                 setattr(item, key, value)
@@ -119,9 +114,10 @@ def update_item(item_id):
         db_session.close()
 
 @app.route('/inventory/<int:item_id>', methods=['DELETE'])
+@jwt_required()
 def delete_item(item_id):
+    db_session = SessionLocal()
     try:
-        db_session = SessionLocal()
         item = db_session.query(InventoryItem).filter_by(id=item_id).first()
 
         if not item:
@@ -137,17 +133,18 @@ def delete_item(item_id):
     finally:
         db_session.close()
 
-# Deduct stock for an item
 @app.route('/inventory/<int:item_id>/remove_stock', methods=['POST'])
+@jwt_required()
 def deduct_item(item_id):
     """Remove stock from an item."""
     data = request.json
     quantity = data.get('quantity', 0)
     if not isinstance(quantity, int) or quantity <= 0:
         return jsonify({'error': 'Invalid quantity. Must be a positive integer.'}), 400
+    
+    db_session = SessionLocal()
 
     try:
-        db_session = SessionLocal()
         item = db_session.query(InventoryItem).filter_by(id=item_id).first()
         if not item:
             return jsonify({'error': 'Item not found'}), 404
@@ -166,15 +163,17 @@ def deduct_item(item_id):
         db_session.close()
 
 @app.route('/inventory/<int:item_id>/add_stock', methods=['POST'])
+@jwt_required()
 def add_stock(item_id):
     data = request.json
     quantity = data.get('quantity', 0)
 
     if not isinstance(quantity, int) or quantity <= 0:
         return jsonify({'error': 'Invalid quantity. Must be a positive integer.'}), 400
+    
+    db_session = SessionLocal()
 
     try:
-        db_session = SessionLocal()
         item = db_session.query(InventoryItem).filter_by(id=item_id).first()
 
         if not item:
