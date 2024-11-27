@@ -1,4 +1,4 @@
-from flask import Flask, json, request, jsonify
+from flask import Flask, json, request, jsonify, current_app
 from flask_cors import CORS
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -15,6 +15,21 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 jwt = JWTManager(app)
+
+# Add a default function to get customer data
+def get_customer_data(username):
+    """Retrieve customer data from the customer service."""
+    response = requests.get(f'http://customer-service:3000/customer/{username}', timeout=5)
+    response.raise_for_status()
+
+    if response.headers.get('Content-Type') != 'application/json':
+        raise Exception('Unexpected content type: JSON expected')
+
+    customer = response.json()
+    return customer
+
+# Set the default function in app config
+app.config['GET_CUSTOMER_DATA_FUNC'] = get_customer_data
 
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
@@ -52,16 +67,13 @@ def get_customer_reviews():
     """Get all reviews submitted by a specific customer."""
     db_session = SessionLocal()
     try:
-        user = json.loads(get_jwt_identity()) 
+        user = json.loads(get_jwt_identity())
 
-        response = requests.get(f'http://customer-service:3000/customer/{user['username']}', timeout=5)
-        response.raise_for_status()  
+        # Use the function from app config
+        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
+        customer = get_customer_data_func(user['username'])
 
-        if response.headers.get('Content-Type') != 'application/json':
-            raise Exception('Unexpected content type: JSON expected')
-
-        customer = response.json()
-        reviews = db_session.query(Review).filter_by(customer_id=customer.id).all()
+        reviews = db_session.query(Review).filter_by(customer_id=customer['id']).all()
 
         if not reviews:
             return jsonify({'message': 'No reviews found for this customer'}), 404
@@ -118,15 +130,12 @@ def submit_review(item_id):
     data = request.json
     db_session = SessionLocal()
     try:
-        user = json.loads(get_jwt_identity()) 
+        user = json.loads(get_jwt_identity())
 
-        response = requests.get(f'http://customer-service:3000/customer/{user['username']}', timeout=5)
-        response.raise_for_status()  
+        # Use the function from app config
+        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
+        customer = get_customer_data_func(user['username'])
 
-        if response.headers.get('Content-Type') != 'application/json':
-            raise Exception('Unexpected content type: JSON expected')
-
-        customer = response.json()
         # Validate review data
         is_valid, message = Review.validate_data(data)
         if not is_valid:
@@ -134,7 +143,7 @@ def submit_review(item_id):
 
         # Create and save the review
         new_review = Review(
-            customer_id=customer.id,
+            customer_id=customer['id'],
             item_id=item_id,
             rating=data["rating"],
             comment=data.get("comment"),
@@ -157,25 +166,21 @@ def update_review(review_id):
     data = request.json
     db_session = SessionLocal()
     try:
-        user = json.loads(get_jwt_identity()) 
+        user = json.loads(get_jwt_identity())
 
-        response = requests.get(f'http://customer-service:3000/customer/{user['username']}', timeout=5)
-        response.raise_for_status()  
-
-        if response.headers.get('Content-Type') != 'application/json':
-            raise Exception('Unexpected content type: JSON expected')
-
-        customer = response.json()
+        # Use the function from app config
+        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
+        customer = get_customer_data_func(user['username'])
 
         review = db_session.query(Review).filter_by(id=review_id).first()
         if not review:
             return jsonify({'error': 'Review not found'}), 404
-        
+
         is_valid, message = Review.validate_data(data)
         if not is_valid:
             return jsonify({'error': message}), 400
-        
-        if review.customer_id != customer.id:
+
+        if review.customer_id != customer['id']:
             return jsonify({'error': "User cannot update this review"}), 400
 
         for key, value in data.items():
@@ -197,24 +202,19 @@ def delete_review(review_id):
     """Delete a review."""
     db_session = SessionLocal()
     try:
+        user = json.loads(get_jwt_identity())
 
-        user = json.loads(get_jwt_identity()) 
-
-        response = requests.get(f'http://customer-service:3000/customer/{user['username']}', timeout=5)
-        response.raise_for_status()  
-
-        if response.headers.get('Content-Type') != 'application/json':
-            raise Exception('Unexpected content type: JSON expected')
-
-        customer = response.json()
+        # Use the function from app config
+        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
+        customer = get_customer_data_func(user['username'])
 
         review = db_session.query(Review).filter_by(id=review_id).first()
 
-        if review.customer_id != customer.id:
-            return jsonify({'error': "User cannot delete this review"}), 400
-
         if not review:
             return jsonify({'error': 'Review not found'}), 404
+
+        if review.customer_id != customer['id']:
+            return jsonify({'error': "User cannot delete this review"}), 400
 
         db_session.delete(review)
         db_session.commit()
@@ -228,8 +228,8 @@ def delete_review(review_id):
 # Flag a review
 @app.route('/reviews/flag/<int:review_id>', methods=['PUT'])
 @jwt_required()
-def moderate_review(review_id):
-    """Flag a review"""
+def flag_review(review_id):
+    """Flag a review."""
     db_session = SessionLocal()
     try:
         review = db_session.query(Review).filter_by(id=review_id).first()
@@ -248,8 +248,8 @@ def moderate_review(review_id):
 # Approve a review
 @app.route('/reviews/approve/<int:review_id>', methods=['PUT'])
 @jwt_required()
-def moderate_review(review_id):
-    """Approve a review"""
+def approve_review(review_id):
+    """Approve a review."""
     db_session = SessionLocal()
     try:
         review = db_session.query(Review).filter_by(id=review_id).first()

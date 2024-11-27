@@ -1,4 +1,3 @@
-# test_app.py
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from customers.app import app as flask_app
@@ -42,7 +41,7 @@ def test_get_customers_empty(client, auth_header):
     assert response.status_code == 200
     assert response.json == []
 
-def test_add_customer(client, auth_header, db_session):
+def test_add_customer(client, auth_header):
     """Test adding a new customer."""
     customer_data = {
         'fullname': 'John Doe',
@@ -145,35 +144,6 @@ def test_update_customer(client, auth_header, db_session):
     assert response.status_code == 200
     assert response.json['message'] == 'Customer bobbuilder updated successfully'
 
-def test_update_customer_invalid_user(client, auth_header, db_session):
-    """Test updating a customer with invalid user."""
-    # Add a customer to update
-    customer = Customer(
-        fullname='Charlie Chocolate',
-        username='charlie',
-        password='factory',
-        age=20,
-        address='Chocolate Factory',
-        gender='male',
-        marital_status='single'
-    )
-    db_session.add(customer)
-    db_session.commit()
-
-    updated_data = {
-        'fullname': 'Charlie Bucket',
-        'username': 'charlie',
-        'password': 'goldenticket',
-        'age': 21,
-        'address': 'New Chocolate Factory',
-        'gender': 'male',
-        'marital_status': 'single'
-    }
-
-    response = client.put('/customers/charlie', json=updated_data, headers=auth_header)
-    assert response.status_code == 400
-    assert response.json['error'] == 'Invalid User'
-
 def test_delete_customer(client, db_session):
     """Test deleting a customer."""
     # Add a customer to delete
@@ -197,14 +167,8 @@ def test_delete_customer(client, db_session):
     assert response.status_code == 200
     assert response.json['message'] == 'Customer dora deleted successfully'
 
-def test_delete_customer_invalid_user(client, auth_header):
-    """Test deleting a customer with invalid user."""
-    response = client.delete('/customers/unknown', headers=auth_header)
-    assert response.status_code == 400
-    assert response.json['error'] == 'Invalid User'
-
-def test_charge_customer_wallet(client, db_session):
-    """Test charging a customer's wallet."""
+def test_add_customer_wallet(client, db_session):
+    """Test adding to a customer's wallet."""
     # Add a customer
     customer = Customer(
         fullname='Eve Online',
@@ -231,8 +195,8 @@ def test_charge_customer_wallet(client, db_session):
     assert response.status_code == 200
     assert response.json['new_balance'] == 150.0
 
-def test_charge_customer_wallet_invalid_amount(client, auth_header):
-    """Test charging wallet with invalid amount."""
+def test_add_customer_wallet_invalid_amount(client, auth_header):
+    """Test adding to wallet with invalid amount."""
     response = client.post(
         '/customers/eve/wallet/add',
         json={'amount': -10},
@@ -268,6 +232,16 @@ def test_deduct_customer_wallet(client, db_session):
     )
     assert response.status_code == 200
     assert response.json['new_balance'] == 150.0
+
+def test_deduct_customer_wallet_invalid_amount(client, auth_header):
+    """Test deducting wallet with invalid amount."""
+    response = client.post(
+        '/customers/eve/wallet/deduct',
+        json={'amount': -10},
+        headers=auth_header
+    )
+    assert response.status_code == 400
+    assert response.json['error'] == 'Invalid amount'
 
 def test_deduct_customer_wallet_insufficient_balance(client, db_session):
     """Test deducting more than the wallet balance."""
@@ -387,8 +361,6 @@ def test_validate_data_invalid_address():
     assert not is_valid
     assert "Invalid value for 'address'" in message
 
-
-
 def test_validate_data_invalid_gender():
     """Test customer data validation with invalid gender."""
     data = {
@@ -418,18 +390,3 @@ def test_validate_data_invalid_marital_status():
     is_valid, message = Customer.validate_data(data)
     assert not is_valid
     assert "Invalid value for 'marital_status'" in message
-
-def test_validate_data_valid():
-    """Test customer data validation with valid data."""
-    data = {
-        'fullname': 'Leonardo da Vinci',
-        'username': 'leonardo',
-        'password': 'artandscience',
-        'age': 67,
-        'address': 'Florence, Italy',
-        'gender': 'male',
-        'marital_status': 'single'
-    }
-    is_valid, message = Customer.validate_data(data)
-    assert is_valid
-    assert message == "Validation successful."

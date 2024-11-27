@@ -18,47 +18,6 @@ jwt = JWTManager(app)
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
 
-@app.route('/inventory', methods=['GET'])
-@jwt_required()
-def get_inventory():
-    """
-    Retrieve all items with their name and price.
-    """
-    db_session = SessionLocal()
-    try:
-        goods = db_session.query(InventoryItem.name, InventoryItem.price_per_item).all()
-        json_results = [{"name": name, "price": price} for name, price in goods]
-        return jsonify(json_results), 200
-    except Exception as e:
-        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
-    finally:
-        db_session.close()
-
-@app.route('/inventory/<int:item_id>', methods=['GET'])
-@jwt_required()
-def get_item_details(item_id):
-    """
-    Retrieve detailed information about a specific item.
-    """
-    db_session = SessionLocal()
-    try:
-        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
-        if item is None:
-            return jsonify({"error": "Item not found"}), 404
-        item_details = {
-            "id": item.id,
-            "name": item.name,
-            "category": item.category,
-            "price_per_item": item.price_per_item,
-            "description": item.description,
-            "stock_count": item.stock_count
-        }
-        return jsonify(item_details), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-    finally:
-        db_session.close()
-
 @app.route('/inventory', methods=['POST'])
 @jwt_required()
 def add_item():
