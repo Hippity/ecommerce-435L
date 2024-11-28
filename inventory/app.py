@@ -52,15 +52,15 @@ def update_item(item_id):
         if not item:
             return jsonify({'error': 'Item not found'}), 404
         
-        is_valid, message = InventoryItem.validate_data(data)
-        if not is_valid:
-            return jsonify({'error': message}), 400
+        updated_product = {
+            "name" : data.get('name') or item.name,
+            "category" : data.get('category') or item.category,
+            "price_per_item" : data.get('price_per_item') or item.price_per_item,
+            "stock_count" : data.get('stock_count') or item.stock_count,
+            "description" : data.get('description') or item.description
+        }
 
-        for key, value in data.items():
-            if hasattr(item, key):
-                setattr(item, key, value)
-        
-        is_valid, message = InventoryItem.validate_data(data)
+        is_valid, message = InventoryItem.validate_data(updated_product)
         if not is_valid:
             return jsonify({'error': message}), 400
 
