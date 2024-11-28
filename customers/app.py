@@ -2,6 +2,7 @@ from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from auth.app import role_required
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
@@ -9,6 +10,9 @@ from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import json
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+ph = PasswordHasher()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -21,6 +25,7 @@ Base.metadata.create_all(bind=engine)
 
 @app.route('/customers', methods=['GET'])
 @jwt_required()
+@role_required(["admin"])
 def get_customers():
     """Get all customers."""
     db_session = SessionLocal()
@@ -80,12 +85,24 @@ def add_customer():
         existing_customer = db_session.query(Customer).filter_by(username=data.get('username')).first()
         if existing_customer:
             return jsonify({'error': 'Username is already taken'}), 400
-        
+
         is_valid, message = Customer.validate_data(data)
         if not is_valid:
             return jsonify({'error': message}), 400
 
-        new_customer = Customer(**data)
+        hashed_password = ph.hash(data.get('password'))
+
+        new_customer = Customer(
+            fullname=data.get('fullname'),
+            username=data.get('username'),
+            password=hashed_password,
+            age=data.get('age'),
+            address=data.get('address'),
+            gender=data.get('gender'),
+            marital_status=data.get('marital_status'),
+            wallet=0.0,  # Default wallet balance
+            role="customer"  # Default role
+        )
         db_session.add(new_customer)
         db_session.commit()
 
