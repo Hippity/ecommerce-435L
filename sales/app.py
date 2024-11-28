@@ -7,7 +7,7 @@ from shared.models.customer import Customer
 from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required, get_jwt_identity
 import json
 import requests
 
@@ -79,20 +79,23 @@ def purchase_item(item_id):
     try:        
         user = json.loads(get_jwt_identity()) 
 
-        response = requests.get(f'http://inventory-service:3001/inventory/{item_id}', timeout=5)
-        response.raise_for_status()  
+        db_session = SessionLocal()
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
 
-        if response.headers.get('Content-Type') != 'application/json':
-            raise Exception('Unexpected content type: JSON expected')
-        
-        item = response.json()
+        user_identity = get_jwt_identity()  
+        jwt_token = create_access_token(identity=user_identity)
 
-        if item["stock_count"]>quantity and user["wallet"]>= item["price_per_item"]*quantity:
-
+        if item.stock_count>quantity and user["wallet"]>= item.price_per_item*quantity:
+            payload = {"amount": item.price_per_item * quantity}
+            headers = {
+                'Authorization': f'Bearer {jwt_token}',
+                'Content-Type': 'application/json'
+            }
             response = requests.post(
-            f'http://customers-service:3000/customers/{user["username"]}/wallet/deduct',
-            json={"amount": item["price_per_item"]*quantity}, 
-            timeout=5
+                f'http://customers-service:3000/customers/{user["username"]}/wallet/deduct',
+                json=payload,
+                headers=headers,
+                timeout=5
             ) 
             response.raise_for_status()  
             
@@ -102,6 +105,10 @@ def purchase_item(item_id):
             response = requests.post(
             f'http://inventory-service:3001/inventory/{item_id}/remove_stock',
             json={"quantity": quantity}, 
+            headers = {
+                'Authorization': f'Bearer {jwt_token}',
+                'Content-Type': 'application/json'
+            },
             timeout=5
             ) 
             response.raise_for_status()  
@@ -109,7 +116,7 @@ def purchase_item(item_id):
             if response.headers.get('Content-Type') != 'application/json':
                 raise Exception('Unexpected content type: JSON expected')
         
-        return jsonify({"message": f"{user['username']} successfully purchased {quantity} unit(s) of {item['name']}"})
+        return jsonify({"message": f"{user['username']} successfully purchased {quantity} unit(s) of {item.name}"})
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
