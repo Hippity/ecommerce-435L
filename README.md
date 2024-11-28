@@ -1,74 +1,46 @@
 # Microservices Setup Guide
 
-This repository contains multiple microservices that together make up the e-commerce platform. Each service can be built and run independently using Docker. Follow the instructions below to build and run the services.
+This README explains how to set up and run the E-Commerce Project using Docker Compose. The project consists of multiple microservices, including `auth-service`, `customer-service`, `sales-service`, `review-service`, `inventory-service`, and a MySQL database.
 
 ## Prerequisites
 
-1. [Docker](https://www.docker.com/) must be installed on your machine.
-2. Ensure a Docker network named `ecommerce-network` exists. If not, create it using the command:
+1. Install Docker and Docker Compose on your machine.
+2. Clone the repository to your local machine:
    ```bash
-   docker network create ecommerce-network
+   git clone https://github.com/Hippity/ecommerce-435L.git
+   cd ecommerce-435L
+   ```
+3. Ensure `docker-compose.yml`, `requirements.txt`, and all service directories (`auth`, `customer`, `sales`, `review`, `inventory`) are present in the root directory.
+
+## Setting Up the Project
+
+### Step 1: Build and Start Services
+1. Run the following command to build and start all services:
+   ```bash
+   docker-compose up --build
    ```
 
-## Building and Running the Services
-
-### Customers Service
-
-1. Build the Docker image for the customers service:
+### Step 2: Verify Running Services
+1. Check the running containers:
    ```bash
-   docker build -t customers_service -f customers/Dockerfile .
+   docker-compose ps
    ```
-2. Run the customers service:
-   ```bash
-   docker run -d --network ecommerce-network --name customers-service -p 3000:3000 customers_service
+   Example output:
    ```
-
-### Inventory Service
-
-1. Build the Docker image for the inventory service:
-   ```bash
-   docker build -t inventory_service -f inventory/Dockerfile .
-   ```
-2. Run the inventory service:
-   ```bash
-   docker run -d --network ecommerce-network --name inventory-service -p 3001:3001 inventory_service
+   Name                          Command               State           Ports
+   ecommerce-435l-db-1                  mysql:8.0                          "docker-entrypoint.s…"   db                  6 minutes ago    Up 9 seconds   33060/tcp, 0.0.0.0:3307->3306/tcp
+   ecommerce-435l-auth-service-1        ecommerce-435l-auth-service        "python auth/app.py"     auth-service        11 seconds ago   Up 9 seconds   0.0.0.0:3004->3004/tcp
+   ecommerce-435l-customer-service-1    ecommerce-435l-customer-service    "python customers/ap…"   customer-service    11 seconds ago   Up 9 seconds   0.0.0.0:3000->3000/tcp
+   ecommerce-435l-inventory-service-1   ecommerce-435l-inventory-service   "python inventory/ap…"   inventory-service   11 seconds ago   Up 8 seconds   0.0.0.0:3001->3001/tcp
+   ecommerce-435l-review-service-1      ecommerce-435l-review-service      "python reviews/app.…"   review-service      11 seconds ago   Up 9 seconds   0.0.0.0:3002->3002/tcp   
+   ecommerce-435l-sales-service-1       ecommerce-435l-sales-service       "python sales/app.py"    sales-service       8 seconds ago   Up 6 seconds   0.0.0.0:3003->3003/tcp
    ```
 
-### Reviews Service
+### Step 3: Access the Services
+Access each service through its exposed port:
 
-1. Build the Docker image for the reviews service:
-   ```bash
-   docker build -t reviews_service -f reviews/Dockerfile .
-   ```
-2. Run the reviews service:
-   ```bash
-   docker run -d --network ecommerce-network --name reviews-service -p 3002:3002 reviews_service
-   ```
-
-### Sales Service
-
-1. Build the Docker image for the sales service:
-   ```bash
-   docker build -t sales_service -f sales/Dockerfile .
-   ```
-2. Run the sales service:
-   ```bash
-   docker run -d --network ecommerce-network --name sales-service -p 3003:3003 sales_service
-   ```
-
-### Auth Service
-
-1. Build the Docker image for the auth service:
-   ```bash
-   docker build -t auth_service -f auth/Dockerfile .
-   ```
-2. Run the auth service:
-   ```bash
-   docker run -d --network ecommerce-network --name auth-service -p 3004:3004 auth_service
-   ```
-
-## Notes
-
-- All services are configured to communicate through the `ecommerce-network` Docker network.
-- Ensure all the Dockerfiles are correctly placed in their respective directories before running the commands.
-- Adjust port mappings if any of the specified ports (3000-3004) are already in use.
+- **Auth Service**: `http://localhost:3004`
+- **Customer Service**: `http://localhost:3000`
+- **Sales Service**: `http://localhost:3003`
+- **Review Service**: `http://localhost:3002`
+- **Inventory Service**: `http://localhost:3001`
