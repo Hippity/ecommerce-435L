@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:987654321@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3004:3004"
+    depends_on:
+      - db
+
+  customer-service:
+    build:
+      context: .
+      dockerfile: customers/Dockerfile
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:987654321@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  sales-service:
+    build:
+      context: .
+      dockerfile: sales/Dockerfile
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:987654321@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3003:3003"
+    depends_on:
+      - db
+
+  review-service:
+    build:
+      context: .
+      dockerfile: reviews/Dockerfile
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:987654321@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: inventory/Dockerfile
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:987654321@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 987654321
+      MYSQL_DATABASE: ecommerce
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
