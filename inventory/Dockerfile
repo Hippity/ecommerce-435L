@@ -24,7 +24,7 @@ EXPOSE 3001
 ENV DATABASE_URL=mysql+pymysql://root:987654321@host.docker.internal:3306/ecommerce
 #ENV DATABASE_URL=mysql+pymysql://root:987654321@localhost:3306/ecommerce
 
-CMD ["pytest"]
+#CMD ["pytest"]
 
 # Define the command to run the application
 CMD ["python", "inventory/app.py"]
