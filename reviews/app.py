@@ -16,21 +16,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
-# Add a default function to get customer data
-def get_customer_data(username):
-    """Retrieve customer data from the customer service."""
-    response = requests.get(f'http://customer-service:3000/customer/{username}', timeout=5)
-    response.raise_for_status()
-
-    if response.headers.get('Content-Type') != 'application/json':
-        raise Exception('Unexpected content type: JSON expected')
-
-    customer = response.json()
-    return customer
-
-# Set the default function in app config
-app.config['GET_CUSTOMER_DATA_FUNC'] = get_customer_data
-
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
 
@@ -68,12 +53,9 @@ def get_customer_reviews():
     db_session = SessionLocal()
     try:
         user = json.loads(get_jwt_identity())
+        customer = db_session.query(Customer).filter_by(username=user['username']).first()
 
-        # Use the function from app config
-        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'])
-
-        reviews = db_session.query(Review).filter_by(customer_id=customer['id']).all()
+        reviews = db_session.query(Review).filter_by(customer_id=customer.id).all()
 
         if not reviews:
             return jsonify({'message': 'No reviews found for this customer'}), 404
@@ -131,10 +113,7 @@ def submit_review(item_id):
     db_session = SessionLocal()
     try:
         user = json.loads(get_jwt_identity())
-
-        # Use the function from app config
-        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'])
+        customer = db_session.query(Customer).filter_by(username=user['username']).first()
 
         # Validate review data
         is_valid, message = Review.validate_data(data)
@@ -143,7 +122,7 @@ def submit_review(item_id):
 
         # Create and save the review
         new_review = Review(
-            customer_id=customer['id'],
+            customer_id=customer.id,
             item_id=item_id,
             rating=data["rating"],
             comment=data.get("comment"),
@@ -167,25 +146,24 @@ def update_review(review_id):
     db_session = SessionLocal()
     try:
         user = json.loads(get_jwt_identity())
-
-        # Use the function from app config
-        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'])
+        customer = db_session.query(Customer).filter_by(username=user['username']).first()
 
         review = db_session.query(Review).filter_by(id=review_id).first()
         if not review:
             return jsonify({'error': 'Review not found'}), 404
 
-        is_valid, message = Review.validate_data(data)
-        if not is_valid:
-            return jsonify({'error': message}), 400
-
-        if review.customer_id != customer['id']:
+        if review.customer_id != customer.id:
             return jsonify({'error': "User cannot update this review"}), 400
 
-        for key, value in data.items():
-            if hasattr(review, key):
-                setattr(review, key, value)
+        updated_review = {
+            "rating": data.get("rating") or review.rating,
+            "comment": data.get("comment") or review.comment,
+            "status": data.get("status") or review.status
+        }
+
+        is_valid, message = Review.validate_data(updated_review)
+        if not is_valid:
+            return jsonify({'error': message}), 400
 
         db_session.commit()
         return jsonify({'message': 'Review updated successfully'}), 200
@@ -203,17 +181,14 @@ def delete_review(review_id):
     db_session = SessionLocal()
     try:
         user = json.loads(get_jwt_identity())
-
-        # Use the function from app config
-        get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'])
+        customer = db_session.query(Customer).filter_by(username=user['username']).first()
 
         review = db_session.query(Review).filter_by(id=review_id).first()
 
         if not review:
             return jsonify({'error': 'Review not found'}), 404
 
-        if review.customer_id != customer['id']:
+        if review.customer_id != customer.id:
             return jsonify({'error': "User cannot delete this review"}), 400
 
         db_session.delete(review)
