@@ -12,7 +12,7 @@ import json
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
 # Create tables if not created
@@ -71,7 +71,6 @@ def get_customer_by_username(username):
         db_session.close()
 
 @app.route('/customers', methods=['POST'])
-@jwt_required()
 def add_customer():
     """Register a new customer."""
     data = request.json

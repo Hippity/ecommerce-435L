@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
 app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
-@app.route("/login", methods=['GET'])
+@app.route("/login", methods=['POST'])
 def login():
     """Autheticated a user and returns the access token"""
     data = request.json

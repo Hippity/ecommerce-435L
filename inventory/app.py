@@ -12,7 +12,7 @@ import json
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
 # Create tables if not created

@@ -13,12 +13,11 @@ import requests
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
-
 
 # Configure JWT
 app.config['JWT_SECRET_KEY'] = 'secret-key'
@@ -110,7 +109,7 @@ def purchase_item(item_id):
             if response.headers.get('Content-Type') != 'application/json':
                 raise Exception('Unexpected content type: JSON expected')
         
-        return jsonify({'message': f'{user['username']} successfully purchased {quantity} unit(s) of {item['name']}'}), 200
+        return jsonify({"message": f"{user['username']} successfully purchased {quantity} unit(s) of {item['name']}"})
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
