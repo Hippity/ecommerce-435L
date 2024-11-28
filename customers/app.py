@@ -15,6 +15,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
+#Base.metadata.drop_all(bind=engine)
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
 
@@ -211,6 +212,39 @@ def deduct_customer_wallet(username):
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
+
+@app.route('/customers/<string:username>/orders', methods=['GET'])
+@jwt_required()
+def get_customer_orders(username):
+    """Get all previous orders of a customer."""
+    db_session = SessionLocal()
+    try:
+        user = json.loads(get_jwt_identity())
+
+        if user['username'] != username:
+            return jsonify({'error': 'Invalid User'}), 400
+
+        customer = db_session.query(Customer).filter_by(username=username).first()
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+
+        orders = customer.previous_orders 
+        orders_list = [
+            {
+                'order_id': order.id,
+                'item_id': order.item_id,
+                'good_name' : order.good_name,
+                'quantity': order.quantity
+            }
+            for order in orders
+        ]
+        return jsonify({'orders': orders_list}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000)

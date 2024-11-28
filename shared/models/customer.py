@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Float, Integer, String 
-from shared.models.base import Base
 from sqlalchemy.orm import relationship
+from shared.models.base import Base
+from shared.models.order import Order  # Import the Order class
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -15,6 +16,8 @@ class Customer(Base):
     wallet = Column(Float, nullable=False, default=0.0)
 
     reviews = relationship("Review", back_populates="customer")
+    previous_orders = relationship("Order", back_populates="customer", cascade="all, delete-orphan")
+
 
     @classmethod
     def validate_data(cls, data):

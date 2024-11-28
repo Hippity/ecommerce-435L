@@ -16,6 +16,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
 
+#Base.metadata.drop_all(bind=engine)
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
 

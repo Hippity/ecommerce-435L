@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
+from shared.models.order import Order
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required, get_jwt_identity
@@ -63,63 +64,89 @@ def get_item_details(item_id):
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
-
 @app.route('/purchase/<int:item_id>', methods=['POST'])
 @jwt_required()
 def purchase_item(item_id):
     """
-    Handle purchasing an item by a logged-in customer.
+    Handle purchasing an item by a logged-in customer and log the order.
     """
     data = request.json
     quantity = data.get('quantity', 0)
 
     if not isinstance(quantity, int) or quantity <= 0:
         return jsonify({'error': 'Invalid quantity. Must be a positive integer.'}), 400
-    
-    try:        
-        user = json.loads(get_jwt_identity()) 
 
-        db_session = SessionLocal()
+    db_session = SessionLocal()
+    try:
+        # Get logged-in user's identity
+        user = json.loads(get_jwt_identity())
+        customer = db_session.query(Customer).filter(Customer.username == user["username"]).first()
         item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
 
-        user_identity = get_jwt_identity()  
-        jwt_token = create_access_token(identity=user_identity)
+        # Validate customer and item
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
 
-        if item.stock_count>quantity and user["wallet"]>= item.price_per_item*quantity:
-            payload = {"amount": item.price_per_item * quantity}
-            headers = {
-                'Authorization': f'Bearer {jwt_token}',
-                'Content-Type': 'application/json'
-            }
-            response = requests.post(
-                f'http://customers-service:3000/customers/{user["username"]}/wallet/deduct',
-                json=payload,
-                headers=headers,
-                timeout=5
-            ) 
-            response.raise_for_status()  
-            
-            if response.headers.get('Content-Type') != 'application/json':
-                raise Exception('Unexpected content type: JSON expected')
-            
-            response = requests.post(
-            f'http://inventory-service:3001/inventory/{item_id}/remove_stock',
-            json={"quantity": quantity}, 
-            headers = {
-                'Authorization': f'Bearer {jwt_token}',
-                'Content-Type': 'application/json'
-            },
+        # Check if there is enough stock and if the user has sufficient wallet balance
+        total_cost = item.price_per_item * quantity
+        if item.stock_count < quantity:
+            return jsonify({'error': 'Not enough stock available'}), 400
+        if customer.wallet < total_cost:
+            return jsonify({'error': 'Insufficient wallet balance'}), 400
+
+        # Prepare JWT token for API calls
+        jwt_token = create_access_token(identity=get_jwt_identity())
+        headers = {
+            'Authorization': f'Bearer {jwt_token}',
+            'Content-Type': 'application/json'
+        }
+
+        # Deduct from customer's wallet via API
+        wallet_payload = {"amount": total_cost}
+        wallet_response = requests.post(
+            f'http://customers-service:3000/customers/{user["username"]}/wallet/deduct',
+            json=wallet_payload,
+            headers=headers,
             timeout=5
-            ) 
-            response.raise_for_status()  
+        )
+        wallet_response.raise_for_status()  # Raise exception for HTTP errors
+        if wallet_response.headers.get('Content-Type') != 'application/json':
+            raise Exception('Unexpected content type: JSON expected from wallet service')
 
-            if response.headers.get('Content-Type') != 'application/json':
-                raise Exception('Unexpected content type: JSON expected')
-        
-        return jsonify({"message": f"{user['username']} successfully purchased {quantity} unit(s) of {item.name}"})
-    
+        # Deduct stock via inventory API
+        stock_payload = {"quantity": quantity}
+        stock_response = requests.post(
+            f'http://inventory-service:3001/inventory/{item_id}/remove_stock',
+            json=stock_payload,
+            headers=headers,
+            timeout=5
+        )
+        stock_response.raise_for_status()  # Raise exception for HTTP errors
+        if stock_response.headers.get('Content-Type') != 'application/json':
+            raise Exception('Unexpected content type: JSON expected from inventory service')
+
+        # Log the order in the local database
+        new_order = Order(customer_id=customer.id, item_id=item.id, good_name=item.name, quantity=quantity)
+        db_session.add(new_order)
+        db_session.commit()
+
+        return jsonify({
+            "message": f"{customer.username} successfully purchased {quantity} unit(s) of {item.name}.",
+            "order_id": new_order.id
+        }), 200
+
+    except requests.exceptions.RequestException as e:
+        db_session.rollback()
+        return jsonify({'error': f'Error in external API call: {str(e)}'}), 500
     except Exception as e:
+        db_session.rollback()
         return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3003)
+
+    
