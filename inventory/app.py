@@ -2,6 +2,7 @@ from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from auth.app import role_required
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
@@ -21,6 +22,7 @@ Base.metadata.create_all(bind=engine)
 
 @app.route('/inventory', methods=['POST'])
 @jwt_required()
+@role_required(['admin', 'product_manager'])
 def add_item():
     """Add a new item to the inventory."""
     data = request.json
@@ -44,6 +46,7 @@ def add_item():
 
 @app.route('/inventory/<int:item_id>', methods=['PUT'])
 @jwt_required()
+@role_required(['admin', 'product_manager'])
 def update_item(item_id):
     """Update fields related to a specific inventory item."""
     data = request.json
@@ -75,6 +78,7 @@ def update_item(item_id):
 
 @app.route('/inventory/<int:item_id>', methods=['DELETE'])
 @jwt_required()
+@role_required(['admin', 'product_manager'])
 def delete_item(item_id):
     db_session = SessionLocal()
     try:
@@ -95,6 +99,7 @@ def delete_item(item_id):
 
 @app.route('/inventory/<int:item_id>/remove_stock', methods=['POST'])
 @jwt_required()
+@role_required(['admin', 'product_manager'])
 def deduct_item(item_id):
     """Remove stock from an item."""
     data = request.json
@@ -124,6 +129,7 @@ def deduct_item(item_id):
 
 @app.route('/inventory/<int:item_id>/add_stock', methods=['POST'])
 @jwt_required()
+@role_required(['admin', 'product_manager'])
 def add_stock(item_id):
     data = request.json
     quantity = data.get('quantity', 0)

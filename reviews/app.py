@@ -2,6 +2,7 @@ from flask import Flask, json, request, jsonify, current_app
 from flask_cors import CORS
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from auth.app import role_required
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
@@ -23,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 # Get details of a specific review.
 @app.route('/reviews/<int:review_id>', methods=['GET'])
 @jwt_required()
+@role_required(['admin', 'moderator'])
 def get_review_details(review_id):
     """Get details of a specific review."""
     db_session = SessionLocal()
@@ -49,6 +51,7 @@ def get_review_details(review_id):
 # Get all reviews submitted by a specific customer.
 @app.route('/reviews/customer/', methods=['GET'])
 @jwt_required()
+@role_required(['admin', 'customer', 'moderator'])
 def get_customer_reviews():
     """Get all reviews submitted by a specific customer."""
     db_session = SessionLocal()
@@ -80,6 +83,7 @@ def get_customer_reviews():
 
 @app.route('/reviews/product/<int:item_id>', methods=['GET'])
 @jwt_required()
+@role_required(['admin', 'product_manager', 'moderator'])
 def get_product_reviews(item_id):
     """Get all reviews for a specific product."""
     db_session = SessionLocal()
@@ -108,6 +112,7 @@ def get_product_reviews(item_id):
 # Submit a new review
 @app.route('/reviews/<int:item_id>', methods=['POST'])
 @jwt_required()
+@role_required(['customer'])
 def submit_review(item_id):
     """Submit a new review."""
     data = request.json
@@ -141,6 +146,7 @@ def submit_review(item_id):
 # Update an existing review.
 @app.route('/reviews/<int:review_id>', methods=['PUT'])
 @jwt_required()
+@role_required(['customer'])
 def update_review(review_id):
     """Update an existing review."""
     data = request.json
@@ -177,6 +183,7 @@ def update_review(review_id):
 # Delete a review.
 @app.route('/reviews/<int:review_id>', methods=['DELETE'])
 @jwt_required()
+@role_required(['admin', 'customer', 'moderator'])
 def delete_review(review_id):
     """Delete a review."""
     db_session = SessionLocal()
@@ -204,6 +211,7 @@ def delete_review(review_id):
 # Flag a review
 @app.route('/reviews/flag/<int:review_id>', methods=['PUT'])
 @jwt_required()
+@role_required(['admin', 'product_manager', 'moderator'])
 def flag_review(review_id):
     """Flag a review."""
     db_session = SessionLocal()
@@ -224,6 +232,7 @@ def flag_review(review_id):
 # Approve a review
 @app.route('/reviews/approve/<int:review_id>', methods=['PUT'])
 @jwt_required()
+@role_required(['admin', 'product_manager', 'moderator'])
 def approve_review(review_id):
     """Approve a review."""
     db_session = SessionLocal()

@@ -2,6 +2,7 @@ from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from auth.app import role_required
 from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
@@ -25,6 +26,7 @@ app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
     
 @app.route('/inventory', methods=['GET'])
+@role_required(['admin', 'customer', 'product_manager'])
 @jwt_required()
 def get_inventory():
     """
@@ -42,6 +44,7 @@ def get_inventory():
 
 @app.route('/inventory/<int:item_id>', methods=['GET'])
 @jwt_required()
+@role_required(['admin', 'customer', 'product_manager'])
 def get_item_details(item_id):
     """
     Retrieve detailed information about a specific item.
@@ -66,6 +69,7 @@ def get_item_details(item_id):
         db_session.close()
 @app.route('/purchase/<int:item_id>', methods=['POST'])
 @jwt_required()
+@role_required(['admin', 'customer'])
 def purchase_item(item_id):
     """
     Handle purchasing an item by a logged-in customer and log the order.
