@@ -66,7 +66,7 @@ def get_customers():
 
 @app.route('/customers/<string:username>', methods=['GET'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def get_customer_by_username(username):
     """
     Retrieve customer information by username.
@@ -176,7 +176,7 @@ def add_customer():
 
 @app.route('/customers/<string:username>', methods=['PUT'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def update_customer(username):
     """
     Update customer information.
@@ -238,7 +238,7 @@ def update_customer(username):
 
 @app.route('/customers/<string:username>/change-password', methods=['POST'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def change_password(username):
     """
     Change the password of a customer.
@@ -301,7 +301,7 @@ def change_password(username):
 
 @app.route('/customers/<string:username>', methods=['DELETE'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def delete_customer(username):
     """
     Delete a customer by username and all entries related to it.
@@ -349,7 +349,7 @@ def delete_customer(username):
 
 @app.route('/customers/<string:username>/wallet/add', methods=['POST'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def charge_customer_wallet(username):
     """
     Add funds to a customer's wallet.
@@ -403,7 +403,7 @@ def charge_customer_wallet(username):
 
 @app.route('/customers/<string:username>/wallet/deduct', methods=['POST'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def deduct_customer_wallet(username):
     """
     Deduct funds to a customer's wallet.
@@ -460,7 +460,7 @@ def deduct_customer_wallet(username):
 
 @app.route('/customers/<string:username>/orders', methods=['GET'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def get_customer_orders(username):
     """
     Retrieve all previous orders of a customer.
@@ -511,7 +511,7 @@ def get_customer_orders(username):
         
 @app.route('/customers/<string:username>/wishlist', methods=['GET'])
 @jwt_required()
-@role_required(['admin', 'customer'])
+@role_required(['admin', 'customer', 'product_manager'])
 def get_customer_wishlist(username):
     """
     Retrieve all wishlist items of a customer.
@@ -561,12 +561,12 @@ def get_customer_wishlist(username):
     finally:
         db_session.close()
 
-@app.route('/admins', methods=['POST'])
+@app.route('/customers/add-role', methods=['POST'])
 @jwt_required()
 @role_required(['admin'])
 def add_admin():
     """
-    Register a new admin.
+    Register a new customer with a role
 
     Endpoint:
         POST /admins
@@ -580,7 +580,7 @@ def add_admin():
             - address (str): The admin's address.
             - gender (str): The admin's gender.
             - marital_status (str): The admin's marital status.
-            - role (str): The role of the admin (must be "admin").
+            - role (str): The role of the admin
 
     Decorators:
         @jwt_required() - Ensures the user is authenticated using a JWT token.
@@ -620,7 +620,7 @@ def add_admin():
         db_session.add(new_customer)
         db_session.commit()
 
-        return jsonify({'message': 'Admin added successfully', 'customer_id': new_customer.id}), 201
+        return jsonify({f'message': f'{data.get('role')} added successfully', 'customer_id': new_customer.id}), 201
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500

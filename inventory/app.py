@@ -7,6 +7,8 @@ from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
 from shared.models.inventory import InventoryItem
+from shared.models.order import Order
+from shared.models.wishlist import Wishlist
 from shared.database import engine, SessionLocal
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import json
@@ -24,7 +26,31 @@ Base.metadata.create_all(bind=engine)
 @jwt_required()
 @role_required(['admin', 'product_manager'])
 def add_item():
-    """Add a new item to the inventory."""
+    """
+    Add a new item to the inventory.
+
+    Endpoint:
+        POST /inventory
+
+    Request Body:
+        A JSON object containing the details of the item to be added. 
+            - name (str): The name of the item.
+            - description (str): A brief description of the item.
+            - price_per_item (float): The price of the item.
+            - stock_quantity (int): The available stock quantity of the item.
+            - category (str): The category the item belongs to.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'product_manager']) - Restricts access to users with 
+        "admin" or "product_manager" roles.
+
+    Returns:
+        - 201 Created: If the item is successfully added to the inventory. Includes a success 
+        message and the item ID.
+        - 400 Bad Request: If the input data is invalid.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
     data = request.json
     db_session = SessionLocal()
     try:
@@ -48,7 +74,34 @@ def add_item():
 @jwt_required()
 @role_required(['admin', 'product_manager'])
 def update_item(item_id):
-    """Update fields related to a specific inventory item."""
+    """
+    Update fields related to a specific inventory item.
+
+    Endpoint:
+        PUT /inventory/<int:item_id>
+
+    Path Parameter:
+        item_id (int): The ID of the inventory item to be updated.
+
+    Request Body:
+        A JSON object containing the fields to update.
+            - name (str): The name of the item.
+            - description (str): A brief description of the item.
+            - price_per_item (float): The price of the item.
+            - stock_quantity (int): The available stock quantity of the item.
+            - category (str): The category the item belongs to.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'product_manager']) - Restricts access to users with 
+        "admin" or "product_manager" roles.
+
+    Returns:
+        - 200 OK: If the item is successfully updated. Includes a success message.
+        - 400 Bad Request: If the input data is invalid.
+        - 404 Not Found: If the item with the specified ID does not exist.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
     data = request.json
     db_session = SessionLocal()
     try:     
@@ -56,17 +109,13 @@ def update_item(item_id):
         if not item:
             return jsonify({'error': 'Item not found'}), 404
         
-        updated_product = {
-            "name" : data.get('name') or item.name,
-            "category" : data.get('category') or item.category,
-            "price_per_item" : data.get('price_per_item') or item.price_per_item,
-            "stock_count" : data.get('stock_count') or item.stock_count,
-            "description" : data.get('description') or item.description
-        }
-
-        is_valid, message = InventoryItem.validate_data(updated_product)
+        is_valid, message = InventoryItem.validate_data(data)
         if not is_valid:
             return jsonify({'error': message}), 400
+
+        for key, value in data.items():
+            if hasattr(item, key):
+                setattr(item, key, value)
 
         db_session.commit()
         return jsonify({'message': f'Item {item_id} updated successfully'}), 200
@@ -80,12 +129,35 @@ def update_item(item_id):
 @jwt_required()
 @role_required(['admin', 'product_manager'])
 def delete_item(item_id):
+    """
+    Delete an inventory item and its associated data.
+
+    Endpoint:
+        DELETE /inventory/<int:item_id>
+
+    Path Parameter:
+        item_id (int): The ID of the inventory item to be deleted.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'product_manager']) - Restricts access to users with 
+        "admin" or "product_manager" roles.
+
+    Returns:
+        - 200 OK: If the item and its associated data are successfully deleted. 
+        - 404 Not Found: If the item with the specified ID does not exist.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
     db_session = SessionLocal()
     try:
         item = db_session.query(InventoryItem).filter_by(id=item_id).first()
 
         if not item:
             return jsonify({'error': 'Item not found'}), 404
+        
+        db_session.query(Order).filter_by(item_id=item.id).delete()
+        db_session.query(Review).filter_by(item_id=item.id).delete()
+        db_session.query(Wishlist).filter_by(item_id=item.id).delete()
 
         db_session.delete(item)
         db_session.commit()
@@ -97,11 +169,34 @@ def delete_item(item_id):
     finally:
         db_session.close()
 
-@app.route('/inventory/<int:item_id>/remove_stock', methods=['POST'])
+@app.route('/inventory/<int:item_id>/stock/remove', methods=['POST'])
 @jwt_required()
-@role_required(['admin', 'product_manager'])
+@role_required(['admin', 'product_manager','customer'])
 def deduct_item(item_id):
-    """Remove stock from an item."""
+    """
+    Remove stock from an inventory item.
+
+    Endpoint:
+        POST /inventory/<int:item_id>/stock/remove
+
+    Path Parameter:
+        item_id (int): The ID of the inventory item whose stock is to be deducted.
+
+    Request Body:
+        A JSON object containing the following field:
+            - quantity (int): The amount to deduct from the stock. Must be a positive integer.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'product_manager', 'customer']) - Restricts access to users 
+        with "admin", "product_manager", or "customer" roles.
+
+    Returns:
+        - 200 OK: If the stock is successfully deducted. Includes a success message and the new stock count.
+        - 400 Bad Request: If the input quantity is invalid or if there is insufficient stock.error": "Not enough stock available"
+        - 404 Not Found: If the item with the specified ID does not exist.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
     data = request.json
     quantity = data.get('quantity', 0)
     if not isinstance(quantity, int) or quantity <= 0:
@@ -127,10 +222,34 @@ def deduct_item(item_id):
     finally:
         db_session.close()
 
-@app.route('/inventory/<int:item_id>/add_stock', methods=['POST'])
+@app.route('/inventory/<int:item_id>/stock/add', methods=['POST'])
 @jwt_required()
 @role_required(['admin', 'product_manager'])
 def add_stock(item_id):
+    """
+    Add stock to an inventory item.
+
+    Endpoint:
+        POST /inventory/<int:item_id>/stock/add
+
+    Path Parameter:
+        item_id (int): The ID of the inventory item whose stock is to be increased.
+
+    Request Body:
+        A JSON object containing the following field:
+            - quantity (int): The amount to add to the stock. Must be a positive integer.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'product_manager']) - Restricts access to users with 
+        "admin" or "product_manager" roles.
+
+    Returns:
+        - 200 OK: If the stock is successfully increased. Includes a success message and the new stock count.
+        - 400 Bad Request: If the input quantity is invalid.
+        - 404 Not Found: If the item with the specified ID does not exist.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
     data = request.json
     quantity = data.get('quantity', 0)
 
