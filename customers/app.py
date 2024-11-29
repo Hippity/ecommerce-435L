@@ -236,6 +236,69 @@ def update_customer(username):
     finally:
         db_session.close()
 
+@app.route('/customers/<string:username>/change-password', methods=['POST'])
+@jwt_required()
+@role_required(['admin', 'customer'])
+def change_password(username):
+    """
+    Change the password of a customer.
+
+    Endpoint:
+        POST /customers/<string:username>/change-password
+
+    Path Parameter:
+        username (str): The username of the customer whose password is to be changed.
+
+    Request Body:
+        A JSON object containing the following fields:
+            - current_password (str): The current password of the customer.
+            - new_password (str): The new password to set.
+
+    Decorators:
+        @jwt_required() - Ensures the user is authenticated using a JWT token.
+        @role_required(['admin', 'customer']) - Restricts access to users with 
+          "admin" or "customer" roles.
+
+    Returns:
+        - 200 OK: If the password is successfully changed.
+        - 400 Bad Request: If the current password is incorrect or the new password is invalid.
+        - 404 Not Found: If the customer with the specified username does not exist.
+        - 500 Internal Server Error: If an exception occurs during the process.
+    """
+    data = request.json
+    current_password = data.get('current_password')
+    new_password = data.get('new_password')
+
+    if not current_password or not new_password:
+        return jsonify({'error': 'Current password and new password are required'}), 400
+
+    db_session = SessionLocal()
+    try:
+        user = json.loads(get_jwt_identity())
+
+        if 'admin' not in user['roles'] and user['username'] != username:
+            return jsonify({'error': 'Invalid user'}), 400
+        
+        customer = db_session.query(Customer).filter_by(username=username).first()
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+
+        if not ph.verify(customer.password, current_password):
+            return jsonify({'error': 'Invalid current password'}), 400
+        
+        if not isinstance(new_password, str) or len(new_password) < 6:
+            return jsonify({'error': 'Invalid value for new password. It must be at least 6 characters'}), 400
+
+        customer.password = ph.hash(new_password)
+        db_session.commit()
+
+        return jsonify({'message': 'Password changed successfully'}), 200
+    except Exception as e:
+        db_session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
 @app.route('/customers/<string:username>', methods=['DELETE'])
 @jwt_required()
 @role_required(['admin', 'customer'])
@@ -504,7 +567,7 @@ def get_customer_wishlist(username):
 def add_admin():
     """
     Register a new admin.
-    
+
     Endpoint:
         POST /admins
 
