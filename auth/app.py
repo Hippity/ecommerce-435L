@@ -25,7 +25,18 @@ jwt = JWTManager(app)
 ph = PasswordHasher()
 
 def create_default_admin():
-    """Create a default admin user if none exists."""
+    """
+    Create a default admin user if none exists.
+
+    Admin Credentials:
+        - Username: admin
+        - Password: admin123
+
+    Uses Argon2 hashing for the password and sets the default role to "admin".
+
+    Raises:
+        Exception: If an error occurs during the creation of the admin user.
+    """
     db_session = SessionLocal()
     try:
         existing_admin = db_session.query(Customer).filter_by(role="admin").first()
@@ -52,7 +63,23 @@ def create_default_admin():
 
 @app.route("/login", methods=['POST'])
 def login():
-    """Authenticate a user and return the access token."""
+    """
+    Authenticate a user and return the access token.
+
+    Endpoint:
+        POST /login
+
+    Request Body:
+        JSON object containing:
+            - username (str): The username of the user.
+            - password (str): The user's password.
+
+    Returns:
+        - 200 OK: If authentication is successful. Includes the access token.
+        - 400 Bad Request: If the username or password is missing.
+        - 401 Unauthorized: If the username or password is invalid.
+        - 500 Internal Server Error: If an error occurs during authentication.
+    """
     data = request.json
     db_session = SessionLocal()
     try:
@@ -80,7 +107,14 @@ def login():
     
 def role_required(allowed_roles):
     """
-    A decorator to restrict access to specific roles.
+    Restrict access to specific roles.
+
+    Parameters:
+        allowed_roles (list): A list of roles that are allowed to access the decorated route.
+
+    Returns:
+        - 403 Forbidden: If the user's role is not allowed.
+        - 500 Internal Server Error: If an error occurs during role validation.
     """
     def decorator(func):
         @wraps(func)
