@@ -15,6 +15,7 @@ class InventoryItem(Base):
 
     reviews = relationship("Review", back_populates="inventory_item")
     orders = relationship("Order", back_populates="inventory_item")
+    wishlist_items = relationship("Wishlist", back_populates="inventory_item") 
 
     @classmethod
     def validate_data(cls, data):

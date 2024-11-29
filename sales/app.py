@@ -1,6 +1,8 @@
 from flask import Flask, json, request, jsonify
 from flask_cors import CORS
 import sys, os
+
+from shared.models.wishlist import Wishlist
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from auth.app import role_required
 from shared.models.base import Base
@@ -67,6 +69,84 @@ def get_item_details(item_id):
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
+
+@app.route('/inventory/<int:item_id>/wishlist/add', methods=['POST'])
+@jwt_required()
+@role_required(['customer'])
+def add_wishlist(item_id):
+    """
+    Adds an item to the customer's wishlist.
+    """
+    db_session = SessionLocal()
+    try:
+        user = json.loads(get_jwt_identity())
+        customer = db_session.query(Customer).filter(Customer.username == user["username"]).first()
+
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+
+        existing_wishlist_item = db_session.query(Wishlist).filter(
+            Wishlist.customer_id == customer.id,
+            Wishlist.item_id == item.id
+        ).first()
+        if existing_wishlist_item:
+            return jsonify({'message': f"Item {item_id} is already in your wishlist."}), 200
+
+        new_wishlist_item = Wishlist(customer_id=customer.id, item_id=item.id)
+        db_session.add(new_wishlist_item)
+        db_session.commit()
+
+        return jsonify({"message": f"Item {item_id} added to wishlist successfully."}), 200
+
+    except Exception as e:
+        db_session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+
+@app.route('/inventory/<int:item_id>/wishlist/remove', methods=['DELETE'])
+@jwt_required()
+@role_required(['customer'])
+def remove_wishlist(item_id):
+    """
+    Remove an item from the wishlist.
+    """
+    db_session = SessionLocal()
+    try:
+        user = json.loads(get_jwt_identity())
+        customer = db_session.query(Customer).filter(Customer.username == user["username"]).first()
+
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
+
+        wishlist_item = db_session.query(Wishlist).filter(
+            Wishlist.customer_id == customer.id,
+            Wishlist.item_id == item_id
+        ).first()
+
+        if not wishlist_item:
+            return jsonify({'message': f"Item {item_id} is not in your wishlist."}), 404
+
+        db_session.delete(wishlist_item)
+        db_session.commit()
+
+        return jsonify({'message': f"Item {item_id} removed from wishlist successfully."}), 200
+
+    except Exception as e:
+        db_session.rollback()  
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+        
+
 @app.route('/purchase/<int:item_id>', methods=['POST'])
 @jwt_required()
 @role_required(['admin', 'customer'])

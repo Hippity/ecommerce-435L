@@ -256,12 +256,46 @@ def get_customer_orders(username):
             {
                 'order_id': order.id,
                 'item_id': order.item_id,
-                'good_name' : order.good_name,
+                'good_name' : order.inventory_item.good_name,
                 'quantity': order.quantity
             }
             for order in orders
         ]
         return jsonify({'orders': orders_list}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db_session.close()
+        
+@app.route('/customers/<string:username>/wishlist', methods=['GET'])
+@jwt_required()
+@role_required(['admin', 'customer'])
+def get_customer_wishlist(username):
+    """Get all wishlist items of a customer."""
+    db_session = SessionLocal()
+    try:
+        user = json.loads(get_jwt_identity())
+
+        if user['username'] != username:
+            return jsonify({'error': 'Invalid User'}), 400
+
+        customer = db_session.query(Customer).filter_by(username=username).first()
+        if not customer:
+            return jsonify({'error': 'Customer not found'}), 404
+
+        wishlist = customer.wishlist_items  
+        wishlist_items = [
+            {
+                'wishlist_id': item.wishlist_id,
+                'item_id': item.item_id,
+                'item_name': item.inventory_item.name,  
+                'item_price': item.inventory_item.price_per_item  
+            }
+            for item in wishlist
+        ]
+
+        return jsonify({'wishlist': wishlist_items}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

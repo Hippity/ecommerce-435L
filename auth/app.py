@@ -7,6 +7,7 @@ from shared.models.base import Base
 from shared.models.customer import Customer
 from shared.models.review import Review
 from shared.models.inventory import InventoryItem
+from shared.models.wishlist import Wishlist
 from shared.database import engine, SessionLocal
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from argon2 import PasswordHasher

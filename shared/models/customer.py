@@ -18,7 +18,7 @@ class Customer(Base):
 
     reviews = relationship("Review", back_populates="customer")
     previous_orders = relationship("Order", back_populates="customer", cascade="all, delete-orphan")
-
+    wishlist_items = relationship("Wishlist", back_populates="customer")
 
     @classmethod
     def validate_data(cls, data):

@@ -11,7 +11,8 @@ services:
     ports:
       - "3004:3004"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   customer-service:
     build:
@@ -23,7 +24,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   sales-service:
     build:
@@ -35,7 +37,8 @@ services:
     ports:
       - "3003:3003"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   review-service:
     build:
@@ -47,7 +50,8 @@ services:
     ports:
       - "3002:3002"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   inventory-service:
     build:
@@ -59,7 +63,8 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.0
@@ -70,6 +75,11 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p987654321"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
