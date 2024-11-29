@@ -21,8 +21,11 @@ class Customer(Base):
     wishlist_items = relationship("Wishlist", back_populates="customer")
 
     @classmethod
-    def validate_data(cls, data):
+    def validate_data(cls, data,type):
         required_fields = ["fullname", "username", "password", "age", "address", "gender", "marital_status"]
+        if type == "edit":
+            required_fields = ["fullname", "age", "address", "gender", "marital_status"]
+
         valid_genders = ["male", "female", "other"]
         valid_marital_statuses = ["single", "married"]
 

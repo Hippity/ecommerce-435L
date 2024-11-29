@@ -13,7 +13,8 @@ def app():
     """Create and configure a new app instance for each test."""
     # Set up the database for testing
     Base.metadata.create_all(bind=engine)
-    yield flask_app
+    with flask_app.app_context():
+        yield flask_app
     # Teardown the database after testing
     Base.metadata.drop_all(bind=engine)
 

@@ -221,9 +221,6 @@ def purchase_item(item_id):
             "order_id": new_order.id
         }), 200
 
-    except requests.exceptions.RequestException as e:
-        db_session.rollback()
-        return jsonify({'error': f'Error in external API call: {str(e)}'}), 500
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500
