@@ -4,6 +4,30 @@ from sqlalchemy.sql import func
 from shared.models.base import Base
 
 class Review(Base):
+    """
+    Review model definition and validation.
+
+    Classes:
+        Review(Base): Represents a review in the database.
+
+    Attributes:
+        id (int): The unique identifier for the review. Auto-incremented primary key.
+        customer_id (int): The ID of the customer who wrote the review. Foreign key referencing the `customers` table.
+        item_id (int): The ID of the inventory item being reviewed. Foreign key referencing the `inventory_item` table.
+        rating (int): The rating given by the customer. Must be an integer between 1 and 5.
+        comment (str): Optional comment provided by the customer.
+        status (str): The status of the review. Valid options: "approved", "normal", "flagged".
+        created_at (datetime): The timestamp when the review was created. Defaults to the current timestamp.
+        updated_at (datetime): The timestamp when the review was last updated. Automatically updated.
+
+    Relationships:
+        customer: A many-to-one relationship with the `Customer` model.
+        inventory_item: A many-to-one relationship with the `InventoryItem` model.
+
+    Methods:
+        validate_data(data):
+            Validates review data against required fields and constraints.
+    """
     __tablename__ = 'reviews'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -20,7 +44,20 @@ class Review(Base):
     
     @classmethod
     def validate_data(cls, data):
+        """
+            Validates review data.
 
+            Parameters:
+                data (dict): A dictionary containing review data to validate.
+
+            Returns:
+                tuple: A boolean indicating success (True) or failure (False), and a message.
+
+            Validation Rules:
+                - `rating` (required): Must be an integer between 1 and 5.
+                - `comment` (optional): Must be a string or null.
+                - `status` (optional): Must be one of "approved", "normal", or "flagged".
+        """
         required_fields = ["rating"]
         valid_statuses = ["approved", "normal" ,"flagged"]
 
