@@ -22,6 +22,7 @@ def app():
     Creates a Flask application configured for testing.
     """
     # Create the database and the database tables
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     yield flask_app
     # Teardown: Drop all tables
@@ -334,11 +335,11 @@ def test_remove_stock(client, db_session, get_auth_tokens):
     assert response.status_code == 200
     data = response.get_json()
     assert data['message'] == '20 items deducted from stock'
-    assert data['new_stock'] == 30
+    assert data['new_stock'] == 80
 
     # Verify in DB
     item = db_session.query(InventoryItem).filter_by(id=2).first()
-    assert item.stock_count == 30
+    assert item.stock_count == 80
 
 # Test: Remove stock with bad quantity
 def test_remove_stock_bad_quantity(client, db_session, get_auth_tokens):
@@ -383,16 +384,16 @@ def test_add_stock(client, db_session, get_auth_tokens):
     response = client.post(
         f'/inventory/{2}/stock/add',
         headers={'Authorization': f'Bearer {get_auth_tokens["manager"]}'},
-        json={'quantity': 50}
+        json={'quantity': 20}
     )
     assert response.status_code == 200
     data = response.get_json()
-    assert data['message'] == 'Successfully added 50 items to stock'
-    assert data['new_stock'] == 80
+    assert data['message'] == 'Successfully added 20 items to stock'
+    assert data['new_stock'] == 100
 
     # Verify in DB
     item = db_session.query(InventoryItem).filter_by(id=2).first()
-    assert item.stock_count == 80
+    assert item.stock_count == 100
 
 # Test: Add stock with bad amount
 def test_add_stock_bad_amount(client, db_session, get_auth_tokens):

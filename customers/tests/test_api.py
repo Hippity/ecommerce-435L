@@ -22,6 +22,7 @@ def app():
     Creates a Flask application configured for testing.
     """
     # Create the database and the database tables
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     yield flask_app
     # Teardown: Drop all tables
