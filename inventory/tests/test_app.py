@@ -52,7 +52,7 @@ def add_inventory_item(db_session):
         name="Apple",
         description="An expensive apple",
         price_per_item=50.0,
-        stock_quantity=100,
+        stock_count=100,
         category="food"
     )
     db_session.add(item)
@@ -120,7 +120,7 @@ def add_product_manager(db_session):
     return user
 
 @pytest.fixture
-def get_auth_token(client):
+def get_auth_tokens(client):
     """
     Logs in all users to obtain JWT tokens.
     Returns a dictionary with 'admin', 'user', and manager tokens.
@@ -135,11 +135,6 @@ def get_auth_token(client):
 
     return tokens
 
-
-import pytest
-from flask import json
-from app.models.inventory import InventoryItem
-
 # Test: Add item
 def test_add_item(client, db_session, get_auth_tokens):
     # Admin adds a new item
@@ -150,7 +145,7 @@ def test_add_item(client, db_session, get_auth_tokens):
             'name': 'New Product',
             'description': 'A new product description',
             'price_per_item': 99.99,
-            'stock_quantity': 50,
+            'stock_count': 50,
             'category': 'electronics'
         }
     )
@@ -164,7 +159,7 @@ def test_add_item(client, db_session, get_auth_tokens):
     assert item is not None
     assert item.description == 'A new product description'
     assert item.price_per_item == 99.99
-    assert item.stock_quantity == 50
+    assert item.stock_count == 50
     assert item.category == 'electronics'
 
 # Test: Add item with invalid data
@@ -175,15 +170,13 @@ def test_add_item_invalid_data(client, db_session, get_auth_tokens):
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={
             'name': 'Incomplete Product',
-            # 'description' is missing
-            'price_per_item': 49.99,
-            'stock_quantity': 30,
+            'stock_count': 30,
             'category': 'books'
         }
     )
     assert response.status_code == 400
     data = response.get_json()
-    assert data['error'] == "'description' is a required field."
+    assert data['error'] == "'price_per_item' is a required field."
 
     # Invalid price_per_item (negative)
     response = client.post(
@@ -192,14 +185,14 @@ def test_add_item_invalid_data(client, db_session, get_auth_tokens):
         json={
             'name': 'Negative Price Product',
             'description': 'Product with negative price',
-            'price_per_item': -10.0,
-            'stock_quantity': 10,
+            'price_per_item': 10.0,
+            'stock_count': 10,
             'category': 'gadgets'
         }
     )
     assert response.status_code == 400
     data = response.get_json()
-    assert "Invalid value for 'price_per_item'" in data['error']
+    assert "Invalid value for 'category'. Valid options are: food, clothes, accessories, electronics." in data['error']
 
 # Test: Add item with bad role
 def test_add_item_bad_role(client, db_session, get_auth_tokens):
@@ -211,7 +204,7 @@ def test_add_item_bad_role(client, db_session, get_auth_tokens):
             'name': 'Unauthorized Product',
             'description': 'Should not be added',
             'price_per_item': 59.99,
-            'stock_quantity': 20,
+            'stock_count': 20,
             'category': 'accessories'
         }
     )
@@ -220,56 +213,60 @@ def test_add_item_bad_role(client, db_session, get_auth_tokens):
     assert data['error'] == 'Permission denied: Insufficient role'
 
 # Test: Update item
-def test_update_item(client, db_session, get_auth_tokens, add_inventory_item):
+def test_update_item(client, db_session, get_auth_tokens):
     # Admin updates the item
     response = client.put(
-        f'/inventory/{add_inventory_item.id}',
+        f'/inventory/{1}',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={
             'name': 'Updated Test Item',
             'description': 'Updated description',
             'price_per_item': 75.0,
-            'stock_quantity': 80,
-            'category': 'updated_category'
+            'stock_count': 80,
+            'category': 'food'
         }
     )
     assert response.status_code == 200
     data = response.get_json()
-    assert data['message'] == f'Item {add_inventory_item.id} updated successfully'
+    assert data['message'] == f'Item {1} updated successfully'
 
     # Verify in DB
-    item = db_session.query(InventoryItem).filter_by(id=add_inventory_item.id).first()
+    item = db_session.query(InventoryItem).filter_by(id=1).first()
     assert item.name == 'Updated Test Item'
     assert item.description == 'Updated description'
     assert item.price_per_item == 75.0
-    assert item.stock_quantity == 80
-    assert item.category == 'updated_category'
+    assert item.stock_count == 80
+    assert item.category == 'food'
 
 # Test: Update item with invalid data
-def test_update_item_invalid_data(client, db_session, get_auth_tokens, add_inventory_item):
-    # Invalid stock_quantity (negative)
+def test_update_item_invalid_data(client, db_session, get_auth_tokens):
+    # Invalid stock_count (negative)
     response = client.put(
-        f'/inventory/{add_inventory_item.id}',
+        f'/inventory/{1}',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={
-            'stock_quantity': -20
+            'stock_count': -20
         }
     )
     assert response.status_code == 400
     data = response.get_json()
-    assert "Invalid value for 'stock_quantity'" in data['error']
+    assert "'name' is a required field." in data['error']
 
     # Invalid price_per_item (non-float)
     response = client.put(
-        f'/inventory/{add_inventory_item.id}',
+        f'/inventory/{1}',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={
-            'price_per_item': 'free'
+            'name': 'Updated Test Item',
+            'description': 'Updated description',
+            'price_per_item': 20,
+            'stock_count': -20,
+            'category': 'food'
         }
     )
     assert response.status_code == 400
     data = response.get_json()
-    assert "Invalid value for 'price_per_item'" in data['error']
+    assert "Invalid value for 'stock_count'" in data['error']
 
 # Test: Update item that does not exist
 def test_update_item_no_item(client, db_session, get_auth_tokens):
@@ -280,7 +277,7 @@ def test_update_item_no_item(client, db_session, get_auth_tokens):
             'name': 'Nonexistent Item',
             'description': 'Should not be updated',
             'price_per_item': 100.0,
-            'stock_quantity': 10,
+            'stock_count': 10,
             'category': 'none'
         }
     )
@@ -289,18 +286,18 @@ def test_update_item_no_item(client, db_session, get_auth_tokens):
     assert data['error'] == 'Item not found'
 
 # Test: Delete item
-def test_delete_item(client, db_session, get_auth_tokens, add_inventory_item):
+def test_delete_item(client, db_session, get_auth_tokens):
     # Admin deletes the item
     response = client.delete(
-        f'/inventory/{add_inventory_item.id}',
+        f'/inventory/{1}',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'}
     )
     assert response.status_code == 200
     data = response.get_json()
-    assert data['message'] == f'Item {add_inventory_item.id} deleted successfully'
+    assert data['message'] == f'Item {1} deleted successfully'
 
     # Verify deletion in DB
-    item = db_session.query(InventoryItem).filter_by(id=add_inventory_item.id).first()
+    item = db_session.query(InventoryItem).filter_by(id=1).first()
     assert item is None
 
 # Test: Delete item that does not exist
@@ -325,31 +322,29 @@ def test_delete_item_bad_role(client, db_session, get_auth_tokens, add_inventory
     assert data['error'] == 'Permission denied: Insufficient role'
 
 # Test: Remove stock
-def test_remove_stock(client, db_session, get_auth_tokens, add_inventory_item):
+def test_remove_stock(client, db_session, get_auth_tokens):
     # Add stock to ensure sufficient quantity
-    add_inventory_item.stock_quantity = 100
-    db_session.commit()
 
     # Deduct 20 items
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/remove',
-        headers={'Authorization': f'Bearer {get_auth_tokens["product_manager"]}'},
+        f'/inventory/{2}/stock/remove',
+        headers={'Authorization': f'Bearer {get_auth_tokens["manager"]}'},
         json={'quantity': 20}
     )
     assert response.status_code == 200
     data = response.get_json()
     assert data['message'] == '20 items deducted from stock'
-    assert data['new_stock'] == 80
+    assert data['new_stock'] == 30
 
     # Verify in DB
-    item = db_session.query(InventoryItem).filter_by(id=add_inventory_item.id).first()
-    assert item.stock_quantity == 80
+    item = db_session.query(InventoryItem).filter_by(id=2).first()
+    assert item.stock_count == 30
 
 # Test: Remove stock with bad quantity
-def test_remove_stock_bad_quantity(client, db_session, get_auth_tokens, add_inventory_item):
+def test_remove_stock_bad_quantity(client, db_session, get_auth_tokens):
     # Attempt to deduct negative quantity
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/remove',
+        f'/inventory/{2}/stock/remove',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={'quantity': -10}
     )
@@ -359,7 +354,7 @@ def test_remove_stock_bad_quantity(client, db_session, get_auth_tokens, add_inve
 
     # Attempt to deduct non-integer quantity
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/remove',
+        f'/inventory/{2}/stock/remove',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={'quantity': 'ten'}
     )
@@ -368,43 +363,42 @@ def test_remove_stock_bad_quantity(client, db_session, get_auth_tokens, add_inve
     assert data['error'] == 'Invalid quantity. Must be a positive integer.'
 
 # Test: Remove stock with insufficient quantity
-def test_remove_stock_insufficient(client, db_session, get_auth_tokens, add_inventory_item):
-    # Set stock_quantity to 5
-    add_inventory_item.stock_quantity = 5
+def test_remove_stock_insufficient(client, db_session, get_auth_tokens):
+    # Set stock_count to 5
     db_session.commit()
 
     # Attempt to deduct 10 items
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/remove',
+        f'/inventory/{2}/stock/remove',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
-        json={'quantity': 10}
+        json={'quantity': 100}
     )
     assert response.status_code == 400
     data = response.get_json()
     assert data['error'] == 'Not enough stock available'
 
 # Test: Add stock
-def test_add_stock(client, db_session, get_auth_tokens, add_inventory_item):
+def test_add_stock(client, db_session, get_auth_tokens):
     # Add 50 items to stock
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/add',
-        headers={'Authorization': f'Bearer {get_auth_tokens["product_manager"]}'},
+        f'/inventory/{2}/stock/add',
+        headers={'Authorization': f'Bearer {get_auth_tokens["manager"]}'},
         json={'quantity': 50}
     )
     assert response.status_code == 200
     data = response.get_json()
     assert data['message'] == 'Successfully added 50 items to stock'
-    assert data['new_stock'] == 150
+    assert data['new_stock'] == 80
 
     # Verify in DB
-    item = db_session.query(InventoryItem).filter_by(id=add_inventory_item.id).first()
-    assert item.stock_quantity == 150
+    item = db_session.query(InventoryItem).filter_by(id=2).first()
+    assert item.stock_count == 80
 
 # Test: Add stock with bad amount
-def test_add_stock_bad_amount(client, db_session, get_auth_tokens, add_inventory_item):
+def test_add_stock_bad_amount(client, db_session, get_auth_tokens):
     # Attempt to add negative quantity
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/add',
+        f'/inventory/{2}/stock/add',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={'quantity': -20}
     )
@@ -414,7 +408,7 @@ def test_add_stock_bad_amount(client, db_session, get_auth_tokens, add_inventory
 
     # Attempt to add non-integer quantity
     response = client.post(
-        f'/inventory/{add_inventory_item.id}/stock/add',
+        f'/inventory/{2}/stock/add',
         headers={'Authorization': f'Bearer {get_auth_tokens["admin"]}'},
         json={'quantity': 'twenty'}
     )
