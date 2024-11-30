@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from reviews.app import app as flask_app
 import pytest
 from flask import json
@@ -11,6 +11,9 @@ from shared.models.inventory import InventoryItem
 from flask_jwt_extended import create_access_token
 from argon2 import PasswordHasher
 from unittest.mock import patch
+from line_profiler import LineProfiler
+
+
 
 
 ph = PasswordHasher()
