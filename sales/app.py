@@ -10,6 +10,7 @@ from shared.models.review import Review
 from shared.models.order import Order
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
+from sqlalchemy.sql import text
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required, get_jwt_identity
 import json
 import requests
@@ -403,6 +404,59 @@ def purchase_item(item_id):
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint to monitor service and dependencies.
+
+    Returns:
+        - 200 OK: If the service and all dependencies are operational.
+        - 500 Internal Server Error: If any dependency or service is not operational.
+    """
+    db_status = "unknown"
+    customer_service_status = "unknown"
+    inventory_service_status = "unknown"
+
+    db_session = SessionLocal()
+    try:
+        db_session.execute(text("SELECT 1"))
+        db_session.close()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"unavailable: {str(e)}"
+
+    # Check customer-service health
+    try:
+        response = requests.get('http://customer-service:3000/health', timeout=5)
+        if response.status_code == 200:
+            customer_service_status = "healthy"
+        else:
+            customer_service_status = f"unhealthy: {response.status_code}"
+    except Exception as e:
+        customer_service_status = f"unavailable: {str(e)}"
+
+    # Check inventory-service health
+    try:
+        response = requests.get('http://inventory-service:3001/health', timeout=5)
+        if response.status_code == 200:
+            inventory_service_status = "healthy"
+        else:
+            inventory_service_status = f"unhealthy: {response.status_code}"
+    except Exception as e:
+        inventory_service_status = f"unavailable: {str(e)}"
+
+    # Determine overall status
+    overall_status = "healthy" if db_status == "connected" and customer_service_status == "healthy" and inventory_service_status == "healthy" else "unhealthy"
+
+    # Return health check details
+    return jsonify({
+        "status": overall_status,
+        "database": db_status,
+        "customer_service": customer_service_status,
+        "inventory_service": inventory_service_status
+    }), 200 if overall_status == "healthy" else 500
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3003)

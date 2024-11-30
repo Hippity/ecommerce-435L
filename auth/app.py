@@ -9,7 +9,7 @@ from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.models.wishlist import Wishlist
 from shared.database import engine, SessionLocal
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, unset_jwt_cookies
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
@@ -44,10 +44,10 @@ def create_default_admin():
             admin = Customer(
                 fullname="Admin User",
                 username="admin",
-                age = 0,
-                address = "Admin's address",
-                gender = "men",
-                marital_status = "single",
+                age=0,
+                address="Admin's address",
+                gender="men",
+                marital_status="single",
                 password=ph.hash("admin123"), 
                 role="admin",
                 wallet=0.0
@@ -104,7 +104,36 @@ def login():
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
-    
+
+@app.route("/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    """
+    Logout the user by clearing the JWT cookies.
+
+    Endpoint:
+        POST /logout
+
+    Returns:
+        - 200 OK: If logout is successful.
+    """
+    response = jsonify({"message": "Successfully logged out"})
+    unset_jwt_cookies(response)
+    return response, 200
+
+@app.route("/health", methods=["GET"])
+def health_check():
+    """
+    Health check endpoint to ensure the service is running.
+
+    Endpoint:
+        GET /health
+
+    Returns:
+        - 200 OK: If the service is running.
+    """
+    return jsonify({"status": "healthy"}), 200
+
 def role_required(allowed_roles):
     """
     Restrict access to specific roles.
@@ -139,7 +168,6 @@ def role_required(allowed_roles):
         return wrapper
     return decorator
 
-    
 if __name__ == '__main__':
     create_default_admin()
     app.run(host="0.0.0.0", port=3004)

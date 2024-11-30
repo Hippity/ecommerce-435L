@@ -10,6 +10,7 @@ from shared.models.inventory import InventoryItem
 from shared.models.order import Order
 from shared.models.wishlist import Wishlist
 from shared.database import engine, SessionLocal
+from sqlalchemy.sql import text
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import json
 from argon2 import PasswordHasher
@@ -629,6 +630,33 @@ def add_admin():
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint to monitor service and database status.
+
+    Returns:
+        - 200 OK: If the service and database are operational.
+        - 500 Internal Server Error: If the database or any service is unavailable.
+    """
+    db_status = "unknown"
+    db_session = SessionLocal()
+    try:
+        db_session.execute(text("SELECT 1"))
+        db_session.close()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"unavailable: {str(e)}"
+
+    # Determine overall status
+    overall_status = "healthy" if db_status == "connected" else "unhealthy"
+
+    # Return health check details
+    return jsonify({
+        "status": overall_status,
+        "database": db_status,
+    }), 200 if overall_status == "healthy" else 500
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000)

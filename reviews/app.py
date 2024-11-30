@@ -8,6 +8,7 @@ from shared.models.customer import Customer
 from shared.models.review import Review
 from shared.models.inventory import InventoryItem
 from shared.database import engine, SessionLocal
+from sqlalchemy.sql import text
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import json
 import requests
@@ -450,6 +451,47 @@ def approve_review(review_id):
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint.
+
+    Returns:
+        - 200 OK: If the service and all dependencies are operational.
+        - 500 Internal Server Error: If any dependency is not operational.
+    """
+    db_status = "unknown"
+    customer_service_status = "unknown"
+
+    # Check database connectivity
+    try:
+        db_session = SessionLocal()
+        db_session.execute(text("SELECT 1"))
+        db_session.close()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"unavailable: {str(e)}"
+
+    # Check customer-service health
+    try:
+        response = requests.get('http://customer-service:3000/health', timeout=5)
+        if response.status_code == 200:
+            customer_service_status = "healthy"
+        else:
+            customer_service_status = f"unhealthy: {response.status_code}"
+    except Exception as e:
+        customer_service_status = f"unavailable: {str(e)}"
+
+    # Aggregate overall status
+    overall_status = "healthy" if db_status == "connected" and customer_service_status == "healthy" else "unhealthy"
+
+    # Return JSON response
+    return jsonify({
+        "status": overall_status,
+        "database": db_status,
+        "customer_service": customer_service_status
+    }), 200 if overall_status == "healthy" else 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3002)
