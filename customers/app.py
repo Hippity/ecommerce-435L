@@ -370,8 +370,8 @@ def add_customer_wallet(username):
 
     Decorators:
         @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer']) - Restricts access to users with 
-        "admin" or "customer" roles.
+        @role_required(['admin', 'customer','product_manager']) - Restricts access to users with 
+        "admin" or "customer" or "product_manager" roles.
 
     Returns:
         - 200 OK: If the amount is successfully added to the customer's wallet. 
