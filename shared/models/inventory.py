@@ -65,19 +65,24 @@ class InventoryItem(Base):
             if field not in data:
                 return False, f"'{field}' is a required field."
 
-        if not isinstance(data["name"], str) or len(data["name"].strip()) < 3:
-            return False, "Invalid value for 'name'. It must be at least 3 characters"
+        if "name" in data:
+            if not isinstance(data["name"], str) or len(data["name"].strip()) < 3:
+                return False, "Invalid value for 'name'. It must be at least 3 characters."
 
-        if data["category"].lower() not in valid_categories:
-            return False, f"Invalid value for 'category'. Valid options are: {', '.join(valid_categories)}."
+        if "category" in data:
+            if data["category"].lower() not in valid_categories:
+                return False, f"Invalid value for 'category'. Valid options are: {', '.join(valid_categories)}."
 
-        if not isinstance(data["price_per_item"], (int, float)) or data["price_per_item"] <= 0:
-            return False, "Invalid value for 'price_per_item'. It must be a positive number."
+        if "price_per_item" in data:
+            if not isinstance(data["price_per_item"], (int, float)) or data["price_per_item"] <= 0:
+                return False, "Invalid value for 'price_per_item'. It must be a positive number."
 
-        if not isinstance(data["stock_count"], int) or data["stock_count"] < 0:
-            return False, "Invalid value for 'stock_count'. It must be a non-negative integer."
+        if "stock_count" in data:
+            if not isinstance(data["stock_count"], int) or data["stock_count"] < 0:
+                return False, "Invalid value for 'stock_count'. It must be a non-negative integer."
 
-        if not isinstance(data["description"], str) or len(data["description"].strip()) < 5 :
-            return False, "Invalid value for 'description'. It must be at least 5 characters."
+        if "description" in data:
+            if not isinstance(data["description"], str) or len(data["description"].strip()) < 5:
+                return False, "Invalid value for 'description'. It must be at least 5 characters."
 
         return True, "Validation successful."

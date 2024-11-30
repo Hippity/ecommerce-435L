@@ -33,12 +33,11 @@ def get_customer_details(username,headers):
         rasies an exception
 
     """
-    response = requests.get(f'http://customer-service:3000/customer/{username}', timeout=5, headers=headers)
+    response = requests.get(f'http://customer-service:3000/customers/{username}', timeout=5, headers=headers)
     response.raise_for_status()
     if response.headers.get('Content-Type') != 'application/json':
         raise Exception('Unexpected content type: JSON expected')
-    customer = response.json()
-    return customer
+    return response.json() 
 
 def remove_stock(item_id,quantity,headers):
     """
@@ -80,7 +79,7 @@ def deduct_wallet(username,total_cost,headers):
     """
         wallet_payload = {"amount": total_cost}
         wallet_response = requests.post(
-            f'http://customers-service:3000/customers/{username}/wallet/deduct',
+            f'http://customer-service:3000/customers/{username}/wallet/deduct',
             json=wallet_payload,
             headers=headers,
             timeout=5
@@ -92,7 +91,7 @@ def deduct_wallet(username,total_cost,headers):
 # Set the default function in app config
 app.config['GET_CUSTOMER_DATA_FUNC'] = get_customer_details
 app.config['REMOVE_STOCK_FUNC'] = remove_stock
-app.config['DEDUCT_WALLER_FUNC'] = deduct_wallet
+app.config['DEDUCT_WALLET_FUNC'] = deduct_wallet
 
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
@@ -102,8 +101,8 @@ app.config['JWT_SECRET_KEY'] = 'secret-key'
 jwt = JWTManager(app)
     
 @app.route('/inventory', methods=['GET'])
-@role_required(['admin', 'customer', 'product_manager'])
 @jwt_required()
+@role_required(['admin', 'customer', 'product_manager'])
 def get_inventory():
     """
     Retrieve all items in the inventory with their name and price.
@@ -132,10 +131,10 @@ def get_inventory():
     finally:
         db_session.close()
 
-@app.route('/inventory/<str:category>', methods=['GET'])
-@role_required(['admin', 'customer', 'product_manager'])
+@app.route('/inventory/<string:category>', methods=['GET'])
 @jwt_required()
-def get_inventory(category):
+@role_required(['admin', 'customer', 'product_manager'])
+def get_inventory_category(category):
     """
     Retrieve all items in the inventory with their name and price given a category.
 
@@ -239,16 +238,18 @@ def add_wishlist(item_id):
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
         customer = get_customer_data_func(user['username'],headers)
 
-        item = get_item_details(item_id)
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if not item:
+            return jsonify({"error": "Item not found"}), 404
 
         existing_wishlist_item = db_session.query(Wishlist).filter(
-            Wishlist.customer_id == customer.id,
+            Wishlist.customer_id == customer["id"],
             Wishlist.item_id == item.id
         ).first()
         if existing_wishlist_item:
             return jsonify({'message': f"Item {item_id} is already in your wishlist."}), 200
 
-        new_wishlist_item = Wishlist(customer_id=customer.id, item_id=item.id)
+        new_wishlist_item = Wishlist(customer_id=customer["id"], item_id=item.id)
         db_session.add(new_wishlist_item)
         db_session.commit()
 
@@ -297,10 +298,12 @@ def remove_wishlist(item_id):
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
         customer = get_customer_data_func(user['username'],headers)
 
-        item = get_item_details(item_id)
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if not item:
+            return jsonify({"error": "Item not found"}), 404
 
         wishlist_item = db_session.query(Wishlist).filter(
-            Wishlist.customer_id == customer.id,
+            Wishlist.customer_id == customer["id"],
             Wishlist.item_id == item.id
         ).first()
 
@@ -366,30 +369,32 @@ def purchase_item(item_id):
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
         customer = get_customer_data_func(user['username'],headers)
 
-        item = get_item_details(item_id)
+        item = db_session.query(InventoryItem).filter(InventoryItem.id == item_id).first()
+        if not item:
+            return jsonify({"error": "Item not found"}), 404
 
         # Check if there is enough stock and if the user has sufficient wallet balance
         total_cost = item.price_per_item * quantity
         if item.stock_count < quantity:
             return jsonify({'error': 'Not enough stock available'}), 400
-        if customer.wallet < total_cost:
+        if customer["wallet"] < total_cost:
             return jsonify({'error': 'Insufficient wallet balance'}), 400
 
         # Deduct from customer's wallet via API
-        deduct_wallet_func = current_app.config['DEDUCT_WALLER_DATA_FUNC']
+        deduct_wallet_func = current_app.config['DEDUCT_WALLET_FUNC']
         deduct_wallet_func(user['username'],total_cost,headers)
         
         # Deduct stock via inventory API
-        remove_stock_func = current_app.config['REMOVE_STOCK_DATA_FUNC']
+        remove_stock_func = current_app.config['REMOVE_STOCK_FUNC']
         remove_stock_func(item_id,quantity,headers)
 
         # Log the order in the local database
-        new_order = Order(customer_id=customer.id, item_id=item.id, good_name=item.name, quantity=quantity)
+        new_order = Order(customer_id=customer["id"], item_id=item.id, quantity=quantity)
         db_session.add(new_order)
         db_session.commit()
 
         return jsonify({
-            "message": f"{customer.username} successfully purchased {quantity} unit(s) of {item.name}.",
+            "message": f"{customer['username']} successfully purchased {quantity} unit(s) of {item.name}.",
             "order_id": new_order.id
         }), 200
 
@@ -401,5 +406,3 @@ def purchase_item(item_id):
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3003)
-
-    

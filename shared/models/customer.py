@@ -77,25 +77,36 @@ class Customer(Base):
             if field not in data:
                 return False, f"'{field}' is a required field."
 
-        if not isinstance(data["fullname"], str) or  len(data["fullname"].strip()) < 4:
-            return False, "Invalid value for 'fullname'. It must be at least 4 characters."
+        if "fullname" in data:
+            if not isinstance(data["fullname"], str) or len(data["fullname"].strip()) < 4:
+                return False, "Invalid value for 'fullname'. It must be at least 4 characters."
 
-        if not isinstance(data["username"], str) or len(data["username"].strip()) < 4:
-            return False, "Invalid value for 'username'. It must be at least 4 characters"
+        if "username" in data:
+            if not isinstance(data["username"], str) or len(data["username"].strip()) < 4:
+                return False, "Invalid value for 'username'. It must be at least 4 characters."
 
-        if not isinstance(data["password"], str) or len(data["password"]) < 6:
-            return False, "Invalid value for 'password'. It must be at least 6 characters long."
+        if "password" in data:
+            if not isinstance(data["password"], str) or len(data["password"]) < 6:
+                return False, "Invalid value for 'password'. It must be at least 6 characters long."
 
-        if not isinstance(data["age"], int) or data["age"] < 16:
-            return False, "Invalid value for 'age'. It must be greater than 16"
+        if "age" in data:
+            if not isinstance(data["age"], int) or data["age"] < 16:
+                return False, "Invalid value for 'age'. It must be greater than 16."
 
-        if not isinstance(data["address"], str) or len(data["address"].strip()) < 4:
-            return False, "Invalid value for 'address'. It must be at least 4 characters"
+        if "address" in data:
+            if not isinstance(data["address"], str) or len(data["address"].strip()) < 4:
+                return False, "Invalid value for 'address'. It must be at least 4 characters."
 
-        if data["gender"].lower() not in valid_genders:
-            return False, f"Invalid value for 'gender'. Valid options are: {', '.join(valid_genders)}."
+        if "gender" in data:
+            if data["gender"].lower() not in valid_genders:
+                return False, f"Invalid value for 'gender'. Valid options are: {', '.join(valid_genders)}."
 
-        if data["marital_status"].lower() not in valid_marital_statuses:
-            return False, f"Invalid value for 'marital_status'. Valid options are: {', '.join(valid_marital_statuses)}."
+        if "marital_status" in data:
+            if data["marital_status"].lower() not in valid_marital_statuses:
+                return False, f"Invalid value for 'marital_status'. Valid options are: {', '.join(valid_marital_statuses)}."
+
+        if "wallet" in data:  # Example of an optional field
+            if not isinstance(data["wallet"], (int, float)) or data["wallet"] < 0:
+                return False, "Invalid value for 'wallet'. It must be a non-negative number."
 
         return True, "Validation successful."

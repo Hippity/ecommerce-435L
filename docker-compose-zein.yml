@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth/Dockerfile-zein
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:hello123@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3004:3004"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  customer-service:
+    build:
+      context: .
+      dockerfile: customers/Dockerfile-zein
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:hello123@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  sales-service:
+    build:
+      context: .
+      dockerfile: sales/Dockerfile-zein
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:hello123@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3003:3003"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  review-service:
+    build:
+      context: .
+      dockerfile: reviews/Dockerfile-zein
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:hello123@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3002:3002"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: inventory/Dockerfile-zein
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:hello123@db:3306/ecommerce
+      - PYTHONPATH=/app:/app/shared
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: hello123
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: user
+      MYSQL_PASSWORD: hello123
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "-phello123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:

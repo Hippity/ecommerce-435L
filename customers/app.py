@@ -54,7 +54,8 @@ def get_customers():
                 'address': customer.address,
                 'gender': customer.gender,
                 'marital_status': customer.marital_status,
-                'wallet': customer.wallet
+                'wallet': customer.wallet,
+                "role" : customer.role
             }
             for customer in customers
         ]
@@ -79,8 +80,8 @@ def get_customer_by_username(username):
 
     Decorators:
         @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer']) - Restricts access to users with 
-          "admin" or "customer" roles.
+        @role_required(['admin', 'customer', 'product_manager']) - Restricts access to users with 
+          "admin" or "customer" or "product_manager" roles.
 
     Returns:
         - 200 OK: A JSON object containing the customer's details.
@@ -92,7 +93,7 @@ def get_customer_by_username(username):
     try:
         user = json.loads(get_jwt_identity()) 
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
         
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -111,6 +112,8 @@ def get_customer_by_username(username):
         }
         return jsonify(customer_data), 200
     except Exception as e:
+        print(e)
+        print("hello")
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
@@ -213,7 +216,7 @@ def update_customer(username):
     try:
         user = json.loads(get_jwt_identity()) 
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
         
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -276,7 +279,7 @@ def change_password(username):
     try:
         user = json.loads(get_jwt_identity())
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
         
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -327,7 +330,7 @@ def delete_customer(username):
     try:
         user = json.loads(get_jwt_identity()) 
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
         
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -350,7 +353,7 @@ def delete_customer(username):
 @app.route('/customers/<string:username>/wallet/add', methods=['POST'])
 @jwt_required()
 @role_required(['admin', 'customer', 'product_manager'])
-def charge_customer_wallet(username):
+def add_customer_wallet(username):
     """
     Add funds to a customer's wallet.
 
@@ -385,7 +388,7 @@ def charge_customer_wallet(username):
     try:
         user = json.loads(get_jwt_identity()) 
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
         
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -439,7 +442,7 @@ def deduct_customer_wallet(username):
     try:
         user = json.loads(get_jwt_identity()) 
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
 
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -486,7 +489,7 @@ def get_customer_orders(username):
     try:
         user = json.loads(get_jwt_identity())
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
 
         customer = db_session.query(Customer).filter_by(username=username).first()
@@ -498,7 +501,7 @@ def get_customer_orders(username):
             {
                 'order_id': order.id,
                 'item_id': order.item_id,
-                'good_name' : order.inventory_item.good_name,
+                'item_name' : order.inventory_item.name,
                 'quantity': order.quantity
             }
             for order in orders
@@ -537,13 +540,13 @@ def get_customer_wishlist(username):
     try:
         user = json.loads(get_jwt_identity())
 
-        if 'admin' not in user['roles'] and user['username'] != username:
+        if 'admin' not in user['role'] and user['username'] != username:
             return jsonify({'error': 'Invalid user'}), 400
 
         customer = db_session.query(Customer).filter_by(username=username).first()
         if not customer:
             return jsonify({'error': 'Customer not found'}), 404
-
+        
         wishlist = customer.wishlist_items  
         wishlist_items = [
             {
@@ -600,7 +603,7 @@ def add_admin():
         if existing_customer:
             return jsonify({'error': 'Username is already taken'}), 400
 
-        is_valid, message = Customer.validate_data(data)
+        is_valid, message = Customer.validate_data(data,'add')
         if not is_valid:
             return jsonify({'error': message}), 400
 
@@ -620,7 +623,7 @@ def add_admin():
         db_session.add(new_customer)
         db_session.commit()
 
-        return jsonify({f'message': f'{data.get('role')} added successfully', 'customer_id': new_customer.id}), 201
+        return jsonify({f'message': f'New user added successfully', 'customer_id': new_customer.id}), 201
     except Exception as e:
         db_session.rollback()
         return jsonify({'error': str(e)}), 500

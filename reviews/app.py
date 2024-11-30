@@ -31,19 +31,17 @@ def get_customer_details(username,headers):
         rasies an exception
 
     """
-    response = requests.get(f'http://customer-service:3000/customer/{username}', timeout=5, headers=headers)
+    response = requests.get(f'http://customer-service:3000/customers/{username}', timeout=5, headers=headers)
     response.raise_for_status()
     if response.headers.get('Content-Type') != 'application/json':
         raise Exception('Unexpected content type: JSON expected')
-    customer = response.json()
-    return customer
+    return response.json()
 
 app.config['GET_CUSTOMER_DATA_FUNC'] = get_customer_details
 
 #Base.metadata.drop_all(bind=engine)
 # Create tables if not created
 Base.metadata.create_all(bind=engine)
-
 
 # Get details of a specific review.
 @app.route('/reviews/<int:review_id>', methods=['GET'])
@@ -122,7 +120,7 @@ def get_customer_reviews():
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
         customer = get_customer_data_func(user['username'],headers)
 
-        reviews = db_session.query(Review).filter_by(customer_id=customer.id).all()
+        reviews = db_session.query(Review).filter_by(customer_id=customer["id"]).all()
 
         if not reviews:
             return jsonify({'message': 'No reviews found for this customer'}), 404
@@ -240,7 +238,7 @@ def submit_review(item_id):
 
         # Create and save the review
         new_review = Review(
-            customer_id=customer.id,
+            customer_id=customer["id"],
             item_id=item_id,
             rating=data["rating"],
             comment=data.get("comment"),
@@ -304,7 +302,7 @@ def update_review(review_id):
         if not review:
             return jsonify({'error': 'Review not found'}), 404
         
-        if 'admin' not in user['roles'] and review.customer_id != customer.id:
+        if 'admin' not in user['role'] and review.customer_id != customer["id"]:
             return jsonify({'error': 'Invalid user'}), 400
 
         is_valid, message = Review.validate_data(data,)
@@ -365,7 +363,7 @@ def delete_review(review_id):
         if not review:
             return jsonify({'error': 'Review not found'}), 404
 
-        if 'admin' not in user['roles'] and review.customer_id != customer.id:
+        if 'admin' not in user['role'] and review.customer_id != customer["id"]:
             return jsonify({'error': 'Invalid user'}), 400
 
         db_session.delete(review)

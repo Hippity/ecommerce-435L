@@ -121,7 +121,14 @@ def role_required(allowed_roles):
         def wrapper(*args, **kwargs):
             try:
                 identity = json.loads(get_jwt_identity())
+
+                if "role" not in identity:
+                    return jsonify({"error": "'role' key missing in JWT identity"}), 400
+                
                 user_role = identity.get("role")
+
+                if not user_role:
+                    return jsonify({"error": "Missing role in JWT identity"}), 403
 
                 if user_role not in allowed_roles:
                     return jsonify({"error": "Permission denied: Insufficient role"}), 403
