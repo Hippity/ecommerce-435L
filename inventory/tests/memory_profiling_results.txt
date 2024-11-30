@@ -1,0 +1,41 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-8.3.3, pluggy-1.5.0 -- C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\inventory\tests
+plugins: flask-1.3.0
+collecting ... collected 14 items
+
+test_app.py::test_add_item PASSED                                        [  7%]
+test_app.py::test_add_item_invalid_data PASSED                           [ 14%]
+test_app.py::test_add_item_bad_role PASSED                               [ 21%]
+test_app.py::test_update_item PASSED                                     [ 28%]
+test_app.py::test_update_item_invalid_data PASSED                        [ 35%]
+test_app.py::test_update_item_no_item PASSED                             [ 42%]
+test_app.py::test_delete_item PASSED                                     [ 50%]
+test_app.py::test_delete_item_no_item PASSED                             [ 57%]
+test_app.py::test_delete_item_bad_role PASSED                            [ 64%]
+test_app.py::test_remove_stock PASSED                                    [ 71%]
+test_app.py::test_remove_stock_bad_quantity PASSED                       [ 78%]
+test_app.py::test_remove_stock_insufficient PASSED                       [ 85%]
+test_app.py::test_add_stock PASSED                                       [ 92%]
+test_app.py::test_add_stock_bad_amount PASSED                            [100%]
+
+============================== warnings summary ===============================
+..\..\shared\models\base.py:6
+  C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\shared\models\base.py:6: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 14 passed, 1 warning in 1.72s ========================
+Filename: profiler_memory.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     4     30.5 MiB     30.5 MiB           1   @profile
+     5                                         def run_memory_profiling():
+     6                                             """
+     7                                             Runs pytest while profiling memory usage for the tests.
+     8                                             """
+     9     67.5 MiB     37.0 MiB           1       pytest.main(["-v", "test_app.py"])
+
+

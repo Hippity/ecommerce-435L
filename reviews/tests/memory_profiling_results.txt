@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-8.3.3, pluggy-1.5.0 -- C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\reviews\tests
+plugins: flask-1.3.0
+collecting ... collected 8 items
+
+test_app.py::test_add_review PASSED                                      [ 12%]
+test_app.py::test_submit_review_with_profanity PASSED                    [ 25%]
+test_app.py::test_get_review_by_id PASSED                                [ 37%]
+test_app.py::test_get_product_reviews PASSED                             [ 50%]
+test_app.py::test_update_review PASSED                                   [ 62%]
+test_app.py::test_delete_review PASSED                                   [ 75%]
+test_app.py::test_flag_review PASSED                                     [ 87%]
+test_app.py::test_approve_review PASSED                                  [100%]
+
+============================== warnings summary ===============================
+..\..\shared\models\base.py:6
+  C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\shared\models\base.py:6: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 8 passed, 1 warning in 2.50s =========================
+Filename: profiler_memory.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     4     30.7 MiB     30.7 MiB           1   @profile
+     5                                         def run_memory_profiling():
+     6                                             """
+     7                                             Runs pytest while profiling memory usage for the tests.
+     8                                             """
+     9     74.7 MiB     43.9 MiB           1       pytest.main(["-v", "test_app.py"])
+
+

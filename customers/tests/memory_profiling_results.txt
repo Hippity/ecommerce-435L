@@ -1,0 +1,47 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-8.3.3, pluggy-1.5.0 -- C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\customers\tests
+plugins: flask-1.3.0
+collecting ... collected 20 items
+
+test_app.py::test_get_customers PASSED                                   [  5%]
+test_app.py::test_get_customer_by_username PASSED                        [ 10%]
+test_app.py::test_get_customer_by_username_no_user PASSED                [ 15%]
+test_app.py::test_add_customer PASSED                                    [ 20%]
+test_app.py::test_add_customer_invalid_data PASSED                       [ 25%]
+test_app.py::test_update_customer PASSED                                 [ 30%]
+test_app.py::test_update_customer_invalid_data PASSED                    [ 35%]
+test_app.py::test_update_customer_invalid_user PASSED                    [ 40%]
+test_app.py::test_change_password PASSED                                 [ 45%]
+test_app.py::test_change_password_invalid_password PASSED                [ 50%]
+test_app.py::test_delete_customer PASSED                                 [ 55%]
+test_app.py::test_delete_customer_no_user PASSED                         [ 60%]
+test_app.py::test_deduct_wallet PASSED                                   [ 65%]
+test_app.py::test_deduct_wallet_bad_amount PASSED                        [ 70%]
+test_app.py::test_deduct_wallet_insufficient PASSED                      [ 75%]
+test_app.py::test_add_wallet PASSED                                      [ 80%]
+test_app.py::test_add_wallet_bad_amount PASSED                           [ 85%]
+test_app.py::test_add_product_manager_role PASSED                        [ 90%]
+test_app.py::test_get_previous_orders PASSED                             [ 95%]
+test_app.py::test_get_wishlist PASSED                                    [100%]
+
+============================== warnings summary ===============================
+..\..\shared\models\base.py:6
+  C:\Users\joudy\Desktop\FALL_2024\EECE 435L\Project\ecommerce-435L\shared\models\base.py:6: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 20 passed, 1 warning in 2.80s ========================
+Filename: profiler_memory.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     4     30.8 MiB     30.8 MiB           1   @profile
+     5                                         def run_memory_profiling():
+     6                                             """
+     7                                             Runs pytest while profiling memory usage for the tests.
+     8                                             """
+     9     68.0 MiB     37.2 MiB           1       pytest.main(["-v", "test_app.py"])
+
+
