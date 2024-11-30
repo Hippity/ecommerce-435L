@@ -393,7 +393,7 @@ def purchase_item(item_id):
         new_order = Order(customer_id=customer["id"], item_id=item.id, quantity=quantity)
         db_session.add(new_order)
         db_session.commit()
-
+        remove_wishlist(item_id)
         return jsonify({
             "message": f"{customer['username']} successfully purchased {quantity} unit(s) of {item.name}.",
             "order_id": new_order.id

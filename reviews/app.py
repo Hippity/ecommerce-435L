@@ -11,6 +11,7 @@ from shared.database import engine, SessionLocal
 from sqlalchemy.sql import text
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import json
+from better_profanity import profanity
 import requests
 
 app = Flask(__name__)
@@ -188,10 +189,11 @@ def get_product_reviews(item_id):
     finally:
         db_session.close()
 
-# Submit a new review
+profanity.load_censor_words()
+
 @app.route('/reviews/<int:item_id>', methods=['POST'])
 @jwt_required()
-@role_required(['customer','admin'])
+@role_required(['customer', 'admin'])
 def submit_review(item_id):
     """
     Submit a new review.
@@ -204,7 +206,7 @@ def submit_review(item_id):
 
     Decorators:
         @jwt_required() - Requires authentication via JWT.
-        @role_required(['customer']) - Restricts access to customers only.
+        @role_required(['customer', 'admin']) - Restricts access to customers and admins.
 
     Request Body:
         JSON object containing:
@@ -216,44 +218,56 @@ def submit_review(item_id):
         - 201 Created: If the review is successfully submitted.
         - 400 Bad Request: If validation fails.
         - 500 Internal Server Error: If an error occurs.
-
     """
     data = request.json
     db_session = SessionLocal()
     try:
         user = json.loads(get_jwt_identity())
-        
+
+        # Get customer details
         jwt_token = create_access_token(identity=get_jwt_identity())
         headers = {
             'Authorization': f'Bearer {jwt_token}',
             'Content-Type': 'application/json'
         }
-
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'],headers)
+        customer = get_customer_data_func(user['username'], headers)
 
         # Validate review data
-        is_valid, message = Review.validate_data(data)
-        if not is_valid:
-            return jsonify({'error': message}), 400
+        if not isinstance(data.get("rating"), int) or not (1 <= data["rating"] <= 5):
+            return jsonify({'error': 'Invalid rating. Must be an integer between 1 and 5.'}), 400
+
+        comment = data.get("comment", "").strip()
+        if len(comment) > 500:
+            return jsonify({'error': 'Comment exceeds maximum length of 500 characters.'}), 400
+
+        # Check for profanity using `better-profanity`
+        if comment and profanity.contains_profanity(comment):
+            return jsonify({'error': 'Inappropriate comment detected.'}), 400
 
         # Create and save the review
         new_review = Review(
             customer_id=customer["id"],
             item_id=item_id,
             rating=data["rating"],
-            comment=data.get("comment"),
+            comment=comment,
             status=data.get("status", "approved").lower()
         )
         db_session.add(new_review)
         db_session.commit()
-        return jsonify({'message': 'Review submitted successfully', 'review_id': new_review.id}), 201
+
+        return jsonify({
+            'message': 'Review submitted successfully',
+            'review_id': new_review.id
+        }), 201
+
     except Exception as e:
         db_session.rollback()
+        current_app.logger.error(f"Error in submit_review: {str(e)}")
         return jsonify({'error': str(e)}), 500
     finally:
         db_session.close()
-
+        
 # Update an existing review.
 @app.route('/reviews/<int:review_id>', methods=['PUT'])
 @jwt_required()
