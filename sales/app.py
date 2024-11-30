@@ -247,10 +247,12 @@ def add_wishlist(item_id):
             Wishlist.customer_id == customer["id"],
             Wishlist.item_id == item.id
         ).first()
+
         if existing_wishlist_item:
             return jsonify({'message': f"Item {item_id} is already in your wishlist."}), 200
 
         new_wishlist_item = Wishlist(customer_id=customer["id"], item_id=item.id)
+
         db_session.add(new_wishlist_item)
         db_session.commit()
 
