@@ -39,7 +39,28 @@ def get_customer_details(username,headers):
         raise Exception('Unexpected content type: JSON expected')
     return response.json()
 
+def get_item_exists(item_id,headers):
+    """
+    Retrieve item data from the inventory service.
+
+    Parameters:
+        username (str): The username of the customer whose details are to be retrieved.
+        headers (dict): A dictionary of HTTP headers to include in the request. Typically includes 
+                        authentication headers.
+
+    Returns:
+        dict: A JSON object containing customer details if the request is successful.
+        rasies an exception
+
+    """
+    response = requests.get(f'http://invenotry-service:3001/inventory/{item_id}', timeout=5, headers=headers)
+    response.raise_for_status()
+    if response.headers.get('Content-Type') != 'application/json':
+        raise Exception('Unexpected content type: JSON expected')
+    return True
+
 app.config['GET_CUSTOMER_DATA_FUNC'] = get_customer_details
+app.config['GET_ITEM_EXISTS_FUNC'] = get_item_exists
 
 #Base.metadata.drop_all(bind=engine)
 # Create tables if not created
@@ -168,6 +189,14 @@ def get_product_reviews(item_id):
     """
     db_session = SessionLocal()
     try:
+        user = json.loads(get_jwt_identity())
+
+        # Get customer details
+        jwt_token = create_access_token(identity=get_jwt_identity())
+        headers = {
+            'Authorization': f'Bearer {jwt_token}',
+            'Content-Type': 'application/json'
+        }
         reviews = db_session.query(Review).filter_by(item_id=item_id).all()
         if not reviews:
             return jsonify({'message': 'No reviews found for this product'}), 404
@@ -216,6 +245,7 @@ def submit_review(item_id):
 
     Returns:
         - 201 Created: If the review is successfully submitted.
+        - 404 Not Found: If item doesn't exist
         - 400 Bad Request: If validation fails.
         - 500 Internal Server Error: If an error occurs.
     """
@@ -230,8 +260,14 @@ def submit_review(item_id):
             'Authorization': f'Bearer {jwt_token}',
             'Content-Type': 'application/json'
         }
+        
         get_customer_data_func = current_app.config['GET_CUSTOMER_DATA_FUNC']
-        customer = get_customer_data_func(user['username'], headers)
+        customer = get_customer_data_func(user['username'],headers)
+        
+        get_item_exists_func = current_app.config['GET_ITEM_EXISTS_FUNC']
+        item = get_item_exists_func(item_id, headers)
+        if not item:
+            return jsonify({'error': 'Item not found'}), 404
 
         # Validate review data
         if not isinstance(data.get("rating"), int) or not (1 <= data["rating"] <= 5):
