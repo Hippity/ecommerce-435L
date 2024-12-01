@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>customers.tests.test_app &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">customers.tests.test_app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for customers.tests.test_app</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">)))</span>
+<span class="kn">from</span> <span class="nn">customers.app</span> <span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">flask_app</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="nn">shared.database</span> <span class="kn">import</span> <span class="n">engine</span><span class="p">,</span> <span class="n">SessionLocal</span>
+<span class="kn">from</span> <span class="nn">shared.models.base</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">shared.models.customer</span> <span class="kn">import</span> <span class="n">Customer</span>
+<span class="kn">from</span> <span class="nn">shared.models.review</span> <span class="kn">import</span> <span class="n">Review</span>
+<span class="kn">from</span> <span class="nn">shared.models.inventory</span> <span class="kn">import</span> <span class="n">InventoryItem</span>
+<span class="kn">from</span> <span class="nn">shared.models.order</span> <span class="kn">import</span> <span class="n">Order</span>
+<span class="kn">from</span> <span class="nn">shared.models.wishlist</span> <span class="kn">import</span> <span class="n">Wishlist</span>
+<span class="kn">from</span> <span class="nn">flask_jwt_extended</span> <span class="kn">import</span> <span class="n">create_access_token</span>
+<span class="kn">from</span> <span class="nn">argon2</span> <span class="kn">import</span> <span class="n">PasswordHasher</span>
+
+<span class="c1"># Initialize Password Hasher</span>
+<span class="n">ph</span> <span class="o">=</span> <span class="n">PasswordHasher</span><span class="p">()</span>
+
+<div class="viewcode-block" id="app">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.app">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">app</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a Flask application configured for testing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create the database and the database tables</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">drop_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">flask_app</span>
+    <span class="c1"># Teardown: Drop all tables</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">drop_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="client">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.client">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s1">&#39;session&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides a test client for the Flask application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="db_session">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.db_session">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">db_session</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a new database session for a test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">session</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="add_default_admin">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.add_default_admin">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">add_default_admin</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a default admin user to the database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">admin</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">fullname</span><span class="o">=</span><span class="s2">&quot;Admin User&quot;</span><span class="p">,</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+        <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">address</span><span class="o">=</span><span class="s2">&quot;123 Admin St&quot;</span><span class="p">,</span>
+        <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;male&quot;</span><span class="p">,</span>
+        <span class="n">marital_status</span><span class="o">=</span><span class="s2">&quot;single&quot;</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="n">ph</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;admin123&quot;</span><span class="p">),</span>
+        <span class="n">role</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+        <span class="n">wallet</span><span class="o">=</span><span class="mf">1000.0</span>
+    <span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">admin</span></div>
+
+
+<div class="viewcode-block" id="add_regular_user">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.add_regular_user">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">add_regular_user</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a regular customer user to the database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span>
+        <span class="n">fullname</span><span class="o">=</span><span class="s2">&quot;Regular User&quot;</span><span class="p">,</span>
+        <span class="n">username</span><span class="o">=</span><span class="s2">&quot;user1&quot;</span><span class="p">,</span>
+        <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">address</span><span class="o">=</span><span class="s2">&quot;456 User Ave&quot;</span><span class="p">,</span>
+        <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;female&quot;</span><span class="p">,</span>
+        <span class="n">marital_status</span><span class="o">=</span><span class="s2">&quot;married&quot;</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="n">ph</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;userpass&quot;</span><span class="p">),</span>
+        <span class="n">role</span><span class="o">=</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span>
+        <span class="n">wallet</span><span class="o">=</span><span class="mf">500.0</span>
+    <span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">user</span></div>
+
+
+<div class="viewcode-block" id="get_auth_token">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.get_auth_token">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">get_auth_token</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Logs in both admin and regular user to obtain JWT tokens.</span>
+<span class="sd">    Returns a dictionary with &#39;admin&#39; and &#39;user&#39; tokens.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">tokens</span><span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">}))</span>
+
+    <span class="n">tokens</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;user1&#39;</span><span class="p">,</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;customer&quot;</span><span class="p">}))</span>
+
+    <span class="k">return</span> <span class="n">tokens</span></div>
+
+
+<span class="c1"># Test: Get all customers</span>
+<div class="viewcode-block" id="test_get_customers">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_get_customers">[docs]</a>
+<span class="k">def</span> <span class="nf">test_get_customers</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">,</span> <span class="n">add_default_admin</span><span class="p">,</span> <span class="n">add_regular_user</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>  <span class="c1"># Only admin exists initially</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;admin&#39;</span></div>
+
+
+<span class="c1"># Test: Get customer by username</span>
+<div class="viewcode-block" id="test_get_customer_by_username">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_get_customer_by_username">[docs]</a>
+<span class="k">def</span> <span class="nf">test_get_customer_by_username</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="c1"># Admin accessing another user&#39;s data</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;user1&#39;</span>
+
+    <span class="c1"># Regular user accessing their own data</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;user1&#39;</span></div>
+
+
+<span class="c1"># Test: Get customer by username (No User)</span>
+<div class="viewcode-block" id="test_get_customer_by_username_no_user">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_get_customer_by_username_no_user">[docs]</a>
+<span class="k">def</span> <span class="nf">test_get_customer_by_username_no_user</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/nonexistent&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Customer not found&#39;</span></div>
+
+
+<span class="c1"># Test: Add customer</span>
+<div class="viewcode-block" id="test_add_customer">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_add_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">test_add_customer</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/customers&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;New User&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;newuser&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;newpass123&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+        <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;789 New Rd&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;other&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;single&#39;</span>
+    <span class="p">})</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Customer added successfully&#39;</span>
+    <span class="k">assert</span> <span class="s1">&#39;customer_id&#39;</span> <span class="ow">in</span> <span class="n">data</span>
+
+    <span class="c1"># Verify in DB</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Customer</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;newuser&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">customer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">customer</span><span class="o">.</span><span class="n">fullname</span> <span class="o">==</span> <span class="s1">&#39;New User&#39;</span></div>
+
+
+<span class="c1"># Test: Add customer with invalid data</span>
+<div class="viewcode-block" id="test_add_customer_invalid_data">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_add_customer_invalid_data">[docs]</a>
+<span class="k">def</span> <span class="nf">test_add_customer_invalid_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">):</span>
+    <span class="c1"># Missing required fields</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/customers&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;No Username&#39;</span><span class="p">,</span>
+        <span class="c1"># &#39;username&#39; is missing</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;pass123&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;No Username St&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;single&#39;</span>
+    <span class="p">})</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&#39;username&#39; is a required field.&quot;</span>
+
+    <span class="c1"># Invalid age</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/customers&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;Young User&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;younguser&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;pass123&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>  <span class="c1"># Invalid age</span>
+        <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;Young St&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;single&#39;</span>
+    <span class="p">})</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Invalid value for &#39;age&#39;. It must be greater than 16.&quot;</span></div>
+
+
+<span class="c1"># Test: Update customer</span>
+<div class="viewcode-block" id="test_update_customer">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_update_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">test_update_customer</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated User&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated Address&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;married&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Customer user1 updated successfully&#39;</span>
+
+    <span class="c1"># Verify in DB</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Customer</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">customer</span><span class="o">.</span><span class="n">fullname</span> <span class="o">==</span> <span class="s1">&#39;Updated User&#39;</span>
+    <span class="k">assert</span> <span class="n">customer</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="mi">26</span>
+    <span class="k">assert</span> <span class="n">customer</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="s1">&#39;Updated Address&#39;</span>
+    <span class="k">assert</span> <span class="n">customer</span><span class="o">.</span><span class="n">marital_status</span> <span class="o">==</span> <span class="s1">&#39;married&#39;</span></div>
+
+
+<span class="c1"># Test: Update customer with invalid data</span>
+<div class="viewcode-block" id="test_update_customer_invalid_data">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_update_customer_invalid_data">[docs]</a>
+<span class="k">def</span> <span class="nf">test_update_customer_invalid_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="c1"># Invalid gender</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;User&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;User Address&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;invalid_gender&#39;</span><span class="p">,</span>  <span class="c1"># Invalid gender</span>
+            <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;single&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s2">&quot;Invalid value for &#39;gender&#39;&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Invalid age</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;User&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># Invalid age</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;User Address&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;single&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s2">&quot;Invalid value for &#39;age&#39;&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span></div>
+
+
+<span class="c1"># Test: Update customer with invalid user</span>
+<div class="viewcode-block" id="test_update_customer_invalid_user">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_update_customer_invalid_user">[docs]</a>
+<span class="k">def</span> <span class="nf">test_update_customer_invalid_user</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="c1"># Regular user trying to update another user&#39;s data</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/admin&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;Hacked Admin&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;Hacked Address&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;married&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Invalid user&#39;</span></div>
+
+
+<span class="c1"># Test: Change password</span>
+<div class="viewcode-block" id="test_change_password">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_change_password">[docs]</a>
+<span class="k">def</span> <span class="nf">test_change_password</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/change-password&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;current_password&#39;</span><span class="p">:</span> <span class="s1">&#39;userpass&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="s1">&#39;newuserpass&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Password changed successfully&#39;</span></div>
+
+
+<span class="c1"># Test: Change password with invalid current password</span>
+<div class="viewcode-block" id="test_change_password_invalid_password">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_change_password_invalid_password">[docs]</a>
+<span class="k">def</span> <span class="nf">test_change_password_invalid_password</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/change-password&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;current_password&#39;</span><span class="p">:</span> <span class="s1">&#39;newuserpass&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;new_password&#39;</span><span class="p">:</span> <span class="s1">&#39;bad&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Invalid value for new password. It must be at least 6 characters&#39;</span></div>
+
+
+<span class="c1"># Test: Delete customer</span>
+<div class="viewcode-block" id="test_delete_customer">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_delete_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">test_delete_customer</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Customer user1 deleted successfully&#39;</span>
+
+    <span class="c1"># Verify deletion in DB</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Customer</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">customer</span> <span class="ow">is</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># Test: Delete customer (No User)</span>
+<div class="viewcode-block" id="test_delete_customer_no_user">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_delete_customer_no_user">[docs]</a>
+<span class="k">def</span> <span class="nf">test_delete_customer_no_user</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Customer not found&#39;</span></div>
+
+
+<span class="c1"># Test: Deduct wallet</span>
+<div class="viewcode-block" id="test_deduct_wallet">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_deduct_wallet">[docs]</a>
+<span class="k">def</span> <span class="nf">test_deduct_wallet</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">,</span> <span class="n">add_regular_user</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/wallet/deduct&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Deducted $100.0 from user1&#39;s wallet&quot;</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;new_balance&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">400.0</span></div>
+
+
+<span class="c1"># Test: Deduct wallet with bad amount</span>
+<div class="viewcode-block" id="test_deduct_wallet_bad_amount">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_deduct_wallet_bad_amount">[docs]</a>
+<span class="k">def</span> <span class="nf">test_deduct_wallet_bad_amount</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/wallet/deduct&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">50.0</span><span class="p">}</span>  <span class="c1"># Invalid amount</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Invalid amount&#39;</span></div>
+
+
+<span class="c1"># Test: Deduct wallet with insufficient balance</span>
+<div class="viewcode-block" id="test_deduct_wallet_insufficient">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_deduct_wallet_insufficient">[docs]</a>
+<span class="k">def</span> <span class="nf">test_deduct_wallet_insufficient</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/wallet/deduct&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">}</span>  <span class="c1"># Exceeds current wallet</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Insufficient balance&#39;</span></div>
+
+
+<span class="c1"># Test: Add wallet</span>
+<div class="viewcode-block" id="test_add_wallet">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_add_wallet">[docs]</a>
+<span class="k">def</span> <span class="nf">test_add_wallet</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/wallet/add&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="mf">200.0</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Added $200.0 to user1&#39;s wallet&quot;</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;new_balance&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">600.0</span></div>
+
+
+<span class="c1"># Test: Add wallet with bad amount</span>
+<div class="viewcode-block" id="test_add_wallet_bad_amount">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_add_wallet_bad_amount">[docs]</a>
+<span class="k">def</span> <span class="nf">test_add_wallet_bad_amount</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/user1/wallet/add&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">}</span>  <span class="c1"># Invalid amount</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Invalid amount&#39;</span></div>
+
+
+<span class="c1"># Test: Add product manager role</span>
+<div class="viewcode-block" id="test_add_product_manager_role">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_add_product_manager_role">[docs]</a>
+<span class="k">def</span> <span class="nf">test_add_product_manager_role</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/add-role&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">},</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;fullname&#39;</span><span class="p">:</span> <span class="s1">&#39;Product Manager&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;pm_user&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;pmpass123&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;789 PM Blvd&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;marital_status&#39;</span><span class="p">:</span> <span class="s1">&#39;married&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;product_manager&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;New user added successfully&#39;</span>
+    <span class="k">assert</span> <span class="s1">&#39;customer_id&#39;</span> <span class="ow">in</span> <span class="n">data</span>
+
+    <span class="c1"># Verify in DB</span>
+    <span class="n">pm_user</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Customer</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;pm_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">pm_user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">pm_user</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="s1">&#39;product_manager&#39;</span></div>
+
+
+<span class="c1"># Test: Get previous orders</span>
+<div class="viewcode-block" id="test_get_previous_orders">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_get_previous_orders">[docs]</a>
+<span class="k">def</span> <span class="nf">test_get_previous_orders</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="c1"># Add an order for user1</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">InventoryItem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;food&quot;</span><span class="p">,</span><span class="n">price_per_item</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">stock_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span>
+        <span class="n">customer_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">item_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  
+        <span class="n">quantity</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/admin/orders&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;orders&#39;</span> <span class="ow">in</span> <span class="n">data</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;orders&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;orders&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;quantity&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+<span class="c1"># Test: Get wishlist</span>
+<div class="viewcode-block" id="test_get_wishlist">
+<a class="viewcode-back" href="../../../customers.tests.html#customers.tests.test_app.test_get_wishlist">[docs]</a>
+<span class="k">def</span> <span class="nf">test_get_wishlist</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">db_session</span><span class="p">,</span> <span class="n">get_auth_token</span><span class="p">):</span>
+    <span class="c1"># Add a wishlist item for admin</span>
+    <span class="n">wishlist_item</span> <span class="o">=</span> <span class="n">Wishlist</span><span class="p">(</span>
+        <span class="n">customer_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">item_id</span><span class="o">=</span><span class="mi">1</span>  
+    <span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wishlist_item</span><span class="p">)</span>
+    <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;/customers/admin/wishlist&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">get_auth_token</span><span class="p">[</span><span class="s2">&quot;admin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s1">&#39;wishlist&#39;</span> <span class="ow">in</span> <span class="n">data</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wishlist&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;wishlist&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;item_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

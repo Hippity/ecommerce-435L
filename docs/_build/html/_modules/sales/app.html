@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sales.app &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">sales.app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for sales.app</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">json</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span> <span class="p">,</span> <span class="n">current_app</span>
+<span class="kn">from</span> <span class="nn">flask_cors</span> <span class="kn">import</span> <span class="n">CORS</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">)))</span>
+<span class="kn">from</span> <span class="nn">auth.app</span> <span class="kn">import</span> <span class="n">role_required</span>
+<span class="kn">from</span> <span class="nn">shared.models.wishlist</span> <span class="kn">import</span> <span class="n">Wishlist</span>
+<span class="kn">from</span> <span class="nn">shared.models.base</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">shared.models.customer</span> <span class="kn">import</span> <span class="n">Customer</span>
+<span class="kn">from</span> <span class="nn">shared.models.review</span> <span class="kn">import</span> <span class="n">Review</span>
+<span class="kn">from</span> <span class="nn">shared.models.order</span> <span class="kn">import</span> <span class="n">Order</span>
+<span class="kn">from</span> <span class="nn">shared.models.inventory</span> <span class="kn">import</span> <span class="n">InventoryItem</span>
+<span class="kn">from</span> <span class="nn">shared.database</span> <span class="kn">import</span> <span class="n">engine</span><span class="p">,</span> <span class="n">SessionLocal</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">text</span>
+<span class="kn">from</span> <span class="nn">flask_jwt_extended</span> <span class="kn">import</span> <span class="n">JWTManager</span><span class="p">,</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">get_jwt</span><span class="p">,</span> <span class="n">jwt_required</span><span class="p">,</span> <span class="n">get_jwt_identity</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">CORS</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="sa">r</span><span class="s2">&quot;/*&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;origins&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">}})</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;JWT_SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;secret-key&#39;</span>
+<span class="n">jwt</span> <span class="o">=</span> <span class="n">JWTManager</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_customer_details">
+<a class="viewcode-back" href="../../sales.html#sales.app.get_customer_details">[docs]</a>
+<span class="k">def</span> <span class="nf">get_customer_details</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">headers</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve customer data from the customer service.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        username (str): The username of the customer whose details are to be retrieved.</span>
+<span class="sd">        headers (dict): A dictionary of HTTP headers to include in the request. Typically includes </span>
+<span class="sd">                        authentication headers.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A JSON object containing customer details if the request is successful.</span>
+<span class="sd">        rasies an exception</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;http://customer-service:3000/customers/</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;application/json&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unexpected content type: JSON expected&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> </div>
+
+
+<div class="viewcode-block" id="remove_stock">
+<a class="viewcode-back" href="../../sales.html#sales.app.remove_stock">[docs]</a>
+<span class="k">def</span> <span class="nf">remove_stock</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span><span class="n">quantity</span><span class="p">,</span><span class="n">headers</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove stock for a specific inventory item.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        item_id (int): The ID of the inventory item whose stock is to be deducted.</span>
+<span class="sd">        quantity (int): The quantity to deduct from the stock. Must be a positive integer.</span>
+<span class="sd">        headers (dict): A dictionary of HTTP headers to include in the request, typically </span>
+<span class="sd">                        including authentication headers.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None: The function raises an exception if there is an error during the process.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="n">stock_payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="n">quantity</span><span class="p">}</span>
+    <span class="n">stock_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;http://inventory-service:3001/inventory/</span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s1">/stock/remove&#39;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">stock_payload</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+    <span class="n">stock_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise exception for HTTP errors</span>
+    <span class="k">if</span> <span class="n">stock_response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;application/json&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unexpected content type: JSON expected from inventory service&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="deduct_wallet">
+<a class="viewcode-back" href="../../sales.html#sales.app.deduct_wallet">[docs]</a>
+<span class="k">def</span> <span class="nf">deduct_wallet</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">total_cost</span><span class="p">,</span><span class="n">headers</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deduct funds from a customer&#39;s wallet.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        username (str): The username of the customer whose wallet balance is to be deducted.</span>
+<span class="sd">        total_cost (float): The amount to deduct from the customer&#39;s wallet. Must be a positive number.</span>
+<span class="sd">        headers (dict): A dictionary of HTTP headers to include in the request, typically </span>
+<span class="sd">                        including authentication headers.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None: The function raises an exception if there is an error during the process.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">wallet_payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">total_cost</span><span class="p">}</span>
+        <span class="n">wallet_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;http://customer-service:3000/customers/</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">/wallet/deduct&#39;</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="n">wallet_payload</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+        <span class="n">wallet_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise exception for HTTP errors</span>
+        <span class="k">if</span> <span class="n">wallet_response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;application/json&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unexpected content type: JSON expected from wallet service&#39;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Set the default function in app config</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;GET_CUSTOMER_DATA_FUNC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_customer_details</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;REMOVE_STOCK_FUNC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">remove_stock</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEDUCT_WALLET_FUNC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deduct_wallet</span>
+
+<span class="c1"># Create tables if not created</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># Configure JWT</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;JWT_SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;secret-key&#39;</span>
+<span class="n">jwt</span> <span class="o">=</span> <span class="n">JWTManager</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="get_inventory">
+<a class="viewcode-back" href="../../sales.html#sales.app.get_inventory">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;customer&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_inventory</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve all items in the inventory with their name and price.</span>
+
+<span class="sd">    **Endpoint**:</span>
+<span class="sd">        GET /inventory</span>
+
+<span class="sd">    **Access Control**:</span>
+<span class="sd">        - Users must have one of the following roles:</span>
+<span class="sd">          - `admin`: Can view all inventory items.</span>
+<span class="sd">          - `customer`: Can view all inventory items.</span>
+<span class="sd">          - `product_manager`: Can view all inventory items.</span>
+
+<span class="sd">    **Returns**:</span>
+<span class="sd">        - 200 OK: A JSON array containing the details of all inventory items. Each item includes:</span>
+<span class="sd">            - `name` (str): The name of the inventory item.</span>
+<span class="sd">            - `price` (float): The price per item.</span>
+<span class="sd">        - 500 Internal Server Error: If an error occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">goods</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">InventoryItem</span><span class="o">.</span><span class="n">price_per_item</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">json_results</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">price</span><span class="p">}</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">price</span> <span class="ow">in</span> <span class="n">goods</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">json_results</span><span class="p">),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;An error occurred: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_inventory_category">
+<a class="viewcode-back" href="../../sales.html#sales.app.get_inventory_category">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;string:category&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;customer&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_inventory_category</span><span class="p">(</span><span class="n">category</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve all items in the inventory belonging to a specific category.</span>
+
+<span class="sd">    **Endpoint**:</span>
+<span class="sd">        GET /inventory/&lt;category&gt;</span>
+
+<span class="sd">    **Path Parameter**:</span>
+<span class="sd">        - `category` (str): The category of the inventory items to retrieve.</span>
+
+<span class="sd">    **Access Control**:</span>
+<span class="sd">        - Users must have one of the following roles:</span>
+<span class="sd">          - `admin`: Can view items in any category.</span>
+<span class="sd">          - `customer`: Can view items in any category.</span>
+<span class="sd">          - `product_manager`: Can view items in any category.</span>
+
+<span class="sd">    **Returns**:</span>
+<span class="sd">        - 200 OK: A JSON array containing the details of all inventory items in the specified category. Each item includes:</span>
+<span class="sd">            - `name` (str): The name of the inventory item.</span>
+<span class="sd">            - `price` (float): The price per item.</span>
+<span class="sd">        - 500 Internal Server Error: If an error occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">goods</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">InventoryItem</span><span class="o">.</span><span class="n">price_per_item</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">json_results</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">price</span><span class="p">}</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">price</span> <span class="ow">in</span> <span class="n">goods</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">json_results</span><span class="p">),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;An error occurred: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_item_details">
+<a class="viewcode-back" href="../../sales.html#sales.app.get_item_details">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;customer&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_item_details</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve all items in the inventory with their name and price.</span>
+
+<span class="sd">    **Endpoint**:</span>
+<span class="sd">        GET /inventory</span>
+
+<span class="sd">    **Access Control**:</span>
+<span class="sd">        - Users must have one of the following roles:</span>
+<span class="sd">          - `admin`: Can view all inventory items.</span>
+<span class="sd">          - `customer`: Can view all inventory items.</span>
+<span class="sd">          - `product_manager`: Can view all inventory items.</span>
+
+<span class="sd">    **Response**:</span>
+<span class="sd">        - 200 OK: A JSON array containing the details of all inventory items. Each item includes:</span>
+<span class="sd">            - `name` (str): The name of the inventory item.</span>
+<span class="sd">            - `price` (float): The price per item.</span>
+<span class="sd">        - 500 Internal Server Error: If an error occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Item not found&quot;</span><span class="p">}),</span> <span class="mi">404</span>
+        <span class="n">item_details</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+            <span class="s2">&quot;price_per_item&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">price_per_item</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;stock_count&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">item_details</span><span class="p">),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="add_wishlist">
+<a class="viewcode-back" href="../../sales.html#sales.app.add_wishlist">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;/wishlist/add&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;customer&#39;</span><span class="p">,</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_wishlist</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add an item to the customer&#39;s wishlist.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        POST /inventory/&lt;int:item_id&gt;/wishlist/add</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item to be added to the wishlist.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;customer&#39;, &#39;admin&#39;, &#39;product_manager&#39;]) - Restricts access to users </span>
+<span class="sd">        with &quot;customer&quot;, &quot;admin&quot;, or &quot;product_manager&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the item is successfully added to the wishlist or is already in the wishlist.</span>
+<span class="sd">        - 404 Not Found: If the customer or the inventory item does not exist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        
+        <span class="n">jwt_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">jwt_token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="p">}</span>
+
+        <span class="n">get_customer_data_func</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;GET_CUSTOMER_DATA_FUNC&#39;</span><span class="p">]</span>
+        <span class="n">customer</span> <span class="o">=</span> <span class="n">get_customer_data_func</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Item not found&quot;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="n">existing_wishlist_item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Wishlist</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Wishlist</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">==</span> <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">Wishlist</span><span class="o">.</span><span class="n">item_id</span> <span class="o">==</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">existing_wishlist_item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2"> is already in your wishlist.&quot;</span><span class="p">}),</span> <span class="mi">200</span>
+
+        <span class="n">new_wishlist_item</span> <span class="o">=</span> <span class="n">Wishlist</span><span class="p">(</span><span class="n">customer_id</span><span class="o">=</span><span class="n">customer</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_wishlist_item</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2"> added to wishlist successfully.&quot;</span><span class="p">}),</span> <span class="mi">200</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="remove_wishlist">
+<a class="viewcode-back" href="../../sales.html#sales.app.remove_wishlist">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;/wishlist/remove&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;customer&#39;</span><span class="p">,</span><span class="s1">&#39;admin&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">remove_wishlist</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove an item from the customer&#39;s wishlist.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        DELETE /inventory/&lt;int:item_id&gt;/wishlist/remove</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item to be removed from the wishlist.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;customer&#39;, &#39;admin&#39;]) - Restricts access to users with &quot;customer&quot; </span>
+<span class="sd">        or &quot;admin&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the item is successfully removed from the wishlist.</span>
+<span class="sd">        - 404 Not Found: If the item is not found in the customer&#39;s wishlist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        
+        <span class="n">jwt_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">jwt_token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="p">}</span>
+
+        <span class="n">get_customer_data_func</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;GET_CUSTOMER_DATA_FUNC&#39;</span><span class="p">]</span>
+        <span class="n">customer</span> <span class="o">=</span> <span class="n">get_customer_data_func</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Item not found&quot;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="n">wishlist_item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Wishlist</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Wishlist</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">==</span> <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">Wishlist</span><span class="o">.</span><span class="n">item_id</span> <span class="o">==</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wishlist_item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2"> is not in your wishlist.&quot;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="n">db_session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">wishlist_item</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2"> removed from wishlist successfully.&quot;</span><span class="p">}),</span> <span class="mi">200</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>  
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+        
+
+<div class="viewcode-block" id="purchase_item">
+<a class="viewcode-back" href="../../sales.html#sales.app.purchase_item">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/purchase/&lt;int:item_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;customer&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">purchase_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle item purchase by a logged-in customer and log the order.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        POST /purchase/&lt;int:item_id&gt;</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item to be purchased.</span>
+
+<span class="sd">    Request Body:</span>
+<span class="sd">        A JSON object containing the following field:</span>
+<span class="sd">            - quantity (int): The quantity of the item to purchase. Must be a positive integer.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;customer&#39;]) - Restricts access to users with &quot;admin&quot; or </span>
+<span class="sd">        &quot;customer&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the purchase is successful. Includes a success message and the order ID.</span>
+<span class="sd">        - 400 Bad Request: If the quantity is invalid, stock is insufficient, or the wallet </span>
+<span class="sd">        balance is insufficient.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">quantity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quantity&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">quantity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid quantity. Must be a positive integer.&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get logged-in user&#39;s identity</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        <span class="n">jwt_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="n">get_jwt_identity</span><span class="p">())</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">jwt_token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="p">}</span>
+
+        <span class="n">get_customer_data_func</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;GET_CUSTOMER_DATA_FUNC&#39;</span><span class="p">]</span>
+        <span class="n">customer</span> <span class="o">=</span> <span class="n">get_customer_data_func</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">InventoryItem</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Item not found&quot;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="c1"># Check if there is enough stock and if the user has sufficient wallet balance</span>
+        <span class="n">total_cost</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">price_per_item</span> <span class="o">*</span> <span class="n">quantity</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span> <span class="o">&lt;</span> <span class="n">quantity</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Not enough stock available&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+        <span class="k">if</span> <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;wallet&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">total_cost</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Insufficient wallet balance&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+
+        <span class="c1"># Deduct from customer&#39;s wallet via API</span>
+        <span class="n">deduct_wallet_func</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEDUCT_WALLET_FUNC&#39;</span><span class="p">]</span>
+        <span class="n">deduct_wallet_func</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span><span class="n">total_cost</span><span class="p">,</span><span class="n">headers</span><span class="p">)</span>
+        
+        <span class="c1"># Deduct stock via inventory API</span>
+        <span class="n">remove_stock_func</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;REMOVE_STOCK_FUNC&#39;</span><span class="p">]</span>
+        <span class="n">remove_stock_func</span><span class="p">(</span><span class="n">item_id</span><span class="p">,</span><span class="n">quantity</span><span class="p">,</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="c1"># Log the order in the local database</span>
+        <span class="n">new_order</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span><span class="n">customer_id</span><span class="o">=</span><span class="n">customer</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">quantity</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_order</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">remove_wishlist</span><span class="p">(</span><span class="n">item_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">customer</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> successfully purchased </span><span class="si">{</span><span class="n">quantity</span><span class="si">}</span><span class="s2"> unit(s) of </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="n">new_order</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}),</span> <span class="mi">200</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="health_check">
+<a class="viewcode-back" href="../../sales.html#sales.app.health_check">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/health&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">health_check</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Health check endpoint to monitor service and dependencies.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the service and all dependencies are operational.</span>
+<span class="sd">        - 500 Internal Server Error: If any dependency or service is not operational.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_status</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+    <span class="n">customer_service_status</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+    <span class="n">inventory_service_status</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">))</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db_status</span> <span class="o">=</span> <span class="s2">&quot;connected&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unavailable: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Check customer-service health</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://customer-service:3000/health&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">customer_service_status</span> <span class="o">=</span> <span class="s2">&quot;healthy&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">customer_service_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unhealthy: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">customer_service_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unavailable: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Check inventory-service health</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://inventory-service:3001/health&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">inventory_service_status</span> <span class="o">=</span> <span class="s2">&quot;healthy&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">inventory_service_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unhealthy: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">inventory_service_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unavailable: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Determine overall status</span>
+    <span class="n">overall_status</span> <span class="o">=</span> <span class="s2">&quot;healthy&quot;</span> <span class="k">if</span> <span class="n">db_status</span> <span class="o">==</span> <span class="s2">&quot;connected&quot;</span> <span class="ow">and</span> <span class="n">customer_service_status</span> <span class="o">==</span> <span class="s2">&quot;healthy&quot;</span> <span class="ow">and</span> <span class="n">inventory_service_status</span> <span class="o">==</span> <span class="s2">&quot;healthy&quot;</span> <span class="k">else</span> <span class="s2">&quot;unhealthy&quot;</span>
+
+    <span class="c1"># Return health check details</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">overall_status</span><span class="p">,</span>
+        <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="n">db_status</span><span class="p">,</span>
+        <span class="s2">&quot;customer_service&quot;</span><span class="p">:</span> <span class="n">customer_service_status</span><span class="p">,</span>
+        <span class="s2">&quot;inventory_service&quot;</span><span class="p">:</span> <span class="n">inventory_service_status</span>
+    <span class="p">}),</span> <span class="mi">200</span> <span class="k">if</span> <span class="n">overall_status</span> <span class="o">==</span> <span class="s2">&quot;healthy&quot;</span> <span class="k">else</span> <span class="mi">500</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3003</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

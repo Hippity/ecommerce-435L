@@ -73,22 +73,23 @@ def get_customer_by_username(username):
     """
     Retrieve customer information by username.
 
-    Endpoint:
+    **Endpoint**:
         GET /customers/<string:username>
 
-    Parameters:
-        username (str): The username of the customer whose information is to be retrieved.
+    **Path Parameter**:
+        - `username` (str): The username of the customer whose information is to be retrieved.
 
-    Decorators:
-        @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer', 'product_manager']) - Restricts access to users with 
-          "admin" or "customer" or "product_manager" roles.
+    **Access Control**:
+        - Users must have one of the following roles:
+          - `admin`: Can access any customer's data.
+          - `customer`: Can access only their own data.
+          - `product_manager`: Can access any customer's data.
 
-    Returns:
+    **Returns**:
         - 200 OK: A JSON object containing the customer's details.
         - 400 Bad Request: If a non-admin user tries to access another customer's data.
         - 404 Not Found: If the customer with the specified username does not exist.
-        - 500 Internal Server Error: If an exception occurs during database access.
+        - 500 Internal Server Error: If an error occurs during database access.
     """
     db_session = SessionLocal()
     try:
@@ -248,26 +249,19 @@ def change_password(username):
     Change the password of a customer.
 
     Endpoint:
-        POST /customers/<string:username>/change-password
+        POST /customers/<username>/change-password
 
     Path Parameter:
-        username (str): The username of the customer whose password is to be changed.
+        username (str): The username of the customer.
 
     Request Body:
-        A JSON object containing the following fields:
-            - current_password (str): The current password of the customer.
-            - new_password (str): The new password to set.
-
-    Decorators:
-        @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer']) - Restricts access to users with 
-          "admin" or "customer" roles.
+        - current_password (str): The current password.
+        - new_password (str): The new password.
 
     Returns:
-        - 200 OK: If the password is successfully changed.
-        - 400 Bad Request: If the current password is incorrect or the new password is invalid.
-        - 404 Not Found: If the customer with the specified username does not exist.
-        - 500 Internal Server Error: If an exception occurs during the process.
+        - 200 OK: Success.
+        - 400 Bad Request: Invalid input.
+        - 404 Not Found: Customer not found.
     """
     data = request.json
     current_password = data.get('current_password')

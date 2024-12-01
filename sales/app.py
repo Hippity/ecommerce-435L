@@ -108,19 +108,20 @@ def get_inventory():
     """
     Retrieve all items in the inventory with their name and price.
 
-    Endpoint:
+    **Endpoint**:
         GET /inventory
 
-    Decorators:
-        @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer', 'product_manager']) - Restricts access to users 
-        with "admin", "customer", or "product_manager" roles.
+    **Access Control**:
+        - Users must have one of the following roles:
+          - `admin`: Can view all inventory items.
+          - `customer`: Can view all inventory items.
+          - `product_manager`: Can view all inventory items.
 
-    Returns:
-        - 200 OK: A JSON object containing a list of all inventory items. Each item includes:
-            - name (str): The name of the item.
-            - price (float): The price per item.
-        - 500 Internal Server Error: If an exception occurs during the process.
+    **Returns**:
+        - 200 OK: A JSON array containing the details of all inventory items. Each item includes:
+            - `name` (str): The name of the inventory item.
+            - `price` (float): The price per item.
+        - 500 Internal Server Error: If an error occurs during the process.
     """
     db_session = SessionLocal()
     try:
@@ -137,21 +138,25 @@ def get_inventory():
 @role_required(['admin', 'customer', 'product_manager'])
 def get_inventory_category(category):
     """
-    Retrieve all items in the inventory with their name and price given a category.
+    Retrieve all items in the inventory belonging to a specific category.
 
-    Endpoint:
-        GET /inventory
+    **Endpoint**:
+        GET /inventory/<category>
 
-    Decorators:
-        @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer', 'product_manager']) - Restricts access to users 
-        with "admin", "customer", or "product_manager" roles.
+    **Path Parameter**:
+        - `category` (str): The category of the inventory items to retrieve.
 
-    Returns:
-        - 200 OK: A JSON object containing a list of all inventory items in a category. Each item includes:
-            - name (str): The name of the item.
-            - price (float): The price per item.
-        - 500 Internal Server Error: If an exception occurs during the process.
+    **Access Control**:
+        - Users must have one of the following roles:
+          - `admin`: Can view items in any category.
+          - `customer`: Can view items in any category.
+          - `product_manager`: Can view items in any category.
+
+    **Returns**:
+        - 200 OK: A JSON array containing the details of all inventory items in the specified category. Each item includes:
+            - `name` (str): The name of the inventory item.
+            - `price` (float): The price per item.
+        - 500 Internal Server Error: If an error occurs during the process.
     """
     db_session = SessionLocal()
     try:
@@ -170,19 +175,20 @@ def get_item_details(item_id):
     """
     Retrieve all items in the inventory with their name and price.
 
-    Endpoint:
+    **Endpoint**:
         GET /inventory
 
-    Decorators:
-        @jwt_required() - Ensures the user is authenticated using a JWT token.
-        @role_required(['admin', 'customer', 'product_manager']) - Restricts access to users 
-        with "admin", "customer", or "product_manager" roles.
+    **Access Control**:
+        - Users must have one of the following roles:
+          - `admin`: Can view all inventory items.
+          - `customer`: Can view all inventory items.
+          - `product_manager`: Can view all inventory items.
 
-    Returns:
-        - 200 OK: A JSON object containing a list of all inventory items. Each item includes:
-            - name (str): The name of the item.
-            - price (float): The price per item.
-        - 500 Internal Server Error: If an exception occurs during the process.
+    **Response**:
+        - 200 OK: A JSON array containing the details of all inventory items. Each item includes:
+            - `name` (str): The name of the inventory item.
+            - `price` (float): The price per item.
+        - 500 Internal Server Error: If an error occurs during the process.
     """
     db_session = SessionLocal()
     try:

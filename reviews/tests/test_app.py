@@ -111,6 +111,7 @@ def test_add_review(client, db_session, get_auth_token, add_test_data):
             "id": 1,  
             "username": username,
         }
+        client.application.config['GET_ITEM_EXISTS_FUNC'] = lambda item_id, headers: True
         
         response = client.post(
             f'/reviews/{1}',
@@ -141,6 +142,7 @@ def test_submit_review_with_profanity(client, db_session, get_auth_token, add_te
             "id": 1,
             "username": username,
         }
+        client.application.config['GET_ITEM_EXISTS_FUNC'] = lambda item_id, headers: True
 
         response = client.post(
             '/reviews/1',

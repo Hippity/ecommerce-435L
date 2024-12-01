@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Tests Package &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Sales Package" href="sales.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="sales.html">Sales Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="sales.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Sales Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sales.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.html#sales-app-module">sales.app module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sales.html">Sales Package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="sales.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sales Tests Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales-tests-profile-sales-module">sales.tests.profile_sales module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales-tests-profiler-memory-module">sales.tests.profiler_memory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales-tests-test-app-module">sales.tests.test_app module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html#sales-app-module">sales.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sales Tests Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sales-tests-profile-sales-module">sales.tests.profile_sales module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.profile_sales.profile_all_tests"><code class="docutils literal notranslate"><span class="pre">profile_all_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sales-tests-profiler-memory-module">sales.tests.profiler_memory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.profiler_memory.run_memory_profiling"><code class="docutils literal notranslate"><span class="pre">run_memory_profiling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sales-tests-test-app-module">sales.tests.test_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.add_default_admin"><code class="docutils literal notranslate"><span class="pre">add_default_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.add_inventory_item"><code class="docutils literal notranslate"><span class="pre">add_inventory_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.add_product_manager"><code class="docutils literal notranslate"><span class="pre">add_product_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.add_regular_user"><code class="docutils literal notranslate"><span class="pre">add_regular_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.get_auth_tokens"><code class="docutils literal notranslate"><span class="pre">get_auth_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_add_wishlist"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_add_wishlist_already_there"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist_already_there()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_add_wishlist_no_item"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_get_item_by_id"><code class="docutils literal notranslate"><span class="pre">test_get_item_by_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_get_item_by_id_no_item"><code class="docutils literal notranslate"><span class="pre">test_get_item_by_id_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_get_items"><code class="docutils literal notranslate"><span class="pre">test_get_items()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_get_items_by_category"><code class="docutils literal notranslate"><span class="pre">test_get_items_by_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_purchase_item"><code class="docutils literal notranslate"><span class="pre">test_purchase_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_purchase_item_insufficient_amount"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_insufficient_amount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_purchase_item_no_item"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_purchase_item_no_stock"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_no_stock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_remove_wishlist"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_remove_wishlist_no_item"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.tests.test_app.test_remove_wishlist_not_there"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist_not_there()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+          <li class="breadcrumb-item"><a href="sales.html">Sales Package</a></li>
+      <li class="breadcrumb-item active">Sales Tests Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sales.tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sales-tests-package">
+<h1>Sales Tests Package<a class="headerlink" href="#sales-tests-package" title="Link to this heading"></a></h1>
+<p>The <cite>sales.tests</cite> package provides testing functionality for the <cite>sales</cite> package, including performance profiling, memory profiling, and unit tests.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<p>The <cite>sales.tests</cite> package includes the following submodules:</p>
+</section>
+<section id="sales-tests-profile-sales-module">
+<h2>sales.tests.profile_sales module<a class="headerlink" href="#sales-tests-profile-sales-module" title="Link to this heading"></a></h2>
+<p>The <cite>sales.tests.profile_sales</cite> module focuses on performance profiling for the <cite>sales</cite> package, enabling detailed performance analysis of key functions and operations.</p>
+<dl class="py function" id="module-sales.tests.profile_sales">
+<dt class="sig sig-object py" id="sales.tests.profile_sales.profile_all_tests">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.profile_sales.</span></span><span class="sig-name descname"><span class="pre">profile_all_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/profile_sales.html#profile_all_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.profile_sales.profile_all_tests" title="Link to this definition"></a></dt>
+<dd><p>Profiles all test functions in the test suite using cProfile.</p>
+</dd></dl>
+
+</section>
+<section id="sales-tests-profiler-memory-module">
+<h2>sales.tests.profiler_memory module<a class="headerlink" href="#sales-tests-profiler-memory-module" title="Link to this heading"></a></h2>
+<p>The <cite>sales.tests.profiler_memory</cite> module monitors memory usage for the <cite>sales</cite> package, helping to optimize memory consumption during operations.</p>
+<dl class="py function" id="module-sales.tests.profiler_memory">
+<dt class="sig sig-object py" id="sales.tests.profiler_memory.run_memory_profiling">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.profiler_memory.</span></span><span class="sig-name descname"><span class="pre">run_memory_profiling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/profiler_memory.html#run_memory_profiling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.profiler_memory.run_memory_profiling" title="Link to this definition"></a></dt>
+<dd><p>Runs pytest while profiling memory usage for the tests.</p>
+</dd></dl>
+
+</section>
+<section id="sales-tests-test-app-module">
+<h2>sales.tests.test_app module<a class="headerlink" href="#sales-tests-test-app-module" title="Link to this heading"></a></h2>
+<p>The <cite>sales.tests.test_app</cite> module contains unit tests for the <cite>sales</cite> package, ensuring the correctness and reliability of its features.</p>
+<dl class="py function" id="module-sales.tests.test_app">
+<dt class="sig sig-object py" id="sales.tests.test_app.add_default_admin">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_default_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#add_default_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.add_default_admin" title="Link to this definition"></a></dt>
+<dd><p>Adds a default admin user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.add_inventory_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_inventory_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#add_inventory_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.add_inventory_item" title="Link to this definition"></a></dt>
+<dd><p>Adds an inventory item to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.add_product_manager">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_product_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#add_product_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.add_product_manager" title="Link to this definition"></a></dt>
+<dd><p>Adds a product manager user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.add_regular_user">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_regular_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#add_regular_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.add_regular_user" title="Link to this definition"></a></dt>
+<dd><p>Adds a regular customer user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.app">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.app" title="Link to this definition"></a></dt>
+<dd><p>Creates a Flask application configured for testing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.client">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.client" title="Link to this definition"></a></dt>
+<dd><p>Provides a test client for the Flask application.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.db_session">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">db_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#db_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.db_session" title="Link to this definition"></a></dt>
+<dd><p>Creates a new database session for a test.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.get_auth_tokens">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">get_auth_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#get_auth_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.get_auth_tokens" title="Link to this definition"></a></dt>
+<dd><p>Logs in all users to obtain JWT tokens.
+Returns a dictionary with ‘admin’, ‘user’, and manager tokens.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_add_wishlist">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_wishlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_add_wishlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_add_wishlist" title="Link to this definition"></a></dt>
+<dd><p>Test adding an item to the customer’s wishlist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_add_wishlist_already_there">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_wishlist_already_there</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_add_wishlist_already_there"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_add_wishlist_already_there" title="Link to this definition"></a></dt>
+<dd><p>Test adding an item to the wishlist that’s already there.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_add_wishlist_no_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_wishlist_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_add_wishlist_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_add_wishlist_no_item" title="Link to this definition"></a></dt>
+<dd><p>Test adding a non-existent item to the wishlist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_get_item_by_id">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_get_item_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_inventory_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_regular_user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_product_manager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_default_admin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_get_item_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_get_item_by_id" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving an inventory item by its ID.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_get_item_by_id_no_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_get_item_by_id_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_get_item_by_id_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_get_item_by_id_no_item" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a non-existent inventory item by its ID.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_get_items">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_get_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_get_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_get_items" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving all inventory items.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_get_items_by_category">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_get_items_by_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_get_items_by_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_get_items_by_category" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving inventory items by category.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_purchase_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_purchase_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_purchase_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_purchase_item" title="Link to this definition"></a></dt>
+<dd><p>Test purchasing an item with sufficient wallet balance and stock.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_purchase_item_insufficient_amount">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_purchase_item_insufficient_amount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_purchase_item_insufficient_amount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_purchase_item_insufficient_amount" title="Link to this definition"></a></dt>
+<dd><p>Test purchasing an item when the wallet balance is insufficient.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_purchase_item_no_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_purchase_item_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_purchase_item_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_purchase_item_no_item" title="Link to this definition"></a></dt>
+<dd><p>Test purchasing a non-existent item.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_purchase_item_no_stock">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_purchase_item_no_stock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_purchase_item_no_stock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_purchase_item_no_stock" title="Link to this definition"></a></dt>
+<dd><p>Test purchasing an item when there is insufficient stock.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_remove_wishlist">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_wishlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_remove_wishlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_remove_wishlist" title="Link to this definition"></a></dt>
+<dd><p>Test removing an item from the customer’s wishlist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_remove_wishlist_no_item">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_wishlist_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_remove_wishlist_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_remove_wishlist_no_item" title="Link to this definition"></a></dt>
+<dd><p>Test removing a non-existent item from the wishlist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.tests.test_app.test_remove_wishlist_not_there">
+<span class="sig-prename descclassname"><span class="pre">sales.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_wishlist_not_there</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/tests/test_app.html#test_remove_wishlist_not_there"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.tests.test_app.test_remove_wishlist_not_there" title="Link to this definition"></a></dt>
+<dd><p>Test removing an item that is not in the wishlist.</p>
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p>The <cite>sales.tests</cite> package integrates all testing modules for the <cite>sales</cite> package, enabling comprehensive validation of sales-related functionality.</p>
+<span class="target" id="module-sales.tests"></span></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sales.html" class="btn btn-neutral float-left" title="Sales Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

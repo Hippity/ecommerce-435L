@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>inventory.app &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">inventory.app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for inventory.app</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">json</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">flask_cors</span> <span class="kn">import</span> <span class="n">CORS</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">)))</span>
+<span class="kn">from</span> <span class="nn">auth.app</span> <span class="kn">import</span> <span class="n">role_required</span>
+<span class="kn">from</span> <span class="nn">shared.models.base</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">shared.models.customer</span> <span class="kn">import</span> <span class="n">Customer</span>
+<span class="kn">from</span> <span class="nn">shared.models.review</span> <span class="kn">import</span> <span class="n">Review</span>
+<span class="kn">from</span> <span class="nn">shared.models.inventory</span> <span class="kn">import</span> <span class="n">InventoryItem</span>
+<span class="kn">from</span> <span class="nn">shared.models.order</span> <span class="kn">import</span> <span class="n">Order</span>
+<span class="kn">from</span> <span class="nn">shared.models.wishlist</span> <span class="kn">import</span> <span class="n">Wishlist</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql</span> <span class="kn">import</span> <span class="n">text</span>
+<span class="kn">from</span> <span class="nn">shared.database</span> <span class="kn">import</span> <span class="n">engine</span><span class="p">,</span> <span class="n">SessionLocal</span>
+<span class="kn">from</span> <span class="nn">flask_jwt_extended</span> <span class="kn">import</span> <span class="n">JWTManager</span><span class="p">,</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">jwt_required</span><span class="p">,</span> <span class="n">get_jwt_identity</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">CORS</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">resources</span><span class="o">=</span><span class="p">{</span><span class="sa">r</span><span class="s2">&quot;/*&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;origins&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">}})</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;JWT_SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;secret-key&#39;</span>
+<span class="n">jwt</span> <span class="o">=</span> <span class="n">JWTManager</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="c1">#Base.metadata.drop_all(bind=engine)</span>
+<span class="c1"># Create tables if not created</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<div class="viewcode-block" id="add_item">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.add_item">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_item</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a new item to the inventory.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        POST /inventory</span>
+
+<span class="sd">    Request Body:</span>
+<span class="sd">        A JSON object containing the details of the item to be added. </span>
+<span class="sd">            - name (str): The name of the item.</span>
+<span class="sd">            - description (str): A brief description of the item.</span>
+<span class="sd">            - price_per_item (float): The price of the item.</span>
+<span class="sd">            - stock_quantity (int): The available stock quantity of the item.</span>
+<span class="sd">            - category (str): The category the item belongs to.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;product_manager&#39;]) - Restricts access to users with </span>
+<span class="sd">        &quot;admin&quot; or &quot;product_manager&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 201 Created: If the item is successfully added to the inventory. Includes a success </span>
+<span class="sd">        message and the item ID.</span>
+<span class="sd">        - 400 Bad Request: If the input data is invalid.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="n">InventoryItem</span><span class="o">.</span><span class="n">validate_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">}),</span> <span class="mi">400</span>
+
+        <span class="n">new_item</span> <span class="o">=</span> <span class="n">InventoryItem</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_item</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Good added successfully&#39;</span><span class="p">,</span> <span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="n">new_item</span><span class="o">.</span><span class="n">id</span><span class="p">}),</span> <span class="mi">201</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="update_item">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.update_item">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">update_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update fields related to a specific inventory item.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        PUT /inventory/&lt;int:item_id&gt;</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item to be updated.</span>
+
+<span class="sd">    Request Body:</span>
+<span class="sd">        A JSON object containing the fields to update.</span>
+<span class="sd">            - name (str): The name of the item.</span>
+<span class="sd">            - description (str): A brief description of the item.</span>
+<span class="sd">            - price_per_item (float): The price of the item.</span>
+<span class="sd">            - stock_quantity (int): The available stock quantity of the item.</span>
+<span class="sd">            - category (str): The category the item belongs to.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;product_manager&#39;]) - Restricts access to users with </span>
+<span class="sd">        &quot;admin&quot; or &quot;product_manager&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the item is successfully updated. Includes a success message.</span>
+<span class="sd">        - 400 Bad Request: If the input data is invalid.</span>
+<span class="sd">        - 404 Not Found: If the item with the specified ID does not exist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>     
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Item not found&#39;</span><span class="p">}),</span> <span class="mi">404</span>
+        
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="n">InventoryItem</span><span class="o">.</span><span class="n">validate_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">}),</span> <span class="mi">400</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s1"> updated successfully&#39;</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="delete_item">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.delete_item">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">delete_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete an inventory item and its associated data.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        DELETE /inventory/&lt;int:item_id&gt;</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item to be deleted.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;product_manager&#39;]) - Restricts access to users with </span>
+<span class="sd">        &quot;admin&quot; or &quot;product_manager&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the item and its associated data are successfully deleted. </span>
+<span class="sd">        - 404 Not Found: If the item with the specified ID does not exist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Item not found&#39;</span><span class="p">}),</span> <span class="mi">404</span>
+        
+        <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Order</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Review</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Wishlist</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="n">db_session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Item </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s1"> deleted successfully&#39;</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="deduct_item">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.deduct_item">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;/stock/remove&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">,</span><span class="s1">&#39;customer&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">deduct_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove stock from an inventory item.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        POST /inventory/&lt;int:item_id&gt;/stock/remove</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item whose stock is to be deducted.</span>
+
+<span class="sd">    Request Body:</span>
+<span class="sd">        A JSON object containing the following field:</span>
+<span class="sd">            - quantity (int): The amount to deduct from the stock. Must be a positive integer.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;product_manager&#39;, &#39;customer&#39;]) - Restricts access to users </span>
+<span class="sd">        with &quot;admin&quot;, &quot;product_manager&quot;, or &quot;customer&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the stock is successfully deducted. Includes a success message and the new stock count.</span>
+<span class="sd">        - 400 Bad Request: If the input quantity is invalid or if there is insufficient stock.error&quot;: &quot;Not enough stock available&quot;</span>
+<span class="sd">        - 404 Not Found: If the item with the specified ID does not exist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">quantity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quantity&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">quantity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid quantity. Must be a positive integer.&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+    
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Item not found&#39;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span> <span class="o">&lt;</span> <span class="n">quantity</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Not enough stock available&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+
+        <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span> <span class="o">-=</span> <span class="n">quantity</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">quantity</span><span class="si">}</span><span class="s1"> items deducted from stock&#39;</span><span class="p">,</span> <span class="s1">&#39;new_stock&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="add_stock">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.add_stock">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/inventory/&lt;int:item_id&gt;/stock/add&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@jwt_required</span><span class="p">()</span>
+<span class="nd">@role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;product_manager&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_stock</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add stock to an inventory item.</span>
+
+<span class="sd">    Endpoint:</span>
+<span class="sd">        POST /inventory/&lt;int:item_id&gt;/stock/add</span>
+
+<span class="sd">    Path Parameter:</span>
+<span class="sd">        item_id (int): The ID of the inventory item whose stock is to be increased.</span>
+
+<span class="sd">    Request Body:</span>
+<span class="sd">        A JSON object containing the following field:</span>
+<span class="sd">            - quantity (int): The amount to add to the stock. Must be a positive integer.</span>
+
+<span class="sd">    Decorators:</span>
+<span class="sd">        @jwt_required() - Ensures the user is authenticated using a JWT token.</span>
+<span class="sd">        @role_required([&#39;admin&#39;, &#39;product_manager&#39;]) - Restricts access to users with </span>
+<span class="sd">        &quot;admin&quot; or &quot;product_manager&quot; roles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the stock is successfully increased. Includes a success message and the new stock count.</span>
+<span class="sd">        - 400 Bad Request: If the input quantity is invalid.</span>
+<span class="sd">        - 404 Not Found: If the item with the specified ID does not exist.</span>
+<span class="sd">        - 500 Internal Server Error: If an exception occurs during the process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">quantity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quantity&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">quantity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid quantity. Must be a positive integer.&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+    
+    <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">db_session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InventoryItem</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Item not found&#39;</span><span class="p">}),</span> <span class="mi">404</span>
+
+        <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span> <span class="o">+=</span> <span class="n">quantity</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Successfully added </span><span class="si">{</span><span class="n">quantity</span><span class="si">}</span><span class="s1"> items to stock&#39;</span><span class="p">,</span> <span class="s1">&#39;new_stock&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">stock_count</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="health_check">
+<a class="viewcode-back" href="../../inventory.html#inventory.app.health_check">[docs]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/health&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">health_check</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Health check endpoint to monitor service and database status.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - 200 OK: If the service and database are operational.</span>
+<span class="sd">        - 500 Internal Server Error: If the database or any service is unavailable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_status</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+
+    <span class="c1"># Check database connectivity</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db_session</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">))</span>
+        <span class="n">db_session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db_status</span> <span class="o">=</span> <span class="s2">&quot;connected&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">db_status</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;unavailable: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Determine overall status</span>
+    <span class="n">overall_status</span> <span class="o">=</span> <span class="s2">&quot;healthy&quot;</span> <span class="k">if</span> <span class="n">db_status</span> <span class="o">==</span> <span class="s2">&quot;connected&quot;</span> <span class="k">else</span> <span class="s2">&quot;unhealthy&quot;</span>
+
+    <span class="c1"># Return health check details</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="n">overall_status</span><span class="p">,</span>
+        <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="n">db_status</span><span class="p">,</span>
+    <span class="p">}),</span> <span class="mi">200</span> <span class="k">if</span> <span class="n">overall_status</span> <span class="o">==</span> <span class="s2">&quot;healthy&quot;</span> <span class="k">else</span> <span class="mi">500</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3001</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

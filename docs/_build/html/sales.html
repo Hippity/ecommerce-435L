@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Package &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sales Tests Package" href="sales.tests.html" />
+    <link rel="prev" title="Reviews.Tests Package" href="reviews.tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sales Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales-app-module">sales.app module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.add_wishlist"><code class="docutils literal notranslate"><span class="pre">add_wishlist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.deduct_wallet"><code class="docutils literal notranslate"><span class="pre">deduct_wallet()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.get_customer_details"><code class="docutils literal notranslate"><span class="pre">get_customer_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.get_inventory"><code class="docutils literal notranslate"><span class="pre">get_inventory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.get_inventory_category"><code class="docutils literal notranslate"><span class="pre">get_inventory_category()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.get_item_details"><code class="docutils literal notranslate"><span class="pre">get_item_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.purchase_item"><code class="docutils literal notranslate"><span class="pre">purchase_item()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.remove_stock"><code class="docutils literal notranslate"><span class="pre">remove_stock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sales.app.remove_wishlist"><code class="docutils literal notranslate"><span class="pre">remove_wishlist()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sales Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sales-app-module">sales.app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.add_wishlist"><code class="docutils literal notranslate"><span class="pre">add_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.deduct_wallet"><code class="docutils literal notranslate"><span class="pre">deduct_wallet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.get_customer_details"><code class="docutils literal notranslate"><span class="pre">get_customer_details()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.get_inventory"><code class="docutils literal notranslate"><span class="pre">get_inventory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.get_inventory_category"><code class="docutils literal notranslate"><span class="pre">get_inventory_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.get_item_details"><code class="docutils literal notranslate"><span class="pre">get_item_details()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.purchase_item"><code class="docutils literal notranslate"><span class="pre">purchase_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.remove_stock"><code class="docutils literal notranslate"><span class="pre">remove_stock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sales.app.remove_wishlist"><code class="docutils literal notranslate"><span class="pre">remove_wishlist()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">Sales Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sales.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sales-package">
+<h1>Sales Package<a class="headerlink" href="#sales-package" title="Link to this heading"></a></h1>
+<p>The <cite>sales</cite> package handles all operations related to sales transactions, including managing orders, processing payments, and calculating sales metrics.</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<p>The <cite>sales</cite> package includes the following subpackages:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sales.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales.tests.html#sales-tests-profile-sales-module">sales.tests.profile_sales module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.profile_sales.profile_all_tests"><code class="docutils literal notranslate"><span class="pre">profile_all_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sales.tests.html#sales-tests-profiler-memory-module">sales.tests.profiler_memory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.profiler_memory.run_memory_profiling"><code class="docutils literal notranslate"><span class="pre">run_memory_profiling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sales.tests.html#sales-tests-test-app-module">sales.tests.test_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.add_default_admin"><code class="docutils literal notranslate"><span class="pre">add_default_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.add_inventory_item"><code class="docutils literal notranslate"><span class="pre">add_inventory_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.add_product_manager"><code class="docutils literal notranslate"><span class="pre">add_product_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.add_regular_user"><code class="docutils literal notranslate"><span class="pre">add_regular_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.get_auth_tokens"><code class="docutils literal notranslate"><span class="pre">get_auth_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_add_wishlist"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_add_wishlist_already_there"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist_already_there()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_add_wishlist_no_item"><code class="docutils literal notranslate"><span class="pre">test_add_wishlist_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_get_item_by_id"><code class="docutils literal notranslate"><span class="pre">test_get_item_by_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_get_item_by_id_no_item"><code class="docutils literal notranslate"><span class="pre">test_get_item_by_id_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_get_items"><code class="docutils literal notranslate"><span class="pre">test_get_items()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_get_items_by_category"><code class="docutils literal notranslate"><span class="pre">test_get_items_by_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_purchase_item"><code class="docutils literal notranslate"><span class="pre">test_purchase_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_purchase_item_insufficient_amount"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_insufficient_amount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_purchase_item_no_item"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_purchase_item_no_stock"><code class="docutils literal notranslate"><span class="pre">test_purchase_item_no_stock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_remove_wishlist"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_remove_wishlist_no_item"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sales.tests.html#sales.tests.test_app.test_remove_wishlist_not_there"><code class="docutils literal notranslate"><span class="pre">test_remove_wishlist_not_there()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sales.tests.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<p>The <cite>sales</cite> package provides the following submodules:</p>
+</section>
+<section id="sales-app-module">
+<h2>sales.app module<a class="headerlink" href="#sales-app-module" title="Link to this heading"></a></h2>
+<p>The <cite>sales.app</cite> module is the main entry point for sales-related operations, managing the logic for creating, updating, and deleting sales transactions.</p>
+<dl class="py function" id="module-sales.app">
+<dt class="sig sig-object py" id="sales.app.add_wishlist">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">add_wishlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#add_wishlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.add_wishlist" title="Link to this definition"></a></dt>
+<dd><p>Add an item to the customer’s wishlist.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /inventory/&lt;int:item_id&gt;/wishlist/add</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>item_id (int): The ID of the inventory item to be added to the wishlist.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘customer’, ‘admin’, ‘product_manager’]) - Restricts access to users
+with “customer”, “admin”, or “product_manager” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the item is successfully added to the wishlist or is already in the wishlist.
+- 404 Not Found: If the customer or the inventory item does not exist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.deduct_wallet">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">deduct_wallet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#deduct_wallet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.deduct_wallet" title="Link to this definition"></a></dt>
+<dd><p>Deduct funds from a customer’s wallet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The username of the customer whose wallet balance is to be deducted.</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – The amount to deduct from the customer’s wallet. Must be a positive number.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – A dictionary of HTTP headers to include in the request, typically
+including authentication headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function raises an exception if there is an error during the process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.get_customer_details">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#get_customer_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.get_customer_details" title="Link to this definition"></a></dt>
+<dd><p>Retrieve customer data from the customer service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The username of the customer whose details are to be retrieved.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – A dictionary of HTTP headers to include in the request. Typically includes
+authentication headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object containing customer details if the request is successful.
+rasies an exception</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.get_inventory">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">get_inventory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#get_inventory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.get_inventory" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all items in the inventory with their name and price.</p>
+<dl class="simple">
+<dt><strong>Endpoint</strong>:</dt><dd><p>GET /inventory</p>
+</dd>
+<dt><strong>Access Control</strong>:</dt><dd><ul class="simple">
+<li><p>Users must have one of the following roles:
+- <cite>admin</cite>: Can view all inventory items.
+- <cite>customer</cite>: Can view all inventory items.
+- <cite>product_manager</cite>: Can view all inventory items.</p></li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>200 OK: A JSON array containing the details of all inventory items. Each item includes:</dt><dd><ul>
+<li><p><cite>name</cite> (str): The name of the inventory item.</p></li>
+<li><p><cite>price</cite> (float): The price per item.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>500 Internal Server Error: If an error occurs during the process.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.get_inventory_category">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">get_inventory_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#get_inventory_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.get_inventory_category" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all items in the inventory belonging to a specific category.</p>
+<dl class="simple">
+<dt><strong>Endpoint</strong>:</dt><dd><p>GET /inventory/&lt;category&gt;</p>
+</dd>
+<dt><strong>Path Parameter</strong>:</dt><dd><ul class="simple">
+<li><p><cite>category</cite> (str): The category of the inventory items to retrieve.</p></li>
+</ul>
+</dd>
+<dt><strong>Access Control</strong>:</dt><dd><ul class="simple">
+<li><p>Users must have one of the following roles:
+- <cite>admin</cite>: Can view items in any category.
+- <cite>customer</cite>: Can view items in any category.
+- <cite>product_manager</cite>: Can view items in any category.</p></li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>200 OK: A JSON array containing the details of all inventory items in the specified category. Each item includes:</dt><dd><ul>
+<li><p><cite>name</cite> (str): The name of the inventory item.</p></li>
+<li><p><cite>price</cite> (float): The price per item.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>500 Internal Server Error: If an error occurs during the process.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.get_item_details">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">get_item_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#get_item_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.get_item_details" title="Link to this definition"></a></dt>
+<dd><p>Retrieve all items in the inventory with their name and price.</p>
+<dl class="simple">
+<dt><strong>Endpoint</strong>:</dt><dd><p>GET /inventory</p>
+</dd>
+<dt><strong>Access Control</strong>:</dt><dd><ul class="simple">
+<li><p>Users must have one of the following roles:
+- <cite>admin</cite>: Can view all inventory items.
+- <cite>customer</cite>: Can view all inventory items.
+- <cite>product_manager</cite>: Can view all inventory items.</p></li>
+</ul>
+</dd>
+<dt><strong>Response</strong>:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>200 OK: A JSON array containing the details of all inventory items. Each item includes:</dt><dd><ul>
+<li><p><cite>name</cite> (str): The name of the inventory item.</p></li>
+<li><p><cite>price</cite> (float): The price per item.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>500 Internal Server Error: If an error occurs during the process.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.health_check">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check endpoint to monitor service and dependencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the service and all dependencies are operational.
+- 500 Internal Server Error: If any dependency or service is not operational.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.purchase_item">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">purchase_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#purchase_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.purchase_item" title="Link to this definition"></a></dt>
+<dd><p>Handle item purchase by a logged-in customer and log the order.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /purchase/&lt;int:item_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>item_id (int): The ID of the inventory item to be purchased.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following field:</dt><dd><ul class="simple">
+<li><p>quantity (int): The quantity of the item to purchase. Must be a positive integer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with “admin” or
+“customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the purchase is successful. Includes a success message and the order ID.
+- 400 Bad Request: If the quantity is invalid, stock is insufficient, or the wallet
+balance is insufficient.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.remove_stock">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">remove_stock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#remove_stock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.remove_stock" title="Link to this definition"></a></dt>
+<dd><p>Remove stock for a specific inventory item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item_id</strong> (<em>int</em>) – The ID of the inventory item whose stock is to be deducted.</p></li>
+<li><p><strong>quantity</strong> (<em>int</em>) – The quantity to deduct from the stock. Must be a positive integer.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – A dictionary of HTTP headers to include in the request, typically
+including authentication headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function raises an exception if there is an error during the process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sales.app.remove_wishlist">
+<span class="sig-prename descclassname"><span class="pre">sales.app.</span></span><span class="sig-name descname"><span class="pre">remove_wishlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sales/app.html#remove_wishlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sales.app.remove_wishlist" title="Link to this definition"></a></dt>
+<dd><p>Remove an item from the customer’s wishlist.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>DELETE /inventory/&lt;int:item_id&gt;/wishlist/remove</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>item_id (int): The ID of the inventory item to be removed from the wishlist.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘customer’, ‘admin’]) - Restricts access to users with “customer”
+or “admin” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the item is successfully removed from the wishlist.
+- 404 Not Found: If the item is not found in the customer’s wishlist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p>The <cite>sales</cite> module contains all classes, functions, and constants used to manage sales transactions.</p>
+<span class="target" id="module-sales"></span></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reviews.tests.html" class="btn btn-neutral float-left" title="Reviews.Tests Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sales.tests.html" class="btn btn-neutral float-right" title="Sales Tests Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

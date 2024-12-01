@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews Package &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reviews.Tests Package" href="reviews.tests.html" />
+    <link rel="prev" title="Inventory Tests Package" href="inventory.tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reviews Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews-app-module">reviews.app module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.approve_review"><code class="docutils literal notranslate"><span class="pre">approve_review()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.flag_review"><code class="docutils literal notranslate"><span class="pre">flag_review()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.get_customer_details"><code class="docutils literal notranslate"><span class="pre">get_customer_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.get_customer_reviews"><code class="docutils literal notranslate"><span class="pre">get_customer_reviews()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.get_item_exists"><code class="docutils literal notranslate"><span class="pre">get_item_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.get_product_reviews"><code class="docutils literal notranslate"><span class="pre">get_product_reviews()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.get_review_details"><code class="docutils literal notranslate"><span class="pre">get_review_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.submit_review"><code class="docutils literal notranslate"><span class="pre">submit_review()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviews.app.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html">Sales Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reviews Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reviews-app-module">reviews.app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.approve_review"><code class="docutils literal notranslate"><span class="pre">approve_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.delete_review"><code class="docutils literal notranslate"><span class="pre">delete_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.flag_review"><code class="docutils literal notranslate"><span class="pre">flag_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.get_customer_details"><code class="docutils literal notranslate"><span class="pre">get_customer_details()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.get_customer_reviews"><code class="docutils literal notranslate"><span class="pre">get_customer_reviews()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.get_item_exists"><code class="docutils literal notranslate"><span class="pre">get_item_exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.get_product_reviews"><code class="docutils literal notranslate"><span class="pre">get_product_reviews()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.get_review_details"><code class="docutils literal notranslate"><span class="pre">get_review_details()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.health_check"><code class="docutils literal notranslate"><span class="pre">health_check()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.submit_review"><code class="docutils literal notranslate"><span class="pre">submit_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reviews.app.update_review"><code class="docutils literal notranslate"><span class="pre">update_review()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">Reviews Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/reviews.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reviews-package">
+<h1>Reviews Package<a class="headerlink" href="#reviews-package" title="Link to this heading"></a></h1>
+<p>The <cite>reviews</cite> package manages all operations related to product reviews, including adding, updating, deleting, flagging, and approving reviews. It ensures a robust and user-friendly review management system for the platform.</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<p>The <cite>reviews</cite> package contains the following subpackages for extended functionalities:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviews.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.tests.html#reviews-tests-profile-reviews-module">reviews.tests.profile_reviews module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.profile_reviews.profile_all_tests"><code class="docutils literal notranslate"><span class="pre">profile_all_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.tests.html#reviews-tests-profiler-memory-module">reviews.tests.profiler_memory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.profiler_memory.run_memory_profiling"><code class="docutils literal notranslate"><span class="pre">run_memory_profiling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.tests.html#reviews-tests-test-app-module">reviews.tests.test_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.add_test_data"><code class="docutils literal notranslate"><span class="pre">add_test_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.get_auth_token"><code class="docutils literal notranslate"><span class="pre">get_auth_token()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_add_review"><code class="docutils literal notranslate"><span class="pre">test_add_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_approve_review"><code class="docutils literal notranslate"><span class="pre">test_approve_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_delete_review"><code class="docutils literal notranslate"><span class="pre">test_delete_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_flag_review"><code class="docutils literal notranslate"><span class="pre">test_flag_review()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_get_product_reviews"><code class="docutils literal notranslate"><span class="pre">test_get_product_reviews()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_get_review_by_id"><code class="docutils literal notranslate"><span class="pre">test_get_review_by_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_submit_review_with_profanity"><code class="docutils literal notranslate"><span class="pre">test_submit_review_with_profanity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="reviews.tests.html#reviews.tests.test_app.test_update_review"><code class="docutils literal notranslate"><span class="pre">test_update_review()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.tests.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<p>The <cite>reviews</cite> package provides the following modules for core functionality:</p>
+</section>
+<section id="reviews-app-module">
+<h2>reviews.app module<a class="headerlink" href="#reviews-app-module" title="Link to this heading"></a></h2>
+<p>The <cite>reviews.app</cite> module contains the main application logic for handling review-related operations.</p>
+<dl class="py function" id="module-reviews.app">
+<dt class="sig sig-object py" id="reviews.app.approve_review">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">approve_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#approve_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.approve_review" title="Link to this definition"></a></dt>
+<dd><p>Approve a review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>PUT /reviews/approve/&lt;int:review_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>review_id (int): The ID of the review to approve.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘product_manager’]) - Restricts access to admins and product managers.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the review is successfully approved.
+- 404 Not Found: If the review does not exist.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.delete_review">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">delete_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#delete_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.delete_review" title="Link to this definition"></a></dt>
+<dd><p>Delete a review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>DELETE /reviews/&lt;int:review_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>review_id (int): The ID of the review to delete.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to admins and customers.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the review is successfully deleted.
+- 400 Bad Request: If the user is not authorized.
+- 404 Not Found: If the review does not exist.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.flag_review">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">flag_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#flag_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.flag_review" title="Link to this definition"></a></dt>
+<dd><p>Flag a review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>PUT /reviews/flag/&lt;int:review_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>review_id (int): The ID of the review to flag.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘product_manager’, ‘customer’]) - Restricts access based on roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the review is successfully flagged.
+- 404 Not Found: If the review does not exist.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.get_customer_details">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#get_customer_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.get_customer_details" title="Link to this definition"></a></dt>
+<dd><p>Retrieve customer data from the customer service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The username of the customer whose details are to be retrieved.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – A dictionary of HTTP headers to include in the request. Typically includes
+authentication headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object containing customer details if the request is successful.
+rasies an exception</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.get_customer_reviews">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_reviews</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#get_customer_reviews"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.get_customer_reviews" title="Link to this definition"></a></dt>
+<dd><p>Get all reviews submitted by a specific customer.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /reviews/customer/</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access based on roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON list of reviews submitted by the customer.
+- 404 Not Found: If the customer has no reviews.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.get_item_exists">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">get_item_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#get_item_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.get_item_exists" title="Link to this definition"></a></dt>
+<dd><p>Retrieve item data from the inventory service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The username of the customer whose details are to be retrieved.</p></li>
+<li><p><strong>headers</strong> (<em>dict</em>) – A dictionary of HTTP headers to include in the request. Typically includes
+authentication headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object containing customer details if the request is successful.
+rasies an exception</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.get_product_reviews">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">get_product_reviews</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#get_product_reviews"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.get_product_reviews" title="Link to this definition"></a></dt>
+<dd><p>Get all reviews for a specific product.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /reviews/product/&lt;int:item_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>item_id (int): The ID of the product to retrieve reviews for.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘product_manager’, ‘customer’]) - Restricts access based on roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON list of reviews for the specified product.
+- 404 Not Found: If no reviews exist for the product.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.get_review_details">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">get_review_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#get_review_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.get_review_details" title="Link to this definition"></a></dt>
+<dd><p>Get details of a specific review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /reviews/&lt;int:review_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>review_id (int): The ID of the review to retrieve.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘admin’, ‘product_manager’, ‘customer’]) - Restricts access based on roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON object containing the review details.
+- 404 Not Found: If the review does not exist.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.health_check">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the service and all dependencies are operational.
+- 500 Internal Server Error: If any dependency is not operational.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.submit_review">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">submit_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#submit_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.submit_review" title="Link to this definition"></a></dt>
+<dd><p>Submit a new review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /reviews/&lt;int:item_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>item_id (int): The ID of the product to review.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘customer’, ‘admin’]) - Restricts access to customers and admins.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>JSON object containing:</dt><dd><ul class="simple">
+<li><p>rating (int): Rating for the product (required).</p></li>
+<li><p>comment (str): Optional comment for the review.</p></li>
+<li><p>status (str): Optional status of the review (default: “approved”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the review is successfully submitted.
+- 404 Not Found: If item doesn’t exist
+- 400 Bad Request: If validation fails.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>201 Created</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reviews.app.update_review">
+<span class="sig-prename descclassname"><span class="pre">reviews.app.</span></span><span class="sig-name descname"><span class="pre">update_review</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">review_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reviews/app.html#update_review"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#reviews.app.update_review" title="Link to this definition"></a></dt>
+<dd><p>Update an existing review.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>PUT /reviews/&lt;int:review_id&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>review_id (int): The ID of the review to update.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Requires authentication via JWT.
+&#64;role_required([‘customer’]) - Restricts access to customers only.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>JSON object containing:</dt><dd><ul class="simple">
+<li><p>rating (int): Updated rating for the product.</p></li>
+<li><p>comment (str): Updated comment for the review.</p></li>
+<li><p>status (str): Updated status of the review.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the review is successfully updated.
+- 400 Bad Request: If validation fails or if the user is not authorized.
+- 404 Not Found: If the review does not exist.
+- 500 Internal Server Error: If an error occurs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p>The <cite>reviews</cite> module serves as the main entry point for review-related operations.</p>
+<span class="target" id="module-reviews"></span></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inventory.tests.html" class="btn btn-neutral float-left" title="Inventory Tests Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reviews.tests.html" class="btn btn-neutral float-right" title="Reviews.Tests Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

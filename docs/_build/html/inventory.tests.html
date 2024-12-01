@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Tests Package &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reviews Package" href="reviews.html" />
+    <link rel="prev" title="Inventory Package" href="inventory.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="inventory.html">Inventory Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="inventory.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Inventory Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inventory.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inventory.html#inventory-app-module">inventory.app module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inventory.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html">Sales Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="inventory.html">Inventory Package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="inventory.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Inventory Tests Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inventory-tests-profile-inventory-module">inventory.tests.profile_inventory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inventory-tests-profiler-memory-module">inventory.tests.profiler_memory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inventory-tests-test-app-module">inventory.tests.test_app module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html#inventory-app-module">inventory.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Inventory Tests Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inventory-tests-profile-inventory-module">inventory.tests.profile_inventory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.profile_inventory.profile_all_tests"><code class="docutils literal notranslate"><span class="pre">profile_all_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inventory-tests-profiler-memory-module">inventory.tests.profiler_memory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.profiler_memory.run_memory_profiling"><code class="docutils literal notranslate"><span class="pre">run_memory_profiling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inventory-tests-test-app-module">inventory.tests.test_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.add_default_admin"><code class="docutils literal notranslate"><span class="pre">add_default_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.add_inventory_item"><code class="docutils literal notranslate"><span class="pre">add_inventory_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.add_product_manager"><code class="docutils literal notranslate"><span class="pre">add_product_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.add_regular_user"><code class="docutils literal notranslate"><span class="pre">add_regular_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.get_auth_tokens"><code class="docutils literal notranslate"><span class="pre">get_auth_tokens()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_add_item"><code class="docutils literal notranslate"><span class="pre">test_add_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_add_item_bad_role"><code class="docutils literal notranslate"><span class="pre">test_add_item_bad_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_add_item_invalid_data"><code class="docutils literal notranslate"><span class="pre">test_add_item_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_add_stock"><code class="docutils literal notranslate"><span class="pre">test_add_stock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_add_stock_bad_amount"><code class="docutils literal notranslate"><span class="pre">test_add_stock_bad_amount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_delete_item"><code class="docutils literal notranslate"><span class="pre">test_delete_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_delete_item_bad_role"><code class="docutils literal notranslate"><span class="pre">test_delete_item_bad_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_delete_item_no_item"><code class="docutils literal notranslate"><span class="pre">test_delete_item_no_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_remove_stock"><code class="docutils literal notranslate"><span class="pre">test_remove_stock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_remove_stock_bad_quantity"><code class="docutils literal notranslate"><span class="pre">test_remove_stock_bad_quantity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_remove_stock_insufficient"><code class="docutils literal notranslate"><span class="pre">test_remove_stock_insufficient()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_update_item"><code class="docutils literal notranslate"><span class="pre">test_update_item()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_update_item_invalid_data"><code class="docutils literal notranslate"><span class="pre">test_update_item_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inventory.tests.test_app.test_update_item_no_item"><code class="docutils literal notranslate"><span class="pre">test_update_item_no_item()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+          <li class="breadcrumb-item"><a href="inventory.html">Inventory Package</a></li>
+      <li class="breadcrumb-item active">Inventory Tests Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/inventory.tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inventory-tests-package">
+<h1>Inventory Tests Package<a class="headerlink" href="#inventory-tests-package" title="Link to this heading"></a></h1>
+<p>The <cite>inventory.tests</cite> package contains all testing and profiling modules for the inventory system, ensuring reliability and performance of inventory operations.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="inventory-tests-profile-inventory-module">
+<h2>inventory.tests.profile_inventory module<a class="headerlink" href="#inventory-tests-profile-inventory-module" title="Link to this heading"></a></h2>
+<p>The <cite>profile_inventory</cite> module contains profiling tests to measure the performance of inventory-related operations.</p>
+<dl class="py function" id="module-inventory.tests.profile_inventory">
+<dt class="sig sig-object py" id="inventory.tests.profile_inventory.profile_all_tests">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.profile_inventory.</span></span><span class="sig-name descname"><span class="pre">profile_all_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/profile_inventory.html#profile_all_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.profile_inventory.profile_all_tests" title="Link to this definition"></a></dt>
+<dd><p>Profiles all test functions in the test suite using cProfile.</p>
+</dd></dl>
+
+</section>
+<section id="inventory-tests-profiler-memory-module">
+<h2>inventory.tests.profiler_memory module<a class="headerlink" href="#inventory-tests-profiler-memory-module" title="Link to this heading"></a></h2>
+<p>The <cite>profiler_memory</cite> module evaluates memory usage during inventory operations, ensuring optimal resource management.</p>
+<dl class="py function" id="module-inventory.tests.profiler_memory">
+<dt class="sig sig-object py" id="inventory.tests.profiler_memory.run_memory_profiling">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.profiler_memory.</span></span><span class="sig-name descname"><span class="pre">run_memory_profiling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/profiler_memory.html#run_memory_profiling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.profiler_memory.run_memory_profiling" title="Link to this definition"></a></dt>
+<dd><p>Runs pytest while profiling memory usage for the tests.</p>
+</dd></dl>
+
+</section>
+<section id="inventory-tests-test-app-module">
+<h2>inventory.tests.test_app module<a class="headerlink" href="#inventory-tests-test-app-module" title="Link to this heading"></a></h2>
+<p>The <cite>test_app</cite> module includes unit tests to validate the functionality of inventory-related features such as adding, updating, and deleting inventory items.</p>
+<dl class="py function" id="module-inventory.tests.test_app">
+<dt class="sig sig-object py" id="inventory.tests.test_app.add_default_admin">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_default_admin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#add_default_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.add_default_admin" title="Link to this definition"></a></dt>
+<dd><p>Adds a default admin user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.add_inventory_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_inventory_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#add_inventory_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.add_inventory_item" title="Link to this definition"></a></dt>
+<dd><p>Adds an inventory item to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.add_product_manager">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_product_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#add_product_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.add_product_manager" title="Link to this definition"></a></dt>
+<dd><p>Adds a product manager user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.add_regular_user">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">add_regular_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#add_regular_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.add_regular_user" title="Link to this definition"></a></dt>
+<dd><p>Adds a regular customer user to the database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.app">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.app" title="Link to this definition"></a></dt>
+<dd><p>Creates a Flask application configured for testing.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.client">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.client" title="Link to this definition"></a></dt>
+<dd><p>Provides a test client for the Flask application.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.db_session">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">db_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#db_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.db_session" title="Link to this definition"></a></dt>
+<dd><p>Creates a new database session for a test.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.get_auth_tokens">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">get_auth_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#get_auth_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.get_auth_tokens" title="Link to this definition"></a></dt>
+<dd><p>Logs in all users to obtain JWT tokens.
+Returns a dictionary with ‘admin’, ‘user’, and manager tokens.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_add_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_add_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_add_item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_add_item_bad_role">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_item_bad_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_add_item_bad_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_add_item_bad_role" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_add_item_invalid_data">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_item_invalid_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_add_item_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_add_item_invalid_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_add_stock">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_stock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_add_stock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_add_stock" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_add_stock_bad_amount">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_add_stock_bad_amount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_add_stock_bad_amount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_add_stock_bad_amount" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_delete_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_delete_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_delete_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_delete_item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_delete_item_bad_role">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_delete_item_bad_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_inventory_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_delete_item_bad_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_delete_item_bad_role" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_delete_item_no_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_delete_item_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_delete_item_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_delete_item_no_item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_remove_stock">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_stock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_remove_stock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_remove_stock" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_remove_stock_bad_quantity">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_stock_bad_quantity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_remove_stock_bad_quantity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_remove_stock_bad_quantity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_remove_stock_insufficient">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_remove_stock_insufficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_remove_stock_insufficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_remove_stock_insufficient" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_update_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_update_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_update_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_update_item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_update_item_invalid_data">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_update_item_invalid_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_update_item_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_update_item_invalid_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inventory.tests.test_app.test_update_item_no_item">
+<span class="sig-prename descclassname"><span class="pre">inventory.tests.test_app.</span></span><span class="sig-name descname"><span class="pre">test_update_item_no_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_auth_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inventory/tests/test_app.html#test_update_item_no_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inventory.tests.test_app.test_update_item_no_item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p>The <cite>inventory.tests</cite> package consolidates all testing and profiling tools for the inventory system, supporting both functional and performance testing.</p>
+<span class="target" id="module-inventory.tests"></span></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inventory.html" class="btn btn-neutral float-left" title="Inventory Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reviews.html" class="btn btn-neutral float-right" title="Reviews Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customers Package &mdash; ecommerce_platform_zebibsabbagh 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Customers.Tests Package" href="customers.tests.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ecommerce_platform_zebibsabbagh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Customers Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customers-app-module">customers.app module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#customers">Customers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales.html">Sales Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Customers Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customers-app-module">customers.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#customers">Customers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.html">Inventory Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory.tests.html">Inventory Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">Reviews Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.tests.html">Reviews.Tests Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.html">Sales Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sales.tests.html">Sales Tests Package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ecommerce_platform_zebibsabbagh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">Customers Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/customers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="customers-package">
+<h1>Customers Package<a class="headerlink" href="#customers-package" title="Link to this heading"></a></h1>
+<p>This package manages customer-related operations, including adding, updating, and deleting customer data.</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<p>The <cite>customers</cite> package contains the following subpackages:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="customers.tests.html">Customers.Tests Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customers.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.tests.html#customers-tests-profiler-memory-module">customers.tests.profiler_memory module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.profiler_memory.run_memory_profiling"><code class="docutils literal notranslate"><span class="pre">run_memory_profiling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customers.tests.html#customers-tests-profiler-performance-module">customers.tests.profiler_performance module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.profiler_performance.profile_all_tests"><code class="docutils literal notranslate"><span class="pre">profile_all_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customers.tests.html#customers-tests-test-app-module">customers.tests.test_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.add_default_admin"><code class="docutils literal notranslate"><span class="pre">add_default_admin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.add_regular_user"><code class="docutils literal notranslate"><span class="pre">add_regular_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.get_auth_token"><code class="docutils literal notranslate"><span class="pre">get_auth_token()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_add_customer"><code class="docutils literal notranslate"><span class="pre">test_add_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_add_customer_invalid_data"><code class="docutils literal notranslate"><span class="pre">test_add_customer_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_add_product_manager_role"><code class="docutils literal notranslate"><span class="pre">test_add_product_manager_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_add_wallet"><code class="docutils literal notranslate"><span class="pre">test_add_wallet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_add_wallet_bad_amount"><code class="docutils literal notranslate"><span class="pre">test_add_wallet_bad_amount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_change_password"><code class="docutils literal notranslate"><span class="pre">test_change_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_change_password_invalid_password"><code class="docutils literal notranslate"><span class="pre">test_change_password_invalid_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_deduct_wallet"><code class="docutils literal notranslate"><span class="pre">test_deduct_wallet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_deduct_wallet_bad_amount"><code class="docutils literal notranslate"><span class="pre">test_deduct_wallet_bad_amount()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_deduct_wallet_insufficient"><code class="docutils literal notranslate"><span class="pre">test_deduct_wallet_insufficient()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_delete_customer"><code class="docutils literal notranslate"><span class="pre">test_delete_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_delete_customer_no_user"><code class="docutils literal notranslate"><span class="pre">test_delete_customer_no_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_get_customer_by_username"><code class="docutils literal notranslate"><span class="pre">test_get_customer_by_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_get_customer_by_username_no_user"><code class="docutils literal notranslate"><span class="pre">test_get_customer_by_username_no_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_get_customers"><code class="docutils literal notranslate"><span class="pre">test_get_customers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_get_previous_orders"><code class="docutils literal notranslate"><span class="pre">test_get_previous_orders()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_get_wishlist"><code class="docutils literal notranslate"><span class="pre">test_get_wishlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_update_customer"><code class="docutils literal notranslate"><span class="pre">test_update_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_update_customer_invalid_data"><code class="docutils literal notranslate"><span class="pre">test_update_customer_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="customers.tests.html#customers.tests.test_app.test_update_customer_invalid_user"><code class="docutils literal notranslate"><span class="pre">test_update_customer_invalid_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="customers.tests.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="customers-app-module">
+<h2>customers.app module<a class="headerlink" href="#customers-app-module" title="Link to this heading"></a></h2>
+<p>The <cite>customers.app</cite> module provides the main application logic for customer-related operations.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">add_admin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#add_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Register a new customer with a role</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /admins</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following fields:</dt><dd><ul class="simple">
+<li><p>fullname (str): The full name of the admin.</p></li>
+<li><p>username (str): The unique username of the admin.</p></li>
+<li><p>password (str): The admin’s password (will be hashed before storage).</p></li>
+<li><p>age (int): The admin’s age.</p></li>
+<li><p>address (str): The admin’s address.</p></li>
+<li><p>gender (str): The admin’s gender.</p></li>
+<li><p>marital_status (str): The admin’s marital status.</p></li>
+<li><p>role (str): The role of the admin</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’]) - Restricts access to users with the “admin” role.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the admin is successfully registered. Includes a success message
+and the admin’s ID.
+- 400 Bad Request: If the username is already taken or the input data fails validation.
+- 500 Internal Server Error: If an exception occurs during the registration process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>201 Created</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">add_customer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#add_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Register a new customer. It validates the input data, ensures that the username
+is unique, hashes the customer’s password, and stores the customer in the database.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /customers</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following fields:</dt><dd><ul class="simple">
+<li><p>fullname (str): The full name of the customer.</p></li>
+<li><p>username (str): The unique username of the customer.</p></li>
+<li><p>password (str): The customer’s password (will be hashed before storage).</p></li>
+<li><p>age (int): The customer’s age.</p></li>
+<li><p>address (str): The customer’s address.</p></li>
+<li><p>gender (str): The customer’s gender.</p></li>
+<li><p>marital_status (str): The customer’s marital status.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the customer is successfully registered. Includes a success message
+and the customer’s ID.
+- 400 Bad Request: If the username is already taken or the input data fails validation.
+- 500 Internal Server Error: If an exception occurs during the registration process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>201 Created</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">add_customer_wallet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#add_customer_wallet"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Add funds to a customer’s wallet.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /customers/&lt;string:username&gt;/wallet/add</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer whose wallet is to be charged.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following field:</dt><dd><ul class="simple">
+<li><p>amount (float): The amount to add to the customer’s wallet. Must be greater than 0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’,’product_manager’]) - Restricts access to users with
+“admin” or “customer” or “product_manager” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the amount is successfully added to the customer’s wallet.
+- 400 Bad Request: If the amount is invalid or if a non-admin user attempts to add funds to another user’s wallet.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">change_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#change_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Change the password of a customer.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /customers/&lt;username&gt;/change-password</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer.</p>
+</dd>
+<dt>Request Body:</dt><dd><ul class="simple">
+<li><p>current_password (str): The current password.</p></li>
+<li><p>new_password (str): The new password.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Success.
+- 400 Bad Request: Invalid input.
+- 404 Not Found: Customer not found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">deduct_customer_wallet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#deduct_customer_wallet"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Deduct funds to a customer’s wallet.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>POST /customers/&lt;string:username&gt;/wallet/deduct</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer whose wallet is to be charged.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following field:</dt><dd><ul class="simple">
+<li><p>amount (float): The amount to deduct from the customer’s wallet. Must be greater than 0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with
+“admin” or “customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the amount is successfully deducted to the customer’s wallet.
+- 400 Bad Request: If the amount is invalid or if a non-admin user attempts to deduct funds from another user’s wallet.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">delete_customer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#delete_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Delete a customer by username and all entries related to it.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>DELETE /customers/&lt;string:username&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer to be deleted.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with
+“admin” or “customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the customer is successfully deleted.
+- 400 Bad Request: If a non-admin user attempts to delete another user’s account.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the deletion process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_by_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#get_customer_by_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieve customer information by username.</p>
+<dl class="simple">
+<dt><strong>Endpoint</strong>:</dt><dd><p>GET /customers/&lt;string:username&gt;</p>
+</dd>
+<dt><strong>Path Parameter</strong>:</dt><dd><ul class="simple">
+<li><p><cite>username</cite> (str): The username of the customer whose information is to be retrieved.</p></li>
+</ul>
+</dd>
+<dt><strong>Access Control</strong>:</dt><dd><ul class="simple">
+<li><p>Users must have one of the following roles:
+- <cite>admin</cite>: Can access any customer’s data.
+- <cite>customer</cite>: Can access only their own data.
+- <cite>product_manager</cite>: Can access any customer’s data.</p></li>
+</ul>
+</dd>
+<dt><strong>Returns</strong>:</dt><dd><ul class="simple">
+<li><p>200 OK: A JSON object containing the customer’s details.</p></li>
+<li><p>400 Bad Request: If a non-admin user tries to access another customer’s data.</p></li>
+<li><p>404 Not Found: If the customer with the specified username does not exist.</p></li>
+<li><p>500 Internal Server Error: If an error occurs during database access.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#get_customer_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieve all previous orders of a customer.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /customers/&lt;string:username&gt;/orders</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer whose orders are to be retrieved.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with
+“admin” or “customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A JSON object containing a list of the customer’s orders.
+- 400 Bad Request: If a non-admin user attempts to view the orders of another customer.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">get_customer_wishlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#get_customer_wishlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieve all wishlist items of a customer.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /customers/&lt;string:username&gt;/wishlist</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer whose wishlist is to be retrieved.</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with
+“admin” or “customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A JSON object containing a list of the customer’s wishlist items.
+- 400 Bad Request: If a non-admin user attempts to view the wishlist of another customer.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">get_customers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#get_customers"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieve all customers from the database.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>GET /customers</p>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([“admin”]) - Restricts access to users with the “admin” role.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A JSON list of customer objects
+- 500 Internal Server Error: A JSON object with an “error” field if an exception occurs during database access.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Health check endpoint to monitor service and database status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the service and database are operational.
+- 500 Internal Server Error: If the database or any service is unavailable.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">customers.app.</span></span><span class="sig-name descname"><span class="pre">update_customer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/customers/app.html#update_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Update customer information.</p>
+<dl class="simple">
+<dt>Endpoint:</dt><dd><p>PUT /customers/&lt;string:username&gt;</p>
+</dd>
+<dt>Path Parameter:</dt><dd><p>username (str): The username of the customer whose information is to be updated.</p>
+</dd>
+<dt>Request Body:</dt><dd><dl class="simple">
+<dt>A JSON object containing the following fields:</dt><dd><ul class="simple">
+<li><p>fullname (str): The full name of the customer.</p></li>
+<li><p>age (int): The customer’s age.</p></li>
+<li><p>address (str): The customer’s address.</p></li>
+<li><p>gender (str): The customer’s gender.</p></li>
+<li><p>marital_status (str): The customer’s marital status.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>Decorators:</dt><dd><p>&#64;jwt_required() - Ensures the user is authenticated using a JWT token.
+&#64;role_required([‘admin’, ‘customer’]) - Restricts access to users with
+“admin” or “customer” roles.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the customer information is successfully updated.
+- 400 Bad Request: If the user is not authorized to update the information
+or the input data fails validation.
+- 404 Not Found: If the customer with the specified username does not exist.
+- 500 Internal Server Error: If an exception occurs during the update process.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>200 OK</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p>The <cite>customers</cite> module contains the core functionalities for managing customers.</p>
+</section>
+</section>
+<section id="customers">
+<h1>Customers<a class="headerlink" href="#customers" title="Link to this heading"></a></h1>
+<p>This module manages customer-related operations, including:</p>
+<ul class="simple">
+<li><p>Adding customers</p></li>
+<li><p>Updating customer information</p></li>
+<li><p>Deleting customer records</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="customers.tests.html" class="btn btn-neutral float-right" title="Customers.Tests Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, joudy sabbagh and zein zebib.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
