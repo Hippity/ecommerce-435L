@@ -53,7 +53,7 @@ def get_item_exists(item_id,headers):
         rasies an exception
 
     """
-    response = requests.get(f'http://invenotry-service:3001/inventory/{item_id}', timeout=5, headers=headers)
+    response = requests.get(f'http://sales-service:3003/inventory/{item_id}', timeout=5, headers=headers)
     response.raise_for_status()
     if response.headers.get('Content-Type') != 'application/json':
         raise Exception('Unexpected content type: JSON expected')
@@ -513,6 +513,7 @@ def health_check():
     """
     db_status = "unknown"
     customer_service_status = "unknown"
+    sales_service_status = "unknown"
 
     # Check database connectivity
     try:
@@ -533,14 +534,25 @@ def health_check():
     except Exception as e:
         customer_service_status = f"unavailable: {str(e)}"
 
+    # Check sales-service health
+    try:
+        response = requests.get('http://sales-service:3003/health', timeout=5)
+        if response.status_code == 200:
+            sales_service_status = "healthy"
+        else:
+            sales_service_status = f"unhealthy: {response.status_code}"
+    except Exception as e:
+        sales_service_status = f"unavailable: {str(e)}"
+
     # Aggregate overall status
-    overall_status = "healthy" if db_status == "connected" and customer_service_status == "healthy" else "unhealthy"
+    overall_status = "healthy" if db_status == "connected" and customer_service_status == "healthy" and sales_service_status == "healthy" else "unhealthy"
 
     # Return JSON response
     return jsonify({
         "status": overall_status,
         "database": db_status,
-        "customer_service": customer_service_status
+        "customer_service": customer_service_status,
+        "sales_service_status": sales_service_status
     }), 200 if overall_status == "healthy" else 500
 
 if __name__ == '__main__':
